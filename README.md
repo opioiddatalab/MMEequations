@@ -4,7 +4,7 @@ For more information see [OpioidData.org](opioiddata.org)
 
 The intent of this analysis is to document different formulae used to calculate average daily MME, and examine conditions which may lead to bias.
 
-For example, across 6 formulae, for 2 simple prescriptions dispensed to the same patient on the same day for the same active ingredient, the following values of **average daily MME** were observed:
+[For example](https://opioiddatalab.github.io/MMEequations/MMEequations.html), across 6 formulae, for 2 simple prescriptions dispensed to the same patient on the same day for the same active ingredient, the following values of **average daily MME** were observed:
 
 + 50.0
 + 68.6
