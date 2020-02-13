@@ -13143,6 +13143,7 @@ $( document ).ready(function(){
     </font></p>
 <p>Updated Feb 13, 2020<br>
 For more information see <a href="opioiddata.org">OpioidData.org</a></p>
+<p><font color='red'>Caution: this is a work in progress. Don't take it too seriously (yet).</font></p>
 <hr>
 <p>The intent of this analysis is to document different formulae used to calculate average daily MME, and examine conditions which may lead to bias.</p>
 <p>For example, across 6 formulae, for 2 simple prescriptions dispensed to the same patient on the same day for the same active ingredient, the following values of <strong>average daily MME</strong> were observed:</p>
@@ -13170,6 +13171,7 @@ For more information see <a href="opioiddata.org">OpioidData.org</a></p>
 <li>Month has exactly 30 days</li>
 <li>No other opioid prescriptions (e.g., cash pay in insurance claims data)</li>
 <li>No external sources of opioids (e.g., leftover, diversion)</li>
+<li>All doses taken, and taken as described</li>
 <li>No counterfeits</li>
 <li>Therapeutic equivalence of generics satisfied</li>
 <li>Only solid oral doseage forms prescribed</li>
@@ -13183,17 +13185,44 @@ For more information see <a href="opioiddata.org">OpioidData.org</a></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Simulation-data">Simulation data<a class="anchor-link" href="#Simulation-data">&#182;</a></h2><p>Consider the following prescriber instructions:<br>
-<em>This month, take one 20mg ER oxycodone twice per day for 30 days AND one 5mg oxycodone twice a day as needed</em>
+<h1 id="Problem-statement">Problem statement<a class="anchor-link" href="#Problem-statement">&#182;</a></h1><p>Consider the following prescriber instructions:<br>
+<em>This month, the patient should take one 20mg ER oxycodone twice-a-day for around-the-clock pain for 30 days, AND one 5mg oxycodone twice a day as needed for breakthrough pain. Both prescriptions are dispensed on the first day of the month.</em></p>
+<p><strong>What is the 30-day average daily MME for this patient?</strong><br></p>
+<p>M = total MME per script<br>
+d = days supply on script<br>
+s = date of dispensing<br>
+<em>i</em> = prescription <em>i</em><br>
+n = total number of prescriptions<br>
 <br>
-Both prescriptions were dispensed on the same day, on the first of the month</p>
-
+<strong>Numerator: total MME for all prescriptions dispensed in 30-days</strong></p>
+<p><code>units</code> x <code>strength</code> x <code>conversion</code> = <br>
+Rx1: 60qty x 20mg x 2 = <strong>2400</strong> MME per script<br>
+Rx2: 14qty x 5mg x 2 = <strong>140</strong> MME per script<br>
+<br></p>
+<p><code>|-|-|-|-|-|-|-|-|-|10|-|-|-|-|-|-|-|-|-|20|-|-|-|-|-|-|-|-|-|30|</code>    CALENDAR DAY <br>
+<code>|+|+|+|+|+|+|+|+|+|+ |+|+|+|+|+|+|+|+|+|+ |+|+|+|+|+|+|+|+|+|+ |</code>    Rx1<br>
+<code>|+|+|+|+|+|+|+|.|.|. |.|.|.|.|.|.|.|.|.|. |.|.|.|.|.|.|.|.|.|. |</code>    Rx2<br></p>
+<p>${\sum_{i=0}^n \text{M}}$ = 30-Day Total MME: 2400 + 140 = <strong>2540</strong> <br></p>
+<p><br></p>
+<p><strong>What is the correct denominator?</strong> <br></p>
+<p><font color='red'> *Is it the sum of days supply?*<br><br></font>
+$\cfrac {\sum_{i=0}^n \text{M}} {\sum_{i=0}^n \text{d}}$ = $\cfrac{2540 \text{ MME}} {37 \text{ days}} = 69\text{ average daily MME}$ <br><br>
+<br></p>
+<p><font color='red'>*Is it the total person-time since start of exposure (intent-to-treat) or the maximum days explicitly exposed?*<br></font>
+<font size='1'>Both are 30d in this example but will not always be, e.g., 2 prescriptions separated by days. </font><br><br>
+$\cfrac {\sum_{i=0}^n \text{M}} {max(\text{s+d}) - min(s) + 1}$ = $\cfrac{2540 \text{ MME}} {30 \text{ days}} = 85\text{ average daily MME}$ <br><br>
+<br>
+    <font color='red'>*Or, do you average the two?*<br><br></font>
+$\cfrac{\sum{\cfrac{M_i} {d_i}}} {n}$ = $\cfrac{\cfrac{2400 \text{ MME}} {30 \text{ days}} + \cfrac{140 \text{ MME}} {7 \text{ days}}} {2} = 50\text{ average daily MME}$</p>
+<p>The range of possible values for "average daily MME" (50 to 85) represnts 70% variation between the highest and lowest estimates, in this simple scenario. When the prescriptions are not overlapping or are staggered, there can be a heightened chance of bias.</p>
+<hr>
+<h1 id="Simulation-data">Simulation data<a class="anchor-link" href="#Simulation-data">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[157]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all<span class="k"></span>
@@ -13214,6 +13243,8 @@ Both prescriptions were dispensed on the same day, on the first of the month</p>
 <span class="k">la var</span> strength <span class="s">&quot;Dose strength in milligrams&quot;</span><span class="k"></span>
 <span class="k">la var</span> conv <span class="s">&quot;Conversion factor relative to morphine&quot;</span><span class="k"></span>
 <span class="k">la var</span> days <span class="s">&quot;Days supply indicated calculated by pharmacist&quot;</span>
+
+frame create results equation MME
 
 <span class="k">gen</span> endimputed=start<span class="o">+</span>days<span class="m">-1</span><span class="k"></span>
 <span class="k">la var</span> endimputed <span class="s">&quot;Dispensing date + days supply&quot;</span><span class="k"></span>
@@ -13263,6 +13294,8 @@ Both prescriptions were dispensed on the same day, on the first of the month</p>
 
 . la var days &#34;Days supply indicated calculated by pharmacist&#34;
 
+. frame create results equation MME
+
 . gen endimputed=start+days-1
 
 . la var endimputed &#34;Dispensing date + days supply&#34;
@@ -13292,6 +13325,7 @@ Both prescriptions were dispensed on the same day, on the first of the month</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>(resize the browser window if the table above line wraps and formatting is weird.)</p>
 <hr>
 <h1 id="Core-MME-concept">Core MME concept<a class="anchor-link" href="#Core-MME-concept">&#182;</a></h1>
 </div>
@@ -13300,8 +13334,16 @@ Both prescriptions were dispensed on the same day, on the first of the month</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><em>description</em></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Where:<br>
-$M_{r}$ .......... MME for given prescription r<br>
+$M$ .......... MME for given prescription r<br>
 $q$     .......... Quantity (untis) dispensed<br>
 $d$     .......... Days supply<br>
 $s$     .......... Start date of prescription (day of dispensing)<br>
@@ -13344,11 +13386,12 @@ $e$     .......... End date of prescription<br></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-$$
-\sum_{1=0}^r M_{r}
+<p>$
+\sum_{1=0}^n M_{r}
 \over
-\sum_{1=0}^r {d}
-$$
+\sum_{1=0}^n {d}
+$</p>
+
 </div>
 </div>
 </div>
@@ -13362,20 +13405,25 @@ $$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[158]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 1</span>
 <span class="c1">* Numerator: sum MME for each prescription across time period</span><span class="k"></span>
 <span class="k">bysort</span> pt:<span class="k"> egen</span> num =<span class="k"> total</span>(Mr)
+
 <span class="c1">* Denominator: sum days supply for each prescription across whole time period</span><span class="k"></span>
 <span class="k">bysort</span> pt:<span class="k"> egen</span> den =<span class="k"> total</span>(days)
+
 <span class="c1">* Divide </span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> gen</span> eq1=<span class="nf">round</span>(num<span class="o">/</span>den)<span class="k"></span>
-<span class="k">la var</span> eq1 <span class="s">&quot;MME Equation 1&quot;</span><span class="k"></span>
+<span class="k">bysort</span> pt:<span class="k"> gen</span> eq1=<span class="nf">round</span>(num<span class="o">/</span>den)
+<span class="k">    la var</span> eq1 <span class="s">&quot;MME Equation 1&quot;</span>
+
 <span class="k">drop</span> num den<span class="k"></span>
 <span class="k">di</span> <span class="s">&quot;30-day Average Daily MME for Equation 1:&quot;</span><span class="k"></span>
-<span class="k">list</span> eq1,  noh
+<span class="k">list</span> eq1
+
+frame<span class="k"> post</span> results (<span class="m">1</span>) (eq1)
 </pre></div>
 
     </div>
@@ -13400,10 +13448,14 @@ $$
 
 30-day Average Daily MME for Equation 1:
 
+
      +-----+
+     | eq1 |
+     |-----|
   1. |  69 |
   2. |  69 |
      +-----+
+
 </pre>
 </div>
 </div>
@@ -13439,23 +13491,61 @@ $$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[159]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 2</span>
 <span class="c1">* Numerator: sum MME for each prescription across time period</span><span class="k"></span>
 <span class="k">bysort</span> pt:<span class="k"> egen</span> num =<span class="k"> total</span>(Mr)
+
 <span class="c1">* Denominator: maximum calendar days difference between earliest and last prescription</span><span class="k"></span>
 <span class="k">bysort</span> pt:<span class="k"> egen</span> min=<span class="nf">min</span>(start)<span class="k"></span>
 <span class="k">bysort</span> pt:<span class="k"> egen</span> max=<span class="nf">max</span>(end)<span class="k"></span>
 <span class="k">gen</span> den = max<span class="o">-</span>min<span class="m">+1</span>
+
 <span class="c1">* Divide </span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> gen</span> eq2=<span class="nf">round</span>(num<span class="o">/</span>den)<span class="k"></span>
-<span class="k">la var</span> eq1 <span class="s">&quot;MME Equation 2&quot;</span><span class="k"></span>
-<span class="k">drop</span> num den min max
+<span class="k">bysort</span> pt:<span class="k"> gen</span> eq2=<span class="nf">round</span>(num<span class="o">/</span>den)
+<span class="k">    la var</span> eq1 <span class="s">&quot;MME Equation 2&quot;</span>
+<span class="k">        drop</span> num den min max
+<span class="k">        </span>
+<span class="k">list</span> eq2
+    frame<span class="k"> post</span> results (<span class="m">2</span>) (eq2)
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+
+
+
+
+
+
+     +-----+
+     | eq2 |
+     |-----|
+  1. |  85 |
+  2. |  85 |
+     +-----+
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13490,17 +13580,51 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[160]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">gen</span> temp=Mr<span class="o">/</span>days<span class="k"></span>
+<div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 3</span>
+<span class="k">gen</span> temp=Mr<span class="o">/</span>days<span class="k"></span>
 <span class="k">bysort</span> pt:<span class="k"> egen</span> eq3=mean(temp)<span class="k"></span>
-<span class="k">la var</span> eq3 <span class="s">&quot;MME Equation 3&quot;</span><span class="k"></span>
-<span class="k">note</span> eq3: Average of individual prescription daily MME,<span class="k"> by</span> person<span class="k"></span>
-<span class="k">drop</span> temp
+<span class="k">la var</span> eq3 <span class="s">&quot;MME Equation 3&quot;</span>
+<span class="k">    note</span> eq3: Average of individual prescription daily MME,<span class="k"> by</span> person
+<span class="k">    drop</span> temp<span class="k"></span>
+<span class="k">list</span> eq3
+    frame<span class="k"> post</span> results (<span class="m">3</span>) (eq3)
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+
+
+
+
+     +-----+
+     | eq3 |
+     |-----|
+  1. |  50 |
+  2. |  50 |
+     +-----+
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13532,17 +13656,57 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[161]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">bysort</span> pt:<span class="k"> egen</span> num=total(Mr)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> den=mean(days)<span class="k"></span>
-<span class="k">gen</span> eq4 = <span class="nf">round</span>(num<span class="o">/</span>den)<span class="k"></span>
-<span class="k">la var</span> eq4 <span class="s">&quot;MME Equation 4&quot;</span><span class="k"></span>
-<span class="k">drop</span> num den
+<div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 4</span>
+<span class="c1">* Numerator: total MME</span><span class="k"></span>
+<span class="k">bysort</span> pt:<span class="k"> egen</span> num=total(Mr)
+
+<span class="c1">* Denominator: averaged day supply across all scripts</span><span class="k"></span>
+<span class="k">bysort</span> pt:<span class="k"> egen</span> den=mean(days)
+
+<span class="c1">* Divide</span><span class="k"></span>
+<span class="k">gen</span> eq4 = <span class="nf">round</span>(num<span class="o">/</span>den)
+<span class="k">    la var</span> eq4 <span class="s">&quot;MME Equation 4&quot;</span>
+<span class="k">        drop</span> num den
+
+<span class="k">list</span> eq4
+    frame<span class="k"> post</span> results (<span class="m">4</span>) (eq4)
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+
+
+
+
+     +-----+
+     | eq4 |
+     |-----|
+  1. | 137 |
+  2. | 137 |
+     +-----+
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13574,18 +13738,59 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[162]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">bysort</span> pt:<span class="k"> egen</span> num1=total(units)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> num2=total(strength<span class="o">*</span>conv)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> den=total(days)<span class="k"></span>
-<span class="k">gen</span> eq5 = <span class="nf">round</span>(num1<span class="o">*</span>num2<span class="o">/</span>den)<span class="k"></span>
-<span class="k">la var</span> eq5 <span class="s">&quot;MME Equation 5&quot;</span><span class="k"></span>
-<span class="k">drop</span> num1 num2 den
+<div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 5</span>
+<span class="c1">* Numerator: </span><span class="k"></span>
+<span class="k">bysort</span> pt:<span class="k"> egen</span> num1=total(units)<span class="k"></span>
+<span class="k">bysort</span> pt:<span class="k"> egen</span> num2=total(strength<span class="o">*</span>conv)
+
+<span class="c1">* Denominator:</span><span class="k"></span>
+<span class="k">bysort</span> pt:<span class="k"> egen</span> den=total(days)
+
+<span class="c1">* Divide</span><span class="k"></span>
+<span class="k">gen</span> eq5 = <span class="nf">round</span>(num1<span class="o">*</span>num2<span class="o">/</span>den)
+<span class="k">    la var</span> eq5 <span class="s">&quot;MME Equation 5&quot;</span>
+<span class="k">        drop</span> num1 num2 den
+
+<span class="k">list</span> eq5
+    frame<span class="k"> post</span> results (<span class="m">5</span>) (eq5)
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+
+
+
+
+
+     +-----+
+     | eq5 |
+     |-----|
+  1. | 100 |
+  2. | 100 |
+     +-----+
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13617,19 +13822,60 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[163]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">bysort</span> pt:<span class="k"> egen</span> num1=total(units)<span class="k"></span>
+<div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 6</span>
+<span class="c1">* Numerator: </span><span class="k"></span>
+<span class="k">bysort</span> pt:<span class="k"> egen</span> num1=total(units)<span class="k"></span>
 <span class="k">bysort</span> pt:<span class="k"> egen</span> num2=total(strength<span class="o">*</span>conv)<span class="k"></span>
 <span class="k">bysort</span> pt:<span class="k"> egen</span> min=<span class="nf">min</span>(start)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> max=<span class="nf">max</span>(end)<span class="k"></span>
-<span class="k">gen</span> den = max<span class="o">-</span>min<span class="m">+1</span><span class="k"></span>
-<span class="k">gen</span> eq6 = <span class="nf">round</span>(num1<span class="o">*</span>num2<span class="o">/</span>den)<span class="k"></span>
-<span class="k">drop</span> min max num<span class="o">*</span> den
+<span class="k">bysort</span> pt:<span class="k"> egen</span> max=<span class="nf">max</span>(end)
+
+<span class="c1">* Denominator</span><span class="k"></span>
+<span class="k">gen</span> den = max<span class="o">-</span>min<span class="m">+1</span>
+<span class="k">    gen</span> eq6 = <span class="nf">round</span>(num1<span class="o">*</span>num2<span class="o">/</span>den)
+<span class="k">        la var</span> eq6 <span class="s">&quot;MME Equation 6&quot;</span>
+<span class="k">            drop</span> min max num<span class="o">*</span> den <span class="k"></span>
+<span class="k">list</span> eq6
+    frame<span class="k"> post</span> results (<span class="m">6</span>) (eq6)
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+
+
+
+
+
+
+
+     +-----+
+     | eq6 |
+     |-----|
+  1. | 123 |
+  2. | 123 |
+     +-----+
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13661,19 +13907,63 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="prompt input_prompt">In&nbsp;[164]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">bysort</span> pt:<span class="k"> egen</span> num1=total(units)<span class="k"></span>
+<div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 7</span>
+<span class="c1">* Numerator:</span><span class="k"></span>
+<span class="k">bysort</span> pt:<span class="k"> egen</span> num1=total(units)<span class="k"></span>
 <span class="k">bysort</span> pt:<span class="k"> egen</span> num2=total(strength<span class="o">*</span>conv)<span class="k"></span>
 <span class="k">bysort</span> pt:<span class="k"> egen</span> min=<span class="nf">min</span>(start)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> max=<span class="nf">max</span>(endimputed)<span class="k"></span>
-<span class="k">gen</span> den = max<span class="o">-</span>min<span class="m">+1</span><span class="k"></span>
-<span class="k">gen</span> eq7 = <span class="nf">round</span>(num1<span class="o">*</span>num2<span class="o">/</span>den)<span class="k"></span>
-<span class="k">drop</span> min max num<span class="o">*</span> den
+<span class="k">bysort</span> pt:<span class="k"> egen</span> max=<span class="nf">max</span>(endimputed)
+
+<span class="c1">* Denominator:</span><span class="k"></span>
+<span class="k">gen</span> den = max<span class="o">-</span>min<span class="m">+1</span>
+
+<span class="c1">* Divide</span><span class="k"></span>
+<span class="k">gen</span> eq7 = <span class="nf">round</span>(num1<span class="o">*</span>num2<span class="o">/</span>den)
+<span class="k">    la var</span> eq7 <span class="s">&quot;MME Equation 7&quot;</span>
+<span class="k">        drop</span> min max num<span class="o">*</span> den 
+
+<span class="k">list</span> eq7
+    frame<span class="k"> post</span> results (<span class="m">7</span>) (eq7)
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+
+
+
+
+
+
+
+     +-----+
+     | eq7 |
+     |-----|
+  1. | 123 |
+  2. | 123 |
+     +-----+
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13682,7 +13972,7 @@ $$</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h2 id="Equation-8">Equation 8<a class="anchor-link" href="#Equation-8">&#182;</a></h2><p><em>English description here</em></p>
+<h2 id="Equation-8">Equation 8<a class="anchor-link" href="#Equation-8">&#182;</a></h2><p><em>Brace counting algorithm</em></p>
 
 </div>
 </div>
@@ -13705,13 +13995,151 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[165]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span>
+<div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 8</span>
+
+<span class="c1">* Duplicate copies to create separate lines for start and end dates</span><span class="k"></span>
+<span class="k">expand</span> <span class="m">2</span>,<span class="k"> gen</span>(ender)
+
+<span class="c1">// Generate bracedates</span>
+<span class="k">gen</span> bracedate=start<span class="k"> if</span> ender<span class="o">==</span><span class="m">0</span>
+<span class="k">    replace</span> bracedate=endimputed<span class="k"> if</span> ender<span class="o">==</span><span class="m">1</span>
+
+<span class="c1">// Count number of rows per person</span>
+<span class="k">sort</span> pt bracedate ender
+<span class="k">    by</span> pt:<span class="k"> gen</span> counter=_n
+
+<span class="c1">// Calculate difference between adjacent bracedates</span>
+<span class="k">sort</span> pt bracedate counter<span class="k"></span>
+<span class="k">gen</span> diff = bracedate<span class="o">-</span>bracedate[_n<span class="m">-1</span>]<span class="k"> if</span> counter<span class="o">!=</span><span class="m">1</span>
+    <span class="c1">// fix difference between adjacent days and same days</span>
+<span class="k">    replace</span> diff=bracedate<span class="o">-</span>bracedate[_n<span class="m">-1</span>]<span class="k"> if</span> bracedate<span class="o">==</span>bracedate[_n<span class="m">-1</span>]<span class="o">+</span><span class="m">1</span>
+<span class="k">    replace</span> diff=<span class="m">0</span><span class="k"> if</span> bracedate<span class="o">==</span>bracedate[_n<span class="m">-1</span>] 
+
+<span class="c1">// Check for errors: no observations </span>
+<span class="k">tab</span> diff<span class="k"> if</span> counter<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> diff<span class="o">!=</span>.
+
+<span class="c1">// Create running counter</span>
+<span class="k">gen</span> ender2=ender
+<span class="k">    replace</span> ender2=<span class="o">-</span><span class="m">1</span><span class="k"> if</span> ender<span class="o">==</span><span class="m">1</span>
+<span class="k">    replace</span> ender2=<span class="m">1</span><span class="k"> if</span> ender<span class="o">==</span><span class="m">0</span><span class="k"></span>
+<span class="k">by</span> pt:<span class="k"> gen</span> running=<span class="nf">sum</span>(ender2)<span class="k"></span>
+<span class="k">drop</span> ender2
+
+<span class="c1">// Generate person-days exposed</span>
+<span class="k">bysort</span> pt bracedate counter:<span class="k"> egen</span> ptime=total(diff)<span class="k"> if</span> (running<span class="o">!=</span><span class="m">1</span> | running[_n<span class="m">-1</span>]<span class="o">&gt;</span><span class="m">1</span>)
+<span class="k">    replace</span> ptime=<span class="m">1</span><span class="k"> if</span> diff<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> running<span class="o">==</span><span class="m">1</span>
+<span class="k">    replace</span> ptime=<span class="m">1</span><span class="k"> if</span> running<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> ptime<span class="o">==</span>.
+<span class="k">    replace</span> ptime=<span class="m">1</span><span class="k"> if</span> counter<span class="o">==</span><span class="m">1</span><span class="k"></span>
+<span class="k">sort</span> pt bracedate counter
+<span class="k">    by</span> pt:<span class="k"> egen</span> totptime=total(ptime)
+
+<span class="c1">// Show results</span>
+<span class="k">list</span>
+<span class="k">tab</span> totptime,<span class="k"> m</span>
+
+<span class="c1">// Average daily MME</span>
+<span class="k">keep if</span> ender<span class="o">==</span><span class="m">0</span>
+
+<span class="c1">* Numerator: total MME</span><span class="k"></span>
+<span class="k">bysort</span> pt:<span class="k"> egen</span> num=total(Mr)
+
+<span class="c1">* Denominator: persontime exposed using totptime</span>
+
+<span class="c1">* Divide</span><span class="k"></span>
+<span class="k">gen</span> eq8 = <span class="nf">round</span>(num<span class="o">/</span>totptime)
+<span class="k">    la var</span> eq8 <span class="s">&quot;MME Equation 8&quot;</span>
+<span class="k">        drop</span> num
+
+<span class="k">list</span> eq8
+    frame<span class="k"> post</span> results (<span class="m">8</span>) (eq8)
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+(2 observations created)
+
+(2 missing values generated)
+
+(2 real changes made)
+
+
+
+
+(1 missing value generated)
+
+(0 real changes made)
+
+(0 real changes made)
+
+no observations
+
+
+(2 real changes made)
+
+(2 real changes made)
+
+
+
+
+(0 real changes made)
+
+(0 real changes made)
+
+(1 real change made)
+
+
+
+
+     +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+     |  pt   rx   drug   form   start   end   endimp~d   units   strength   conv   days     Mr   eq1   eq2   eq3   eq4   eq5   eq6   eq7   ender   braced~e   counter   diff   running   ptime   totptime |
+     |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+  1. | 100    1    oxy     ER       1    30         30      60         20      2     30   2400    69    85    50   137   100   123   123       0          1         1      .         1       1         30 |
+  2. | 100    2    oxy     IR       1    30          7      14          5      2      7    140    69    85    50   137   100   123   123       0          1         2      0         2       0         30 |
+  3. | 100    2    oxy     IR       1    30          7      14          5      2      7    140    69    85    50   137   100   123   123       1          7         3      6         1       6         30 |
+  4. | 100    1    oxy     ER       1    30         30      60         20      2     30   2400    69    85    50   137   100   123   123       1         30         4     23         0      23         30 |
+     +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+   totptime |      Freq.     Percent        Cum.
+------------+-----------------------------------
+         30 |          4      100.00      100.00
+------------+-----------------------------------
+      Total |          4      100.00
+
+(2 observations deleted)
+
+
+
+
+
+
+     +-----+
+     | eq8 |
+     |-----|
+  1. |  85 |
+  2. |  85 |
+     +-----+
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13720,10 +14148,70 @@ $$</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h2 id="Summary-results-across-equations">Summary results across equations<a class="anchor-link" href="#Summary-results-across-equations">&#182;</a></h2><p><code>TABLE HERE</code></p>
+<h2 id="Summary-results-across-equations">Summary results across equations<a class="anchor-link" href="#Summary-results-across-equations">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[166]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-stata"><pre><span></span>frame change results<span class="k"></span>
+<span class="k">list</span>
+<span class="k">qui</span>:<span class="k"> summ</span> MME
+<span class="k">    di</span> <span class="s">&quot;Minimum: &quot;</span> <span class="nf">r</span>(min)
+<span class="k">    di</span> <span class="s">&quot;Maximum: &quot;</span> <span class="nf">r</span>(max)
+<span class="k">    di</span> <span class="s">&quot;range: &quot;</span><span class="nf">r</span>(max)<span class="o">-</span><span class="nf">r</span>(min)
+<span class="k">    di</span> <span class="nf">r</span>(max)<span class="o">/</span><span class="nf">r</span>(min) <span class="s">&quot;-fold difference between highest and lowest&quot;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+     +----------------+
+     | equation   MME |
+     |----------------|
+  1. |        1    69 |
+  2. |        2    85 |
+  3. |        3    50 |
+  4. |        4   137 |
+  5. |        5   100 |
+     |----------------|
+  6. |        6   123 |
+  7. |        7   123 |
+  8. |        8    85 |
+     +----------------+
+
+
+Minimum: 50
+
+Maximum: 137
+
+range: 87
+
+2.74-fold difference between highest and lowest
+</pre>
+</div>
+</div>
 
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
