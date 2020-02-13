@@ -13138,21 +13138,42 @@ $( document ).ready(function(){
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Milligrams-of-Morphine-Equivalents-Equations">Milligrams of Morphine Equivalents Equations<a class="anchor-link" href="#Milligrams-of-Morphine-Equivalents-Equations">&#182;</a></h1>
+<p><font size='6'>
+    Milligrams of Morphine Equivalents Equations
+    </font></p>
+<p>Updated Feb 13, 2020<br>
+For more information see <a href="opioiddata.org">OpioidData.org</a></p>
+<hr>
+<p>The intent of this analysis is to document different formulae used to calculate average daily MME, and examine conditions which may lead to bias.</p>
+<p>For example, across 6 formulae, for 2 simple prescriptions dispensed to the same patient on the same day for the same active ingredient, the following values of <strong>average daily MME</strong> were observed:</p>
+<ul>
+<li>50.0</li>
+<li>68.6</li>
+<li>84.7</li>
+<li>100.0</li>
+<li>123.3</li>
+<li>137.3</li>
+</ul>
+<p>The arithmetic details of how average daily MME is calculated can have a tremendous impact on interpretation. Yet, almost no publications include an explicit formula that would allow the results to be replicated.</p>
+<hr>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Assumptions">Assumptions<a class="anchor-link" href="#Assumptions">&#182;</a></h1><ol>
+<h1 id="Assumptions">Assumptions<a class="anchor-link" href="#Assumptions">&#182;</a></h1><p>These are the common assumptions made in calculating average daily MME for an individual using administrative data.</p>
+<ol>
 <li>No missing data</li>
-<li>All variables correctly specified</li>
-<li>Month has 30 days</li>
-<li>No other opioid prescriptions</li>
+<li>All variables correctly specified (including days supply)</li>
+<li>Month has exactly 30 days</li>
+<li>No other opioid prescriptions (e.g., cash pay in insurance claims data)</li>
 <li>No external sources of opioids (e.g., leftover, diversion)</li>
 <li>No counterfeits</li>
 <li>Therapeutic equivalence of generics satisfied</li>
+<li>Only solid oral doseage forms prescribed</li>
+<li>No administration by routes other than oral</li>
 </ol>
 <hr>
 
@@ -13162,10 +13183,10 @@ $( document ).ready(function(){
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Simulation-data">Simulation data<a class="anchor-link" href="#Simulation-data">&#182;</a></h2><p>At the clinic:<br>
-<em>Next month, take one 20mg ER oxycodone twice per day for 30 days AND one 5mg oxycodone twice a day as needed</em>
+<h2 id="Simulation-data">Simulation data<a class="anchor-link" href="#Simulation-data">&#182;</a></h2><p>Consider the following prescriber instructions:<br>
+<em>This month, take one 20mg ER oxycodone twice per day for 30 days AND one 5mg oxycodone twice a day as needed</em>
 <br>
-At the pharmacy: Both prescriptions dispensed same day</p>
+Both prescriptions were dispensed on the same day, on the first of the month</p>
 
 </div>
 </div>
