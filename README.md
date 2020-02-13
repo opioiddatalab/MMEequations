@@ -1,8 +1,6 @@
 # MME Equations
-*Equations to calculate milligrams of morphine equivalents for opioid analgesics*
+*Equations to calculate milligrams of morphine equivalents for opioid analgesics* <br>
 For more information see [OpioidData.org](opioiddata.org)
-
----
 
 The intent of this analysis is to document different formulae used to calculate average daily MME, and examine conditions which may lead to bias.
 
