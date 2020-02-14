@@ -13148,11 +13148,12 @@ For more information see <a href="opioiddata.org">OpioidData.org</a></p>
 <p>The intent of this analysis is to document different formulae used to calculate average daily MME, and examine conditions which may lead to bias.</p>
 <p>For example, across 4 common formulae, for 2 simple prescriptions dispensed to the same patient on the same day for the same active ingredient, the following values of <strong>30-day average daily MME</strong> were observed:</p>
 <ul>
-<li>50 MME/day</li>
-<li>69 MME/day</li>
-<li>69 MME/day</li>
-<li>85 MME/day</li>
+<li>76 MME/day</li>
+<li>94 MME/day</li>
+<li>94 MME/day</li>
+<li>53 MME/day</li>
 </ul>
+<p><strong>So, is this a "high dose" average daily MME by the arbitrary 90 MME/day standard?</strong><br></p>
 <p>The arithmetic details of how average daily MME is calculated can have a tremendous impact on interpretation. Yet, almost no publications include an explicit formula that would allow the results to be replicated.</p>
 <hr>
 
@@ -13180,6 +13181,7 @@ For more information see <a href="opioiddata.org">OpioidData.org</a></p>
 <ol>
 <li>Month has exactly 30 days</li>
 <li>Only solid oral doseage forms prescribed</li>
+<li>All prescriptions dispensed at midnight on date of dispensing</li>
 </ol>
 <hr>
 
@@ -13190,32 +13192,32 @@ For more information see <a href="opioiddata.org">OpioidData.org</a></p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Problem-statement">Problem statement<a class="anchor-link" href="#Problem-statement">&#182;</a></h1><p>Consider the following prescriber instructions:<br>
-<em>This month, the patient should take one 20mg ER oxycodone twice-a-day for around-the-clock pain for 30 days, AND one 5mg oxycodone twice a day as needed for breakthrough pain. Both prescriptions are dispensed on the first day of the month.</em></p>
+<em>This month, the patient should take one 30mg ER oxycodone twice-a-day for around-the-clock pain for 30 days, AND one 5mg oxycodone twice a day as needed for breakthrough pain. Both prescriptions are dispensed on the first day of the month.</em></p>
 <p><font color='red'> **What is the 30-day average daily MME for this patient?** </font> <br></p>
 <p><strong>Numerator: total MME for all prescriptions dispensed in 30-days</strong></p>
 <p><code>units</code> x <code>strength</code> x <code>conversion</code> = <br>
-Rx1: 60qty x 20mg x 2 = <strong>2400</strong> MME per script<br>
-Rx2: 14qty x 5mg x 2 = <strong>140</strong> MME per script<br>
+Rx1: 60qty x 30mg x 1.5 = <strong>2700</strong> MME per script<br>
+Rx2: 14qty x 5mg x 1.5 = <strong>105</strong> MME per script<br>
 <br></p>
 <p><code>|-|-|-|-|-|-|-|-|-|10|-|-|-|-|-|-|-|-|-|20|-|-|-|-|-|-|-|-|-|30|</code>    CALENDAR DAY <br>
 <code>|+|+|+|+|+|+|+|+|+|+ |+|+|+|+|+|+|+|+|+|+ |+|+|+|+|+|+|+|+|+|+ |</code>    Rx1<br>
 <code>|+|+|+|+|+|+|+|.|.|. |.|.|.|.|.|.|.|.|.|. |.|.|.|.|.|.|.|.|.|. |</code>    Rx2<br></p>
-<p>${\sum_{i=0}^n \text{M}}$ = 30-Day Total MME: 2400 + 140 = <strong>2540</strong> <br></p>
+<p>${\sum_{i=0}^n \text{M}}$ = 30-Day Total MME: 2700 + 105 = <strong>2805</strong> <br></p>
 <p><br></p>
 <p><strong>What is the correct denominator?</strong> <br></p>
 <p><font color='red'> 1. Is it the sum of days supply?<br><br></font>
-$\cfrac {\sum_{i=0}^n M_i} {\sum_{i=0}^n d_i}$ = $\cfrac{2540 \text{ MME}} {37 \text{ days}} = 69\text{ average daily MME}$ <br><br>
+$\cfrac {\sum_{i=0}^n M_i} {\sum_{i=0}^n d_i}$ = $\cfrac{2805 \text{ MME}} {37 \text{ days}} = 76\text{ average daily MME}$ <br><br>
 <br></p>
 <p><font color='red'>2. Is it the total person-days since start of exposure (intent-to-treat)?<br></font>
-$\cfrac {\sum_{i=0}^n M_i} {max(\text{s+d}) - min(s) + 1}$ = $\cfrac{2540 \text{ MME}} {30 \text{ days}} = 85\text{ average daily MME}$ <br><br>
+$\cfrac {\sum_{i=0}^n M_i} {max(\text{s+d}) - min(s) + 1}$ = $\cfrac{2805 \text{ MME}} {30 \text{ days}} = 94\text{ average daily MME}$ <br><br>
 <br></p>
 <p><font color='red'>3. Is it the total person-days explicitly exposed, counting overlap days once?<br></font></p>
-<p><code>Equation TBD</code> = $\cfrac{2540 \text{ MME}} {30 \text{ days}} = 85\text{ average daily MME}$ <br><br>
+<p><code>Equation TBD</code> = $\cfrac{2805 \text{ MME}} {30 \text{ days}} = 94\text{ average daily MME}$ <br><br>
 <br>
 <font size='1'>Both #2 and #3 are 30d in this example but will not always be, e.g., 2 prescriptions separated by days. </font><br><br></p>
 <p><font color='red'>4. Or, do you average the two?<br><br></font>
-$\cfrac{\sum{\cfrac{M_i} {d_i}}} {n}$ = $\cfrac{\cfrac{2400 \text{ MME}} {30 \text{ days}} + \cfrac{140 \text{ MME}} {7 \text{ days}}} {2} = 50\text{ average daily MME}$</p>
-<p>The range of possible values for "average daily MME" (50 to 85) represnts 70% variation between the highest and lowest estimates, in this simple scenario. When the prescriptions are not overlapping or are staggered, there can be a heightened chance of bias.</p>
+$\cfrac{\sum{\cfrac{M_i} {d_i}}} {n}$ = $\cfrac{\cfrac{2700 \text{ MME}} {30 \text{ days}} + \cfrac{105 \text{ MME}} {7 \text{ days}}} {2} = 53\text{ average daily MME}$</p>
+<p>The range of possible values for "average daily MME" (53 to 94) represnts 80% variation between the highest and lowest estimates, in this simple scenario, crossing the arbitrary 90 MME/day threshold for "high dose" opioids. When the prescriptions are not overlapping or are staggered, there can be a heightened chance of bias.</p>
 
 </div>
 </div>
@@ -13258,7 +13260,7 @@ prescription in 2016 (the date of the final prescription plus the days supplied)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[425]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all
@@ -13300,6 +13302,7 @@ prescription in 2016 (the date of the final prescription plus the days supplied)
 
 <span class="c1">// Composite program for 4 equations</span>
 <span class="k">program</span> define runexperiment
+<span class="k">    version</span> <span class="m">16</span>
 <span class="k">    qui</span>: datainput
 <span class="k">    qui</span>: frame create results equation MME
 <span class="k">    qui</span>: eq1
@@ -13307,8 +13310,10 @@ prescription in 2016 (the date of the final prescription plus the days supplied)
 <span class="k">    qui</span>: eq3
 <span class="k">    qui</span>: eq4
 <span class="k">    qui</span>:<span class="k"> order</span> totptime, a(eq4)
-<span class="k">    list</span>
-<span class="k">    di</span> <span class="s">&quot;Resize the browser window if line wraps in table.&quot;</span>
+<span class="k">    di</span> <span class="s">&quot;-------------------&quot;</span>
+<span class="k">    di</span> <span class="s">&quot;Total therapy-days accounting for any overlap: &quot;</span> totptime[<span class="m">1</span>] <span class="s">&quot; days out of 30&quot;</span>
+<span class="c1">    *list</span>
+<span class="c1">    *di &quot;Resize the browser window if line wraps in table.&quot;</span>
 <span class="k">    qui</span>: frame change results
     metrics
 <span class="k">    list</span>
@@ -13369,7 +13374,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[426]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 1</span>
@@ -13414,7 +13419,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[427]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 2</span>
@@ -13468,7 +13473,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[428]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 3</span>
@@ -13560,18 +13565,19 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[429]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 4</span>
 
 <span class="k">program</span> define eq4
 <span class="k">    gen</span> temp=M<span class="o">/</span>days
-<span class="k">    bysort</span> pt:<span class="k"> egen</span> eq4=mean(temp)
-<span class="k">    la var</span> eq4 <span class="s">&quot;MME Equation 4&quot;</span>
-<span class="k">        note</span> eq4: Average of individual prescription daily MME,<span class="k"> by</span> person
-<span class="k">        drop</span> temp
-        frame<span class="k"> post</span> results (<span class="m">4</span>) (eq4)<span class="k"></span>
+<span class="k">    bysort</span> pt:<span class="k"> egen</span> temp2=mean(temp)
+<span class="k">        gen</span> eq4=<span class="nf">round</span>(temp2)
+<span class="k">            la var</span> eq4 <span class="s">&quot;MME Equation 4&quot;</span>
+<span class="k">                note</span> eq4: Average of individual prescription daily MME,<span class="k"> by</span> person
+<span class="k">                    drop</span> temp
+                        frame<span class="k"> post</span> results (<span class="m">4</span>) (eq4)<span class="k"></span>
 <span class="k">end</span>
 </pre></div>
 
@@ -13584,7 +13590,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="Experiment-1">Experiment 1<a class="anchor-link" href="#Experiment-1">&#182;</a></h1><p>Using the core example described above, 2 prescriptions :<br></p>
+<h1 id="Experiment-1:-Base-scenario-ER+IR">Experiment 1: Base scenario ER+IR<a class="anchor-link" href="#Experiment-1:-Base-scenario-ER+IR">&#182;</a></h1><p>Using the core example described above, 2 prescriptions :<br></p>
 <ul>
 <li>One 20mg ER oxycodone twice-a-day for 30 days<br></li>
 <li>One 5mg IR oxycodone as needed for breakthrough pain, written as 7 day supply<br></li>
@@ -13596,12 +13602,12 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[430]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
-<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;ER&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">60</span> <span class="m">20</span> <span class="m">2</span> <span class="m">30</span>
-<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span><span class="k"></span>
+<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;ER&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">60</span> <span class="m">30</span> <span class="m">1.5</span> <span class="m">30</span>
+<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
 <span class="k">end</span>
 runexperiment
 </pre></div>
@@ -13623,28 +13629,22 @@ runexperiment
 <pre>
 
 . runexperiment
-
-     +----------------------------------------------------------------------------------------------------------------------------+
-     |  pt   rx   drug   form   start   end   endimp~d   units   strength   conv   days      M   eq1   eq2   eq3   eq4   totptime |
-     |----------------------------------------------------------------------------------------------------------------------------|
-  1. | 100    1    oxy     ER       1    30         30      60         20      2     30   2400    69    85    85    50         30 |
-  2. | 100    2    oxy     IR       1    30          7      14          5      2      7    140    69    85    85    50         30 |
-     +----------------------------------------------------------------------------------------------------------------------------+
-Resize the browser window if line wraps in table.
+-------------------
+Total therapy-days accounting for any overlap: 30 days out of 30
 -------------------
 Experiment results across 4 equations:
-Minimum average daily MME: 50
-Maximum average daily MME: 85
-range: 35
-1.7-fold difference between highest and lowest
+Minimum average daily MME: 53
+Maximum average daily MME: 94
+range: 41
+1.8-fold difference between highest and lowest
 
      +----------------+
      | equation   MME |
      |----------------|
-  1. |        1    69 |
-  2. |        2    85 |
-  3. |        3    85 |
-  4. |        4    50 |
+  1. |        1    76 |
+  2. |        2    94 |
+  3. |        3    94 |
+  4. |        4    53 |
      +----------------+
 </pre>
 </div>
@@ -13670,14 +13670,14 @@ range: 35
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[431]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
 <span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
-<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;ER&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">60</span> <span class="m">20</span> <span class="m">2</span> <span class="m">30</span>
-<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span>
-<span class="m">100</span> <span class="m">3</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">10</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span><span class="k"></span>
+<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;ER&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">60</span> <span class="m">20</span> <span class="m">1.5</span> <span class="m">30</span>
+<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
+<span class="m">100</span> <span class="m">3</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">10</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
 <span class="k">end</span>
 
 runexperiment
@@ -13701,29 +13701,22 @@ runexperiment
 
 
 . runexperiment
-
-     +----------------------------------------------------------------------------------------------------------------------------+
-     |  pt   rx   drug   form   start   end   endimp~d   units   strength   conv   days      M   eq1   eq2   eq3   eq4   totptime |
-     |----------------------------------------------------------------------------------------------------------------------------|
-  1. | 100    1    oxy     ER       1    30         30      60         20      2     30   2400    61    89    89    40         30 |
-  2. | 100    2    oxy     IR       1    30          7      14          5      2      7    140    61    89    89    40         30 |
-  3. | 100    3    oxy     IR      10    30         16      14          5      2      7    140    61    89    89    40         30 |
-     +----------------------------------------------------------------------------------------------------------------------------+
-Resize the browser window if line wraps in table.
+-------------------
+Total therapy-days accounting for any overlap: 30 days out of 30
 -------------------
 Experiment results across 4 equations:
-Minimum average daily MME: 40
-Maximum average daily MME: 89
-range: 49
+Minimum average daily MME: 30
+Maximum average daily MME: 67
+range: 37
 2.2-fold difference between highest and lowest
 
      +----------------+
      | equation   MME |
      |----------------|
-  1. |        1    61 |
-  2. |        2    89 |
-  3. |        3    89 |
-  4. |        4    40 |
+  1. |        1    46 |
+  2. |        2    67 |
+  3. |        3    67 |
+  4. |        4    30 |
      +----------------+
 </pre>
 </div>
@@ -13748,13 +13741,13 @@ range: 49
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[434]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
 <span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
-<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span>
-<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">10</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span><span class="k"></span>
+<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
+<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">10</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
 <span class="k">end</span>
 
 runexperiment
@@ -13778,28 +13771,22 @@ runexperiment
 
 
 . runexperiment
-
-     +---------------------------------------------------------------------------------------------------------------------------+
-     |  pt   rx   drug   form   start   end   endimp~d   units   strength   conv   days     M   eq1   eq2   eq3   eq4   totptime |
-     |---------------------------------------------------------------------------------------------------------------------------|
-  1. | 100    1    oxy     IR       1    30          7      14          5      2      7   140    20     9    20    20         14 |
-  2. | 100    2    oxy     IR      10    30         16      14          5      2      7   140    20     9    20    20         14 |
-     +---------------------------------------------------------------------------------------------------------------------------+
-Resize the browser window if line wraps in table.
+-------------------
+Total therapy-days accounting for any overlap: 14 days out of 30
 -------------------
 Experiment results across 4 equations:
-Minimum average daily MME: 9
-Maximum average daily MME: 20
-range: 11
-2.2-fold difference between highest and lowest
+Minimum average daily MME: 7
+Maximum average daily MME: 15
+range: 8
+2.1-fold difference between highest and lowest
 
      +----------------+
      | equation   MME |
      |----------------|
-  1. |        1    20 |
-  2. |        2     9 |
-  3. |        3    20 |
-  4. |        4    20 |
+  1. |        1    15 |
+  2. |        2     7 |
+  3. |        3    15 |
+  4. |        4    15 |
      +----------------+
 </pre>
 </div>
@@ -13813,7 +13800,7 @@ range: 11
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="Experiment-4:-Two-overlapping-IR-oxycodone">Experiment 4: Two overlapping IR oxycodone<a class="anchor-link" href="#Experiment-4:-Two-overlapping-IR-oxycodone">&#182;</a></h1><p>2 IR prescriptions, more prn use than expected scenario:<br></p>
+<h1 id="Experiment-4:-Two-overlapping-IR-oxycodone">Experiment 4: Two overlapping IR oxycodone<a class="anchor-link" href="#Experiment-4:-Two-overlapping-IR-oxycodone">&#182;</a></h1><p>2 IR prescriptions, more <em>prn</em> use than expected scenario:<br></p>
 <ul>
 <li>One 5mg IR oxycodone <em>prn</em> 2 pills/day, written as 7 day supply, filled on <strong>Day 1</strong><br></li>
 <li>One 5mg IR oxycodone <em>prn</em>, written as 7 day supply, filled on <strong>Day 3</strong><br></li>
@@ -13824,13 +13811,13 @@ range: 11
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[433]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
 <span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
-<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span>
-<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">3</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span><span class="k"></span>
+<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
+<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">3</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
 <span class="k">end</span>
 
 runexperiment
@@ -13854,28 +13841,22 @@ runexperiment
 
 
 . runexperiment
-
-     +---------------------------------------------------------------------------------------------------------------------------+
-     |  pt   rx   drug   form   start   end   endimp~d   units   strength   conv   days     M   eq1   eq2   eq3   eq4   totptime |
-     |---------------------------------------------------------------------------------------------------------------------------|
-  1. | 100    1    oxy     IR       1    30          7      14          5      2      7   140    20     9    31    20          9 |
-  2. | 100    2    oxy     IR       3    30          9      14          5      2      7   140    20     9    31    20          9 |
-     +---------------------------------------------------------------------------------------------------------------------------+
-Resize the browser window if line wraps in table.
+-------------------
+Total therapy-days accounting for any overlap: 9 days out of 30
 -------------------
 Experiment results across 4 equations:
-Minimum average daily MME: 9
-Maximum average daily MME: 31
-range: 22
-3.4-fold difference between highest and lowest
+Minimum average daily MME: 7
+Maximum average daily MME: 23
+range: 16
+3.3-fold difference between highest and lowest
 
      +----------------+
      | equation   MME |
      |----------------|
-  1. |        1    20 |
-  2. |        2     9 |
-  3. |        3    31 |
-  4. |        4    20 |
+  1. |        1    15 |
+  2. |        2     7 |
+  3. |        3    23 |
+  4. |        4    15 |
      +----------------+
 </pre>
 </div>
@@ -13889,11 +13870,389 @@ range: 22
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<p><br>
-<em>fin.</em></p>
+<h1 id="Experiment-5:-One-hydrocone-IR-+-1-oxycodone-IR">Experiment 5: One hydrocone IR + 1 oxycodone IR<a class="anchor-link" href="#Experiment-5:-One-hydrocone-IR-+-1-oxycodone-IR">&#182;</a></h1><p>2 IR prescriptions, switching from oxycodone to hydrocodone because of side effects but assuming both scripts were consumed:<br></p>
+<ul>
+<li>One 5mg IR oxycodone <em>prn</em> 2 pills/day, written as 7 day supply, filled on <strong>Day 1</strong><br></li>
+<li>One 5mg IR hydrocodone <em>prn</em>, written as 7 day supply, filled on <strong>Day 3</strong><br></li>
+</ul>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
+<span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
+<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;hyd&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">3</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1</span> <span class="m">7</span><span class="k"></span>
+<span class="k">end</span>
+
+runexperiment
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+. runexperiment
+-------------------
+Total therapy-days accounting for any overlap: 9 days out of 30
+-------------------
+Experiment results across 4 equations:
+Minimum average daily MME: 6
+Maximum average daily MME: 19
+range: 13
+3.2-fold difference between highest and lowest
+
+     +----------------+
+     | equation   MME |
+     |----------------|
+  1. |        1    13 |
+  2. |        2     6 |
+  3. |        3    19 |
+  4. |        4    13 |
+     +----------------+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<p>Now, let's run the experiment again, but assume that the remaining 10 tablets of oxycodone after the first 2 days was disposed of.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
+<span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
+<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;hyd&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">3</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1</span> <span class="m">7</span><span class="k"></span>
+<span class="k">end</span>
+
+<span class="c1">// Assume first prescritption was discontinued and disposed of before starting the second</span>
+<span class="k">replace</span> days=<span class="m">2</span><span class="k"> if</span> rx<span class="o">==</span><span class="m">1</span><span class="k"></span>
+<span class="k">replace</span> units=<span class="m">4</span><span class="k"> if</span> rx<span class="o">==</span><span class="m">1</span>
+
+runexperiment
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+. replace days=2 if rx==1
+(1 real change made)
+
+. replace units=4 if rx==1
+(1 real change made)
+
+. runexperiment
+-------------------
+Total therapy-days accounting for any overlap: 9 days out of 30
+-------------------
+Experiment results across 4 equations:
+Minimum average daily MME: 3
+Maximum average daily MME: 13
+range: 10
+4.3-fold difference between highest and lowest
+
+     +----------------+
+     | equation   MME |
+     |----------------|
+  1. |        1    11 |
+  2. |        2     3 |
+  3. |        3    11 |
+  4. |        4    13 |
+     +----------------+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h1 id="Large-sample-simulations">Large sample simulations<a class="anchor-link" href="#Large-sample-simulations">&#182;</a></h1><p><font color='red'> Work in progress... </font></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-stata"><pre><span></span><span class="k">program</span> lnsim, rclass
+<span class="k">    version</span> <span class="m">16</span>
+<span class="k">    drop</span> _all
+<span class="k">    set</span> obs <span class="m">100</span>
+<span class="k">    gen</span> z = <span class="nf">exp</span>(<span class="nf">rnormal</span>())
+<span class="k">    gen</span> start=runiformint(<span class="m">1</span>, <span class="m">30</span>)
+<span class="c1">    *gen days=exp(rpoisson(3))</span>
+<span class="k">    gen</span> int days = <span class="nf">floor</span>((<span class="m">30+1</span>)<span class="o">*</span><span class="nf">rpoisson</span>(<span class="m">3</span>) <span class="o">+</span> <span class="m">1</span>)
+<span class="k">    summarize</span> days
+<span class="k">    return scalar mean</span> = <span class="nf">r</span>(mean)
+<span class="k">    return scalar</span> Var = <span class="nf">r</span>(Var)<span class="k"></span>
+<span class="k">end</span>
+
+<span class="c1">*qui: input pt rx str3 drug str2 form start end units strength conv days</span>
+<span class="c1">*100 1 &quot;oxy&quot; &quot;ER&quot; 1 30 60 30 1.5 30</span>
+<span class="c1">*100 2 &quot;oxy&quot; &quot;IR&quot; 1 30 14 5 1.5 7</span>
+<span class="c1">*end</span>
+
+
+
+<span class="c1">*set seed 1234</span><span class="k"></span>
+<span class="k">simulate mean</span>=<span class="nf">r</span>(mean)<span class="k"> var</span>=<span class="nf">r</span>(Var), reps(<span class="m">1000</span>) nodots: lnsim<span class="k"></span>
+<span class="k">summarize</span>
+<span class="k">program drop</span> lnsim
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+      command:  lnsim
+         mean:  r(mean)
+          var:  r(Var)
+
+
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        mean |      1,000    94.05456    5.435994      74.16     117.56
+         var |      1,000    2905.286    449.9829    1616.81   4454.672
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<p><em>fin.</em></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-stata"><pre><span></span><span class="k">program drop</span> lnsim
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-stata"><pre><span></span><span class="k">list</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+      +------------------+
+      |  mean        var |
+      |------------------|
+   1. | 16.43   82.26778 |
+   2. | 16.05   76.75505 |
+   3. | 14.92   79.04404 |
+   4. | 15.25   83.74495 |
+   5. | 16.36   75.42464 |
+      |------------------|
+   6. | 16.19   81.02414 |
+   7. | 16.69   94.33727 |
+   8. | 16.61   75.31101 |
+   9. | 15.99   82.21202 |
+  10. | 14.75   75.44192 |
+      |------------------|
+  11. | 17.39   66.68475 |
+  12. | 15.81   82.37768 |
+  13. | 14.81   85.83222 |
+  14. | 16.78   89.52687 |
+  15. | 16.11   80.30091 |
+      |------------------|
+  16. | 15.82   72.95717 |
+  17. | 15.62   75.20768 |
+  18. | 16.45   70.89646 |
+  19. | 16.21   87.11707 |
+  20. | 16.21   78.04636 |
+      |------------------|
+  21. | 16.61    87.1898 |
+  22. | 15.47   76.27182 |
+  23. | 16.42   68.89252 |
+  24. | 16.69    87.5898 |
+  25. | 14.64   74.55596 |
+      |------------------|
+  26. | 17.53   88.19101 |
+  27. | 16.66   88.75192 |
+  28. |  17.4   82.50505 |
+  29. | 16.97   72.87788 |
+  30. | 16.49   79.48475 |
+      |------------------|
+  31. | 16.23   79.55263 |
+  32. | 16.32   77.55313 |
+  33. | 16.18   81.30061 |
+  34. | 15.66   90.83273 |
+  35. |  16.1   72.31313 |
+      |------------------|
+  36. | 16.88    90.4097 |
+  37. | 15.76   86.44687 |
+  38. | 16.85    87.2803 |
+  39. |  15.1   76.63636 |
+  40. | 16.36   82.45495 |
+      |------------------|
+  41. | 16.77   96.64353 |
+  42. | 15.28   81.23394 |
+  43. | 17.17   74.40515 |
+  44. | 16.44   83.92566 |
+  45. | 17.64   92.85899 |
+      |------------------|
+  46. | 17.68   68.78545 |
+  47. | 15.04   78.46303 |
+  48. | 15.74   74.37616 |
+  49. | 14.42   71.05414 |
+  50. | 16.77   99.69404 |
+      |------------------|
+  51. | 14.72   85.03192 |
+  52. | 16.37   75.32636 |
+  53. | 15.05   66.31061 |
+  54. | 14.66   96.22667 |
+  55. | 15.33   75.49606 |
+      |------------------|
+  56. | 15.66   71.25697 |
+  57. | 15.55   75.09849 |
+  58. | 15.15   86.67424 |
+  59. | 15.45   76.55303 |
+  60. | 16.94   82.62263 |
+      |------------------|
+  61. | 16.52   79.14101 |
+  62. | 15.95   74.71465 |
+  63. | 16.85   82.61364 |
+  64. | 14.85   74.02778 |
+  65. |    16   85.71717 |
+      |------------------|
+  66. |    17   91.19192 |
+  67. |  15.6   87.45454 |
+  68. | 15.08   87.54909 |
+  69. | 15.04   74.74586 |
+  70. | 17.06   79.99636 |
+      |------------------|
+  71. | 15.62   74.60162 |
+  72. | 16.72   73.59757 |
+  73. | 15.12   68.00565 |
+  74. |  18.3   74.89899 |
+  75. | 15.76   77.88121 |
+      |------------------|
+  76. | 15.41   71.63828 |
+  77. |  15.5   77.84849 |
+  78. | 15.31   77.22616 |
+  79. | 15.36    77.0004 |
+  80. | 16.83   83.25364 |
+      |------------------|
+--more--
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-stata"><pre><span></span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
     </div>
   </div>
