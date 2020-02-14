@@ -13146,14 +13146,12 @@ For more information see <a href="opioiddata.org">OpioidData.org</a></p>
 <p><font color='red'>Caution: this is a work in progress. Don't take it too seriously (yet).</font></p>
 <hr>
 <p>The intent of this analysis is to document different formulae used to calculate average daily MME, and examine conditions which may lead to bias.</p>
-<p>For example, across 6 formulae, for 2 simple prescriptions dispensed to the same patient on the same day for the same active ingredient, the following values of <strong>average daily MME</strong> were observed:</p>
+<p>For example, across 4 common formulae, for 2 simple prescriptions dispensed to the same patient on the same day for the same active ingredient, the following values of <strong>30-day average daily MME</strong> were observed:</p>
 <ul>
-<li>50.0</li>
-<li>68.6</li>
-<li>84.7</li>
-<li>100.0</li>
-<li>123.3</li>
-<li>137.3</li>
+<li>50 MME/day</li>
+<li>69 MME/day</li>
+<li>69 MME/day</li>
+<li>85 MME/day</li>
 </ul>
 <p>The arithmetic details of how average daily MME is calculated can have a tremendous impact on interpretation. Yet, almost no publications include an explicit formula that would allow the results to be replicated.</p>
 <hr>
@@ -13164,18 +13162,24 @@ For more information see <a href="opioiddata.org">OpioidData.org</a></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Assumptions">Assumptions<a class="anchor-link" href="#Assumptions">&#182;</a></h1><p>These are the common assumptions made in calculating average daily MME for an individual using administrative data.</p>
+<h1 id="Assumptions">Assumptions<a class="anchor-link" href="#Assumptions">&#182;</a></h1><p>These are the common general assumptions made in calculating average daily MME for an individual using administrative data:</p>
 <ol>
 <li>No missing data</li>
 <li>All variables correctly specified (including days supply)</li>
-<li>Month has exactly 30 days</li>
-<li>No other opioid prescriptions (e.g., cash pay in insurance claims data)</li>
-<li>No external sources of opioids (e.g., leftover, diversion)</li>
+<li>No other opioid prescriptions dispensed (e.g., cash pay in insurance claims data)</li>
+<li>No external sources of opioids (e.g., leftover, diversion, illicitly manufactured)</li>
 <li>All doses taken, and taken as described</li>
+<li>Prescription was taken starting on the day dispensed</li>
 <li>No counterfeits</li>
 <li>Therapeutic equivalence of generics satisfied</li>
-<li>Only solid oral doseage forms prescribed</li>
 <li>No administration by routes other than oral</li>
+<li>No differences between opioids in terms of subjective liking, clinical effectiveness, or side effects</li>
+<li>No stability changes by storage or time</li>
+</ol>
+<p>Additional assumptions for modeling in the exercise below:</p>
+<ol>
+<li>Month has exactly 30 days</li>
+<li>Only solid oral doseage forms prescribed</li>
 </ol>
 <hr>
 
@@ -13187,14 +13191,8 @@ For more information see <a href="opioiddata.org">OpioidData.org</a></p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Problem-statement">Problem statement<a class="anchor-link" href="#Problem-statement">&#182;</a></h1><p>Consider the following prescriber instructions:<br>
 <em>This month, the patient should take one 20mg ER oxycodone twice-a-day for around-the-clock pain for 30 days, AND one 5mg oxycodone twice a day as needed for breakthrough pain. Both prescriptions are dispensed on the first day of the month.</em></p>
-<p><strong>What is the 30-day average daily MME for this patient?</strong><br></p>
-<p>M = total MME per script<br>
-d = days supply on script<br>
-s = date of dispensing<br>
-<em>i</em> = prescription <em>i</em><br>
-n = total number of prescriptions<br>
-<br>
-<strong>Numerator: total MME for all prescriptions dispensed in 30-days</strong></p>
+<p><font color='red'> **What is the 30-day average daily MME for this patient?** </font> <br></p>
+<p><strong>Numerator: total MME for all prescriptions dispensed in 30-days</strong></p>
 <p><code>units</code> x <code>strength</code> x <code>conversion</code> = <br>
 Rx1: 60qty x 20mg x 2 = <strong>2400</strong> MME per script<br>
 Rx2: 14qty x 5mg x 2 = <strong>140</strong> MME per script<br>
@@ -13205,167 +13203,130 @@ Rx2: 14qty x 5mg x 2 = <strong>140</strong> MME per script<br>
 <p>${\sum_{i=0}^n \text{M}}$ = 30-Day Total MME: 2400 + 140 = <strong>2540</strong> <br></p>
 <p><br></p>
 <p><strong>What is the correct denominator?</strong> <br></p>
-<p><font color='red'> *Is it the sum of days supply?*<br><br></font>
-$\cfrac {\sum_{i=0}^n \text{M}} {\sum_{i=0}^n \text{d}}$ = $\cfrac{2540 \text{ MME}} {37 \text{ days}} = 69\text{ average daily MME}$ <br><br>
+<p><font color='red'> 1. Is it the sum of days supply?<br><br></font>
+$\cfrac {\sum_{i=0}^n M_i} {\sum_{i=0}^n d_i}$ = $\cfrac{2540 \text{ MME}} {37 \text{ days}} = 69\text{ average daily MME}$ <br><br>
 <br></p>
-<p><font color='red'>*Is it the total person-time since start of exposure (intent-to-treat) or the maximum days explicitly exposed?*<br></font>
-<font size='1'>Both are 30d in this example but will not always be, e.g., 2 prescriptions separated by days. </font><br><br>
-$\cfrac {\sum_{i=0}^n \text{M}} {max(\text{s+d}) - min(s) + 1}$ = $\cfrac{2540 \text{ MME}} {30 \text{ days}} = 85\text{ average daily MME}$ <br><br>
+<p><font color='red'>2. Is it the total person-days since start of exposure (intent-to-treat)?<br></font>
+$\cfrac {\sum_{i=0}^n M_i} {max(\text{s+d}) - min(s) + 1}$ = $\cfrac{2540 \text{ MME}} {30 \text{ days}} = 85\text{ average daily MME}$ <br><br>
+<br></p>
+<p><font color='red'>3. Is it the total person-days explicitly exposed, counting overlap days once?<br></font></p>
+<p><code>Equation TBD</code> = $\cfrac{2540 \text{ MME}} {30 \text{ days}} = 85\text{ average daily MME}$ <br><br>
 <br>
-    <font color='red'>*Or, do you average the two?*<br><br></font>
+<font size='1'>Both #2 and #3 are 30d in this example but will not always be, e.g., 2 prescriptions separated by days. </font><br><br></p>
+<p><font color='red'>4. Or, do you average the two?<br><br></font>
 $\cfrac{\sum{\cfrac{M_i} {d_i}}} {n}$ = $\cfrac{\cfrac{2400 \text{ MME}} {30 \text{ days}} + \cfrac{140 \text{ MME}} {7 \text{ days}}} {2} = 50\text{ average daily MME}$</p>
 <p>The range of possible values for "average daily MME" (50 to 85) represnts 70% variation between the highest and lowest estimates, in this simple scenario. When the prescriptions are not overlapping or are staggered, there can be a heightened chance of bias.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="Simulation-data">Simulation data<a class="anchor-link" href="#Simulation-data">&#182;</a></h1>
+<h1 id="In-popular-usage">In popular usage<a class="anchor-link" href="#In-popular-usage">&#182;</a></h1><h2 id="Origins-and-evolution">Origins and evolution<a class="anchor-link" href="#Origins-and-evolution">&#182;</a></h2><p>The concept of comapring the relative potency of opioid molecules to each other (or morphine) has its roots in clinical pharmacology, appearing in the biomedical literature <a href="https://pubmed.ncbi.nlm.nih.gov/13631610/">around 1960</a>, and codified in the essential textbook Goodman and Gilman's <a href="https://en.wikipedia.org/wiki/Goodman_%26_Gilman%27s_The_Pharmacological_Basis_of_Therapeutics">The Pharmacological Basis of Therapeutics</a>. About 40 years ago, as new opioid molecules were becoming available for routine medical use, equianalgesic potency conversions were developed to assist clinical decision making when switching a patient from one opioid compound to another. In 1985, <a href="https://pubmed.ncbi.nlm.nih.gov/2582259-the-treatment-of-cancer-pain/">Foley</a> formalized clinical practice for cancer pain management into an equianalgesic conversion table that serves as the archetype. Conversion tables started appearing in drug labels in the 1990s. The concept was attractive and one such table was notoriously <a href="https://opioiddatalab.github.io/MMEequations/OxyContinMMEpen.png">embeded in a pen</a> as a marketing leave-behind. By 2001, <a href="https://pubmed.ncbi.nlm.nih.gov/11369161-accuracy-in-equianalgesic-dosing-conversion-dilemmas/">controversy was brewing</a> on how to use the conversion factors among clinicians, with <a href="https://pubmed.ncbi.nlm.nih.gov/11495714-equianalgesic-dose-ratios-for-opioids-a-critical-review-and-proposals-for-long-term-dosing/">specific concern</a> over the conversion factor for long-acting opioid methadone, which had emerged as a common chornic pain management option. Later, <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4809343/">Fudin et al.</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/19735901-opioid-equianalgesic-tables-are-they-all-equally-dangerous/">Shaheen et al.</a> and others detailed why the use of conversion factors is deeply questionable, not in the least because they do not take into account elimination half-life. To our knowledge, in 2006 the first documented use of morphine equivalents in an epidemiology study was published by <a href="https://pubmed.ncbi.nlm.nih.gov/16236466-association-between-non-medical-and-prescriptive-usage-of-opioids/">Dasgupta et al.</a>, with a comprehensive conversion table assembled from various sources including drug labels. Then, several <a href="https://www.nhms.org/sites/default/files/Pdfs/Opioid-Comparison-Chart-Prescriber-Letter-2012.pdf">professional organizations</a> and <a href="healthquality.va.gov/guidelines/Pain/cot/VADoDOTCPG022717.pdf">other groups</a> created equianalgesic tables with varying conversion factors. Around 2010, Len Paulozzi at the Centers for Disease Control and Prevention (CDC) started circulating annaul spreadsheets with NDC and equianalgesic potency to researchers via email listservs. This <a href="https://www.cdc.gov/drugoverdose/pdf/calculating_total_daily_dose-a.pdf">particular set</a> of conversion factors soon became the standard for research studies, but only offered guidance on measuring MME in a single prescription, and did not address overlapping scripts. In 2016, CDC issued <a href="https://www.cdc.gov/mmwr/volumes/65/rr/rr6501e1.htm?CDC_AA_refVal=https%3A%2F%2Fwww.cdc.gov%2Fmmwr%2Fvolumes%2F65%2Frr%2Frr6501e1er.htm">guidelines</a> for pain management that included strong cautions for opioid use above an arbitrary MME threshold, thereby suggesting a metric for intervention evaluation and surveillance, still with little regard to how to account for overlapping prescriptions. State laws and insurance policies with MME limits rapidly evolved, invoking the guidelines. Since 2015 there has been rapid increase in the number of publications using MME for epidemiologic studies, however, there is still no standard way for calculating MME in large healthcare datasets. In addition, there is little agreement on how to calculate MME for liquid medicines and non-oral routes of administration.</p>
+<h2 id="Clinical-care-implications">Clinical care implications<a class="anchor-link" href="#Clinical-care-implications">&#182;</a></h2><p><strong>Daily MME thresholds are used to modify care regimens for patients, without explicit formulae for how it is calcualted.</strong><br></p>
+<blockquote><p>If the incoming claim was greater than the allowed daily MME, or if the incoming claim caused the total daily MME limit to be exceeded, the incoming claim was denied at point of sale...The MME reduction schedule was every 6 months: May 2017 to ≤250 MME/day; November 2017 to ≤200
+MME/day, May 2018 to ≤150 MME/day. The next, and probably final, decrease for chronic non-cancer pain beneficiaries receiving an opioid will be November 14, 2018 and the total daily MME allowed limit will be ≤90 MME/day.<br><a href="https://www.medicaid.gov/Medicaid/Prescription-Drugs/Downloads/Drug-Utilization-Review/DUR-FFS-Reports/AR-DUR-FFY17.pdf">Arkansas Medicaid</a></p>
+</blockquote>
+<h2 id="Public-health-implications">Public health implications<a class="anchor-link" href="#Public-health-implications">&#182;</a></h2><p>MME are routinely used in epidemiologic studies of opioid utilization today. The ease of calculation, based solely on arithmetic, coupled with the molecular underpinnings, create an ideal level of cognitive complexity to engender MMEs with an aura of authority. Collectively, MME offer the potential to agglomerate opioid compounds to create a summary metric for population level research and policy, similar to blood alcohol concentrations. However, this approach also obscures nuance between opioid compounds and formulations that may be worth of exploration.</p>
+<blockquote><p>The average daily MME per prescription was 48.1 in 2015, and prescriptions for 90 MME per day and up are considered to be "high-dose".<br> <a href="https://opioid.amfar.org/indicator/mme_percap">amFAR</a></p>
+</blockquote>
+<h2 id="Usage-examples">Usage examples<a class="anchor-link" href="#Usage-examples">&#182;</a></h2><p><strong>Equation 2 Example</strong><br></p>
+<blockquote><p>For days with multiple prescriptions, MME was calculated for each prescription separately and
+summed to yield a single daily MME dosage. Each beneficiary was assigned an average daily MME dose by <strong>dividing the sum total daily MME for each beneficiary by</strong> the days in the “treatment period”: “Treatment period” was defined as <strong>the number of days between the first day of the
+beneficiary’s first opioid prescription and the last</strong> day of the beneficiary’s final opioid
+prescription in 2016 (the date of the final prescription plus the days supplied).<br>
+<a href="https://www.cms.gov/About-CMS/Agency-Information/OMH/Downloads/Opioid-Prescription-in-Medicare-Beneficiaries-Report.pdf">Centers for Medicare and Medicaid Services, page 11</a></p>
+</blockquote>
+<p><strong>Equation ? Example</strong><br></p>
+<blockquote><p>The treatment period begins on an index prescription start date (IPSD) and ends on the last day of opioid supply during the measurement year. Total Daily MME is the total sum of the MME Daily Doses for all opioid dispensing events on one day. Average MME is the average MME for all opioids dispensed during the treatment period.<br>
+<a href="https://www.ncqa.org/wp-content/uploads/2019/02/20190208_17_UOD.pdf">National Committee for Quality Assurance, pages 1 &amp; 4</a></p>
+</blockquote>
+<p><strong>Equation 3 example</strong></p>
+<blockquote><p>Average daily MME was defined as the patient’s total MME from all prescriptions received during follow-up divided by the total available days supply from all prescriptions. If a beneficiary’s prescription was filled before the end of the previous prescription, the <strong>overlapping days were only counted once in the denominator</strong>.<br>
+<a href="https://www.jmcp.org/doi/pdf/10.18553/jmcp.2019.25.9.966">Raman S et al.</a></p>
+</blockquote>
+<h2 id="Alternative-approaches">Alternative approaches<a class="anchor-link" href="#Alternative-approaches">&#182;</a></h2><p><strong>Similar to Equation 3 but avoiding denominator hassle.</strong></p>
+<blockquote><p>The volume and rate of opioid prescribing through the EMR were the key outputs measured. Data were analyzed as <strong>MME per patient encounter per month</strong>, MME per prescription, and number of opioid prescriptions per encounter. <br>
+<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6324493/">Meisenberg BR et al.</a></p>
+</blockquote>
+<hr>
+<h1 id="Simulation-programs">Simulation programs<a class="anchor-link" href="#Simulation-programs">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[157]:</div>
+<div class="prompt input_prompt">In&nbsp;[425]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all<span class="k"></span>
-<span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
-<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;ER&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">60</span> <span class="m">20</span> <span class="m">2</span> <span class="m">30</span>
-<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span><span class="k"></span>
+<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all
+
+<span class="k">program</span> define datainput
+<span class="k">    sort</span> pt start rx
+<span class="k">    la var</span> pt <span class="s">&quot;Patient ID&quot;</span>
+<span class="k">    la var</span> rx <span class="s">&quot;Prescription number&quot;</span>
+<span class="k">    la var</span> drug <span class="s">&quot;Opioid active ingredient&quot;</span>
+<span class="k">    la var form</span> <span class="s">&quot;Extended/immediate-release or patch&quot;</span>
+<span class="k">    la var</span> start <span class="s">&quot;Date dispensed&quot;</span>
+<span class="k">    la var end</span> <span class="s">&quot;Last calendar day of month under observation&quot;</span>
+<span class="c1">    *la var endimputed &quot;Latest calendar date for any prescription including days supply&quot; </span>
+<span class="k">    la var</span> units <span class="s">&quot;Quantity dispensed&quot;</span>
+<span class="k">    la var</span> strength <span class="s">&quot;Dose strength in milligrams&quot;</span>
+<span class="k">    la var</span> conv <span class="s">&quot;Conversion factor relative to morphine&quot;</span>
+<span class="k">    la var</span> days <span class="s">&quot;Days supply indicated calculated by pharmacist&quot;</span>
+
+<span class="k">    gen</span> endimputed=start<span class="o">+</span>days<span class="m">-1</span>
+<span class="k">    la var</span> endimputed <span class="s">&quot;Dispensing date + days supply&quot;</span>
+<span class="k">    order</span> endimputed, a(end)
+
+<span class="k">    gen</span> M=units<span class="o">*</span>strength<span class="o">*</span>conv
+<span class="k">    la var</span> M <span class="s">&quot;Total MME in given prescription&quot;</span>
+<span class="k">    list</span>
+<span class="k">    </span>
 <span class="k">end</span>
 
-<span class="k">sort</span> pt start rx
+<span class="c1">// Performance metrics</span>
+<span class="k">program</span> define metrics
+<span class="k">    qui</span>:<span class="k"> summ</span> MME
+<span class="k">        di</span> <span class="s">&quot;-------------------&quot;</span>
+<span class="k">        di</span> <span class="s">&quot;Experiment results across 4 equations:&quot;</span>
+<span class="k">        di</span> <span class="s">&quot;Minimum average daily MME: &quot;</span> <span class="nf">r</span>(min)
+<span class="k">        di</span> <span class="s">&quot;Maximum average daily MME: &quot;</span> <span class="nf">r</span>(max)
+<span class="k">        di</span> <span class="s">&quot;range: &quot;</span><span class="nf">r</span>(max)<span class="o">-</span><span class="nf">r</span>(min)
+<span class="k">        di</span> <span class="nf">round</span>(<span class="nf">r</span>(max)<span class="o">/</span><span class="nf">r</span>(min),.<span class="m">1</span>) <span class="s">&quot;-fold difference between highest and lowest&quot;</span><span class="k"></span>
+<span class="k">end</span>
 
-<span class="k">la var</span> pt <span class="s">&quot;Patient ID&quot;</span><span class="k"></span>
-<span class="k">la var</span> rx <span class="s">&quot;Prescription number&quot;</span><span class="k"></span>
-<span class="k">la var</span> drug <span class="s">&quot;Opioid active ingredient&quot;</span><span class="k"></span>
-<span class="k">la var form</span> <span class="s">&quot;Extended/immediate-release or patch&quot;</span><span class="k"></span>
-<span class="k">la var</span> start <span class="s">&quot;Date dispensed&quot;</span><span class="k"></span>
-<span class="k">la var end</span> <span class="s">&quot;Last calendar day of month the prescription is intended for&quot;</span><span class="k"></span>
-<span class="k">la var</span> units <span class="s">&quot;Quantity dispensed&quot;</span><span class="k"></span>
-<span class="k">la var</span> strength <span class="s">&quot;Dose strength in milligrams&quot;</span><span class="k"></span>
-<span class="k">la var</span> conv <span class="s">&quot;Conversion factor relative to morphine&quot;</span><span class="k"></span>
-<span class="k">la var</span> days <span class="s">&quot;Days supply indicated calculated by pharmacist&quot;</span>
-
-frame create results equation MME
-
-<span class="k">gen</span> endimputed=start<span class="o">+</span>days<span class="m">-1</span><span class="k"></span>
-<span class="k">la var</span> endimputed <span class="s">&quot;Dispensing date + days supply&quot;</span><span class="k"></span>
-<span class="k">order</span> endimputed, a(end)
-
-<span class="k">gen</span> Mr=units<span class="o">*</span>strength<span class="o">*</span>conv<span class="k"></span>
-<span class="k">la var</span> Mr <span class="s">&quot;Total MME in given prescription&quot;</span><span class="k"></span>
-<span class="k">list</span>
+<span class="c1">// Composite program for 4 equations</span>
+<span class="k">program</span> define runexperiment
+<span class="k">    qui</span>: datainput
+<span class="k">    qui</span>: frame create results equation MME
+<span class="k">    qui</span>: eq1
+<span class="k">    qui</span>: eq2
+<span class="k">    qui</span>: eq3
+<span class="k">    qui</span>: eq4
+<span class="k">    qui</span>:<span class="k"> order</span> totptime, a(eq4)
+<span class="k">    list</span>
+<span class="k">    di</span> <span class="s">&quot;Resize the browser window if line wraps in table.&quot;</span>
+<span class="k">    qui</span>: frame change results
+    metrics
+<span class="k">    list</span>
+<span class="k">    qui</span>:<span class="k"> clear</span> frames<span class="k"></span>
+<span class="k">end</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-. sort pt start rx
-
-. la var pt &#34;Patient ID&#34;
-
-. la var rx &#34;Prescription number&#34;
-
-. la var drug &#34;Opioid active ingredient&#34;
-
-. la var form &#34;Extended/immediate-release or patch&#34;
-
-. la var start &#34;Date dispensed&#34;
-
-. la var end &#34;Last calendar day of month the prescription is intended for&#34;
-
-. la var units &#34;Quantity dispensed&#34;
-
-. la var strength &#34;Dose strength in milligrams&#34;
-
-. la var conv &#34;Conversion factor relative to morphine&#34;
-
-. la var days &#34;Days supply indicated calculated by pharmacist&#34;
-
-. frame create results equation MME
-
-. gen endimputed=start+days-1
-
-. la var endimputed &#34;Dispensing date + days supply&#34;
-
-. order endimputed, a(end)
-
-. gen Mr=units*strength*conv
-
-. la var Mr &#34;Total MME in given prescription&#34;
-
-. list
-
-     +-----------------------------------------------------------------------------------------+
-     |  pt   rx   drug   form   start   end   endimp~d   units   strength   conv   days     Mr |
-     |-----------------------------------------------------------------------------------------|
-  1. | 100    1    oxy     ER       1    30         30      60         20      2     30   2400 |
-  2. | 100    2    oxy     IR       1    30          7      14          5      2      7    140 |
-     +-----------------------------------------------------------------------------------------+
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>(resize the browser window if the table above line wraps and formatting is weird.)</p>
-<hr>
-<h1 id="Core-MME-concept">Core MME concept<a class="anchor-link" href="#Core-MME-concept">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><em>description</em></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Where:<br>
-$M$ .......... MME for given prescription r<br>
-$q$     .......... Quantity (untis) dispensed<br>
-$d$     .......... Days supply<br>
-$s$     .......... Start date of prescription (day of dispensing)<br>
-$e$     .......... End date of prescription<br></p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="MME-Conversion-Factors">MME Conversion Factors<a class="anchor-link" href="#MME-Conversion-Factors">&#182;</a></h1><p>To be completed...</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<hr>
-<h1 id="Excel-formulas">Excel formulas<a class="anchor-link" href="#Excel-formulas">&#182;</a></h1><p>The base Excel file can be found <a href="opioiddata.org">here</a>. The column naming conventions follow from the simulation data above.</p>
+<h1 id="Spreadsheet-formulae">Spreadsheet formulae<a class="anchor-link" href="#Spreadsheet-formulae">&#182;</a></h1><p><font color='red'> To be completed later. </font></p>
+<p>The base Excel file can be found <a href="opioiddata.org">here</a>. The column naming conventions follow from the simulation data above.</p>
 <ul>
 <li>column C = prescription number <code>rx</code></li>
 <li>column D = API <code>drug</code></li>
@@ -13378,7 +13339,14 @@ $e$     .......... End date of prescription<br></p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="Equations">Equations<a class="anchor-link" href="#Equations">&#182;</a></h1><h2 id="Equation-1">Equation 1<a class="anchor-link" href="#Equation-1">&#182;</a></h2><p>Divide the (sum of MMEs) by the (sum of days supply):</p>
+<h1 id="Equations">Equations<a class="anchor-link" href="#Equations">&#182;</a></h1><p>Where:<br>
+$M_i$ .......... MME for given prescription <em>i</em><br>
+$q$     .......... Quantity (untis) dispensed<br>
+$d$     .......... Days supply<br>
+$s$     .......... Start date of prescription (day of dispensing)<br>
+$e$     .......... End date of prescription (dispensing date plus days supply)<br>
+$n$     .......... Total number of prescriptions<br></p>
+<h2 id="Equation-1">Equation 1<a class="anchor-link" href="#Equation-1">&#182;</a></h2><p>Average daily MME is calculated by dividing (the sum of MMEs across all prescriptions) by (the sum of days supply) over the entire observation period.</p>
 
 </div>
 </div>
@@ -13386,11 +13354,7 @@ $e$     .......... End date of prescription<br></p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$
-\sum_{1=0}^n M_{r}
-\over
-\sum_{1=0}^n {d}
-$</p>
+<p>Average daily MME = $\cfrac {\sum_{i=0}^n M_i} {\sum_{i=0}^n d_i}$</p>
 
 </div>
 </div>
@@ -13398,68 +13362,34 @@ $</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Excel formula: <code>=ROUND(((L7+L8)/(K7+K8)),1)</code></p>
+<p>Spreadsheet formula: <code>=ROUND(((L7+L8)/(K7+K8)),1)</code></p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[158]:</div>
+<div class="prompt input_prompt">In&nbsp;[426]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 1</span>
-<span class="c1">* Numerator: sum MME for each prescription across time period</span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> num =<span class="k"> total</span>(Mr)
 
-<span class="c1">* Denominator: sum days supply for each prescription across whole time period</span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> den =<span class="k"> total</span>(days)
+<span class="k">program</span> define eq1
+<span class="c1">    * Numerator: sum MME for each prescription across time period</span>
+<span class="k">        bysort</span> pt:<span class="k"> egen</span> num =<span class="k"> total</span>(M)
 
-<span class="c1">* Divide </span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> gen</span> eq1=<span class="nf">round</span>(num<span class="o">/</span>den)
-<span class="k">    la var</span> eq1 <span class="s">&quot;MME Equation 1&quot;</span>
+<span class="c1">    * Denominator: sum days supply for each prescription across whole time period</span>
+<span class="k">        bysort</span> pt:<span class="k"> egen</span> den =<span class="k"> total</span>(days)
 
-<span class="k">drop</span> num den<span class="k"></span>
-<span class="k">di</span> <span class="s">&quot;30-day Average Daily MME for Equation 1:&quot;</span><span class="k"></span>
-<span class="k">list</span> eq1
-
-frame<span class="k"> post</span> results (<span class="m">1</span>) (eq1)
+<span class="c1">    * Divide </span>
+<span class="k">        bysort</span> pt:<span class="k"> gen</span> eq1=<span class="nf">round</span>(num<span class="o">/</span>den)
+<span class="k">            la var</span> eq1 <span class="s">&quot;MME Equation 1&quot;</span>
+<span class="k">                drop</span> num den
+                frame<span class="k"> post</span> results (<span class="m">1</span>) (eq1)<span class="k"></span>
+<span class="k">end</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-
-
-
-30-day Average Daily MME for Equation 1:
-
-
-     +-----+
-     | eq1 |
-     |-----|
-  1. |  69 |
-  2. |  69 |
-     +-----+
-
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13468,7 +13398,8 @@ frame<span class="k"> post</span> results (<span class="m">1</span>) (eq1)
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h2 id="Equation-2">Equation 2<a class="anchor-link" href="#Equation-2">&#182;</a></h2><p><em>English description here</em></p>
+<h2 id="Equation-2">Equation 2<a class="anchor-link" href="#Equation-2">&#182;</a></h2><p>Average daily MME is calculated by dividing (the sum of MMEs across all prescriptions) by (the number of calendar days between the start of the first prescription and the end of the last prescription).<br></p>
+<p>Average daily MME = $\cfrac {\sum_{i=0}^n \text{M}} {max(\text{s+d}) - min(s) + 1}$</p>
 
 </div>
 </div>
@@ -13476,76 +13407,36 @@ frame<span class="k"> post</span> results (<span class="m">1</span>) (eq1)
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>PLACEHOLDER MATHJAX $$\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Excel formula: <code>insert formula here</code></p>
+<p>Spreadsheet formula: <code>insert formula here</code></p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[159]:</div>
+<div class="prompt input_prompt">In&nbsp;[427]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 2</span>
-<span class="c1">* Numerator: sum MME for each prescription across time period</span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> num =<span class="k"> total</span>(Mr)
 
-<span class="c1">* Denominator: maximum calendar days difference between earliest and last prescription</span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> min=<span class="nf">min</span>(start)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> max=<span class="nf">max</span>(end)<span class="k"></span>
-<span class="k">gen</span> den = max<span class="o">-</span>min<span class="m">+1</span>
+<span class="k">program</span> define eq2
+<span class="c1">    * Numerator: sum MME for each prescription across time period</span>
+<span class="k">        bysort</span> pt:<span class="k"> egen</span> num =<span class="k"> total</span>(M)
 
-<span class="c1">* Divide </span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> gen</span> eq2=<span class="nf">round</span>(num<span class="o">/</span>den)
-<span class="k">    la var</span> eq1 <span class="s">&quot;MME Equation 2&quot;</span>
-<span class="k">        drop</span> num den min max
-<span class="k">        </span>
-<span class="k">list</span> eq2
-    frame<span class="k"> post</span> results (<span class="m">2</span>) (eq2)
+<span class="c1">    * Denominator: maximum calendar days difference between earliest and last prescription</span>
+<span class="k">        bysort</span> pt:<span class="k"> egen</span> min=<span class="nf">min</span>(start)
+<span class="k">            bysort</span> pt:<span class="k"> egen</span> max=<span class="nf">max</span>(end)
+<span class="k">                gen</span> den = max<span class="o">-</span>min<span class="m">+1</span>
+
+<span class="c1">    * Divide </span>
+<span class="k">        bysort</span> pt:<span class="k"> gen</span> eq2=<span class="nf">round</span>(num<span class="o">/</span>den)
+<span class="k">            la var</span> eq1 <span class="s">&quot;MME Equation 2&quot;</span>
+<span class="k">                drop</span> num den min max
+                    frame<span class="k"> post</span> results (<span class="m">2</span>) (eq2)<span class="k"></span>
+<span class="k">end</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-
-
-
-
-
-
-     +-----+
-     | eq2 |
-     |-----|
-  1. |  85 |
-  2. |  85 |
-     +-----+
-
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13554,7 +13445,7 @@ frame<span class="k"> post</span> results (<span class="m">1</span>) (eq1)
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h2 id="Equation-3">Equation 3<a class="anchor-link" href="#Equation-3">&#182;</a></h2><p>Average of individual prescription daily MME, by person</p>
+<h2 id="Equation-3">Equation 3<a class="anchor-link" href="#Equation-3">&#182;</a></h2><p>Average daily MME is calculated by dividing (the sum of MMEs across all prescriptions) by (the total person-days explicitly exposed, counting overlap days once). There are other ways to implement this equation in code, but the approach below uses the brace counting algorithm.</p>
 
 </div>
 </div>
@@ -13562,10 +13453,7 @@ frame<span class="k"> post</span> results (<span class="m">1</span>) (eq1)
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>PLACEHOLDER MATHJAX 
-$$
-\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}
-$$</p>
+<p>Average daily MME = <code>Equation TBD</code></p>
 
 </div>
 </div>
@@ -13573,58 +13461,74 @@ $$</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Excel formula: <code>insert formula here</code></p>
+<p>Spreadsheet formula: <code>can anyone help with this?</code></p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[160]:</div>
+<div class="prompt input_prompt">In&nbsp;[428]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 3</span>
-<span class="k">gen</span> temp=Mr<span class="o">/</span>days<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> eq3=mean(temp)<span class="k"></span>
-<span class="k">la var</span> eq3 <span class="s">&quot;MME Equation 3&quot;</span>
-<span class="k">    note</span> eq3: Average of individual prescription daily MME,<span class="k"> by</span> person
-<span class="k">    drop</span> temp<span class="k"></span>
-<span class="k">list</span> eq3
-    frame<span class="k"> post</span> results (<span class="m">3</span>) (eq3)
+
+<span class="k">program</span> define eq3
+<span class="c1">    * Duplicate copies to create separate lines for start and end dates</span>
+<span class="k">        expand</span> <span class="m">2</span>,<span class="k"> gen</span>(ender)
+
+    <span class="c1">// Generate bracedates</span>
+<span class="k">        gen</span> bracedate=start<span class="k"> if</span> ender<span class="o">==</span><span class="m">0</span>
+<span class="k">            replace</span> bracedate=endimputed<span class="k"> if</span> ender<span class="o">==</span><span class="m">1</span>
+
+    <span class="c1">// Count number of rows per person</span>
+<span class="k">        sort</span> pt bracedate ender
+<span class="k">            by</span> pt:<span class="k"> gen</span> counter=_n
+
+    <span class="c1">// Calculate difference between adjacent bracedates</span>
+<span class="k">        sort</span> pt bracedate counter
+<span class="k">            gen</span> diff = bracedate<span class="o">-</span>bracedate[_n<span class="m">-1</span>]<span class="k"> if</span> counter<span class="o">!=</span><span class="m">1</span>
+
+    <span class="c1">// fix difference between adjacent days and same days</span>
+<span class="k">        replace</span> diff=bracedate<span class="o">-</span>bracedate[_n<span class="m">-1</span>]<span class="k"> if</span> bracedate<span class="o">==</span>bracedate[_n<span class="m">-1</span>]<span class="o">+</span><span class="m">1</span>
+<span class="k">            replace</span> diff=<span class="m">0</span><span class="k"> if</span> bracedate<span class="o">==</span>bracedate[_n<span class="m">-1</span>] 
+
+    <span class="c1">// Check for errors: no observations </span>
+    <span class="c1">//    tab diff if counter==1 &amp; diff!=.</span>
+
+    <span class="c1">// Create running counter</span>
+<span class="k">        gen</span> ender2=ender
+<span class="k">            replace</span> ender2=<span class="o">-</span><span class="m">1</span><span class="k"> if</span> ender<span class="o">==</span><span class="m">1</span>
+<span class="k">            replace</span> ender2=<span class="m">1</span><span class="k"> if</span> ender<span class="o">==</span><span class="m">0</span>
+<span class="k">                by</span> pt:<span class="k"> gen</span> running=<span class="nf">sum</span>(ender2)
+<span class="k">                    drop</span> ender2
+
+    <span class="c1">// Generate person-days exposed</span>
+<span class="k">        bysort</span> pt bracedate counter:<span class="k"> egen</span> ptime=total(diff)<span class="k"> if</span> (running<span class="o">!=</span><span class="m">1</span> | running[_n<span class="m">-1</span>]<span class="o">&gt;</span><span class="m">1</span>)
+<span class="k">            replace</span> ptime=<span class="m">1</span><span class="k"> if</span> diff<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> running<span class="o">==</span><span class="m">1</span>
+<span class="k">                replace</span> ptime=<span class="m">1</span><span class="k"> if</span> running<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> ptime<span class="o">==</span>.
+<span class="k">                    replace</span> ptime=<span class="m">1</span><span class="k"> if</span> counter<span class="o">==</span><span class="m">1</span>
+<span class="k">                        sort</span> pt bracedate counter
+<span class="k">                            by</span> pt:<span class="k"> egen</span> totptime=total(ptime)
+
+    <span class="c1">// Average daily MME</span>
+<span class="k">        keep if</span> ender<span class="o">==</span><span class="m">0</span>
+
+<span class="c1">    * Numerator: total MME</span>
+<span class="k">        bysort</span> pt:<span class="k"> egen</span> num=total(M)
+
+<span class="c1">    * Denominator: use totptime</span>
+
+<span class="c1">    * Divide</span>
+<span class="k">        gen</span> eq3 = <span class="nf">round</span>(num<span class="o">/</span>totptime)
+<span class="k">            la var</span> eq3 <span class="s">&quot;MME Equation 3 - brace counting&quot;</span>
+<span class="k">                drop</span> num ender bracedate diff counter running ptime
+<span class="k">                    order</span> eq3, a(eq2)
+                    frame<span class="k"> post</span> results (<span class="m">3</span>) (eq3)<span class="k"></span>
+<span class="k">end</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-
-
-
-
-     +-----+
-     | eq3 |
-     |-----|
-  1. |  50 |
-  2. |  50 |
-     +-----+
-
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13633,7 +13537,7 @@ $$</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h2 id="Equation-4">Equation 4<a class="anchor-link" href="#Equation-4">&#182;</a></h2><p><em>English description here</em></p>
+<h2 id="Equation-4">Equation 4<a class="anchor-link" href="#Equation-4">&#182;</a></h2><p>Average daily MME is calculated by taking the mean of the average across all prescriptions of the daily MME (MME $\div$ days supply) per script.</p>
 
 </div>
 </div>
@@ -13641,7 +13545,7 @@ $$</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>PLACEHOLDER MATHJAX $$\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$</p>
+<p>Average daily MME = $\cfrac{\sum{\cfrac{M_i} {d_i}}} {n}$</p>
 
 </div>
 </div>
@@ -13656,57 +13560,22 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[161]:</div>
+<div class="prompt input_prompt">In&nbsp;[429]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 4</span>
-<span class="c1">* Numerator: total MME</span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> num=total(Mr)
 
-<span class="c1">* Denominator: averaged day supply across all scripts</span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> den=mean(days)
-
-<span class="c1">* Divide</span><span class="k"></span>
-<span class="k">gen</span> eq4 = <span class="nf">round</span>(num<span class="o">/</span>den)
+<span class="k">program</span> define eq4
+<span class="k">    gen</span> temp=M<span class="o">/</span>days
+<span class="k">    bysort</span> pt:<span class="k"> egen</span> eq4=mean(temp)
 <span class="k">    la var</span> eq4 <span class="s">&quot;MME Equation 4&quot;</span>
-<span class="k">        drop</span> num den
-
-<span class="k">list</span> eq4
-    frame<span class="k"> post</span> results (<span class="m">4</span>) (eq4)
+<span class="k">        note</span> eq4: Average of individual prescription daily MME,<span class="k"> by</span> person
+<span class="k">        drop</span> temp
+        frame<span class="k"> post</span> results (<span class="m">4</span>) (eq4)<span class="k"></span>
+<span class="k">end</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-
-
-
-
-     +-----+
-     | eq4 |
-     |-----|
-  1. | 137 |
-  2. | 137 |
-     +-----+
-
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13715,47 +13584,26 @@ $$</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h2 id="Equation-5">Equation 5<a class="anchor-link" href="#Equation-5">&#182;</a></h2><p><em>English description here</em></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>PLACEHOLDER MATHJAX $$\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Excel formula: <code>insert formula here</code></p>
+<h1 id="Experiment-1">Experiment 1<a class="anchor-link" href="#Experiment-1">&#182;</a></h1><p>Using the core example described above, 2 prescriptions :<br></p>
+<ul>
+<li>One 20mg ER oxycodone twice-a-day for 30 days<br></li>
+<li>One 5mg IR oxycodone as needed for breakthrough pain, written as 7 day supply<br></li>
+<li>Both prescriptions are dispensed on the first day of the month<br></li>
+</ul>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[162]:</div>
+<div class="prompt input_prompt">In&nbsp;[430]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 5</span>
-<span class="c1">* Numerator: </span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> num1=total(units)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> num2=total(strength<span class="o">*</span>conv)
-
-<span class="c1">* Denominator:</span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> den=total(days)
-
-<span class="c1">* Divide</span><span class="k"></span>
-<span class="k">gen</span> eq5 = <span class="nf">round</span>(num1<span class="o">*</span>num2<span class="o">/</span>den)
-<span class="k">    la var</span> eq5 <span class="s">&quot;MME Equation 5&quot;</span>
-<span class="k">        drop</span> num1 num2 den
-
-<span class="k">list</span> eq5
-    frame<span class="k"> post</span> results (<span class="m">5</span>) (eq5)
+<div class=" highlight hl-stata"><pre><span></span><span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;ER&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">60</span> <span class="m">20</span> <span class="m">2</span> <span class="m">30</span>
+<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span><span class="k"></span>
+<span class="k">end</span>
+runexperiment
 </pre></div>
 
     </div>
@@ -13774,437 +13622,261 @@ $$</p>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 
-
-
-
-
-
-
-     +-----+
-     | eq5 |
-     |-----|
-  1. | 100 |
-  2. | 100 |
-     +-----+
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<hr>
-<h2 id="Equation-6">Equation 6<a class="anchor-link" href="#Equation-6">&#182;</a></h2><p><em>English description here</em></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>PLACEHOLDER MATHJAX $$\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Excel formula: <code>insert formula here</code></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[163]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 6</span>
-<span class="c1">* Numerator: </span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> num1=total(units)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> num2=total(strength<span class="o">*</span>conv)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> min=<span class="nf">min</span>(start)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> max=<span class="nf">max</span>(end)
-
-<span class="c1">* Denominator</span><span class="k"></span>
-<span class="k">gen</span> den = max<span class="o">-</span>min<span class="m">+1</span>
-<span class="k">    gen</span> eq6 = <span class="nf">round</span>(num1<span class="o">*</span>num2<span class="o">/</span>den)
-<span class="k">        la var</span> eq6 <span class="s">&quot;MME Equation 6&quot;</span>
-<span class="k">            drop</span> min max num<span class="o">*</span> den <span class="k"></span>
-<span class="k">list</span> eq6
-    frame<span class="k"> post</span> results (<span class="m">6</span>) (eq6)
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-
-
-
-
-
-
-
-     +-----+
-     | eq6 |
-     |-----|
-  1. | 123 |
-  2. | 123 |
-     +-----+
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<hr>
-<h2 id="Equation-7">Equation 7<a class="anchor-link" href="#Equation-7">&#182;</a></h2><p><em>English description here - Imputed end of time</em></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>PLACEHOLDER MATHJAX $$\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Excel formula: <code>insert formula here</code></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[164]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 7</span>
-<span class="c1">* Numerator:</span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> num1=total(units)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> num2=total(strength<span class="o">*</span>conv)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> min=<span class="nf">min</span>(start)<span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> max=<span class="nf">max</span>(endimputed)
-
-<span class="c1">* Denominator:</span><span class="k"></span>
-<span class="k">gen</span> den = max<span class="o">-</span>min<span class="m">+1</span>
-
-<span class="c1">* Divide</span><span class="k"></span>
-<span class="k">gen</span> eq7 = <span class="nf">round</span>(num1<span class="o">*</span>num2<span class="o">/</span>den)
-<span class="k">    la var</span> eq7 <span class="s">&quot;MME Equation 7&quot;</span>
-<span class="k">        drop</span> min max num<span class="o">*</span> den 
-
-<span class="k">list</span> eq7
-    frame<span class="k"> post</span> results (<span class="m">7</span>) (eq7)
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-
-
-
-
-
-
-
-     +-----+
-     | eq7 |
-     |-----|
-  1. | 123 |
-  2. | 123 |
-     +-----+
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<hr>
-<h2 id="Equation-8">Equation 8<a class="anchor-link" href="#Equation-8">&#182;</a></h2><p><em>Brace counting algorithm</em></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>PLACEHOLDER MATHJAX $$\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Excel formula: <code>insert formula here</code></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[165]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 8</span>
-
-<span class="c1">* Duplicate copies to create separate lines for start and end dates</span><span class="k"></span>
-<span class="k">expand</span> <span class="m">2</span>,<span class="k"> gen</span>(ender)
-
-<span class="c1">// Generate bracedates</span>
-<span class="k">gen</span> bracedate=start<span class="k"> if</span> ender<span class="o">==</span><span class="m">0</span>
-<span class="k">    replace</span> bracedate=endimputed<span class="k"> if</span> ender<span class="o">==</span><span class="m">1</span>
-
-<span class="c1">// Count number of rows per person</span>
-<span class="k">sort</span> pt bracedate ender
-<span class="k">    by</span> pt:<span class="k"> gen</span> counter=_n
-
-<span class="c1">// Calculate difference between adjacent bracedates</span>
-<span class="k">sort</span> pt bracedate counter<span class="k"></span>
-<span class="k">gen</span> diff = bracedate<span class="o">-</span>bracedate[_n<span class="m">-1</span>]<span class="k"> if</span> counter<span class="o">!=</span><span class="m">1</span>
-    <span class="c1">// fix difference between adjacent days and same days</span>
-<span class="k">    replace</span> diff=bracedate<span class="o">-</span>bracedate[_n<span class="m">-1</span>]<span class="k"> if</span> bracedate<span class="o">==</span>bracedate[_n<span class="m">-1</span>]<span class="o">+</span><span class="m">1</span>
-<span class="k">    replace</span> diff=<span class="m">0</span><span class="k"> if</span> bracedate<span class="o">==</span>bracedate[_n<span class="m">-1</span>] 
-
-<span class="c1">// Check for errors: no observations </span>
-<span class="k">tab</span> diff<span class="k"> if</span> counter<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> diff<span class="o">!=</span>.
-
-<span class="c1">// Create running counter</span>
-<span class="k">gen</span> ender2=ender
-<span class="k">    replace</span> ender2=<span class="o">-</span><span class="m">1</span><span class="k"> if</span> ender<span class="o">==</span><span class="m">1</span>
-<span class="k">    replace</span> ender2=<span class="m">1</span><span class="k"> if</span> ender<span class="o">==</span><span class="m">0</span><span class="k"></span>
-<span class="k">by</span> pt:<span class="k"> gen</span> running=<span class="nf">sum</span>(ender2)<span class="k"></span>
-<span class="k">drop</span> ender2
-
-<span class="c1">// Generate person-days exposed</span>
-<span class="k">bysort</span> pt bracedate counter:<span class="k"> egen</span> ptime=total(diff)<span class="k"> if</span> (running<span class="o">!=</span><span class="m">1</span> | running[_n<span class="m">-1</span>]<span class="o">&gt;</span><span class="m">1</span>)
-<span class="k">    replace</span> ptime=<span class="m">1</span><span class="k"> if</span> diff<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> running<span class="o">==</span><span class="m">1</span>
-<span class="k">    replace</span> ptime=<span class="m">1</span><span class="k"> if</span> running<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> ptime<span class="o">==</span>.
-<span class="k">    replace</span> ptime=<span class="m">1</span><span class="k"> if</span> counter<span class="o">==</span><span class="m">1</span><span class="k"></span>
-<span class="k">sort</span> pt bracedate counter
-<span class="k">    by</span> pt:<span class="k"> egen</span> totptime=total(ptime)
-
-<span class="c1">// Show results</span>
-<span class="k">list</span>
-<span class="k">tab</span> totptime,<span class="k"> m</span>
-
-<span class="c1">// Average daily MME</span>
-<span class="k">keep if</span> ender<span class="o">==</span><span class="m">0</span>
-
-<span class="c1">* Numerator: total MME</span><span class="k"></span>
-<span class="k">bysort</span> pt:<span class="k"> egen</span> num=total(Mr)
-
-<span class="c1">* Denominator: persontime exposed using totptime</span>
-
-<span class="c1">* Divide</span><span class="k"></span>
-<span class="k">gen</span> eq8 = <span class="nf">round</span>(num<span class="o">/</span>totptime)
-<span class="k">    la var</span> eq8 <span class="s">&quot;MME Equation 8&quot;</span>
-<span class="k">        drop</span> num
-
-<span class="k">list</span> eq8
-    frame<span class="k"> post</span> results (<span class="m">8</span>) (eq8)
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-(2 observations created)
-
-(2 missing values generated)
-
-(2 real changes made)
-
-
-
-
-(1 missing value generated)
-
-(0 real changes made)
-
-(0 real changes made)
-
-no observations
-
-
-(2 real changes made)
-
-(2 real changes made)
-
-
-
-
-(0 real changes made)
-
-(0 real changes made)
-
-(1 real change made)
-
-
-
-
-     +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-     |  pt   rx   drug   form   start   end   endimp~d   units   strength   conv   days     Mr   eq1   eq2   eq3   eq4   eq5   eq6   eq7   ender   braced~e   counter   diff   running   ptime   totptime |
-     |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-  1. | 100    1    oxy     ER       1    30         30      60         20      2     30   2400    69    85    50   137   100   123   123       0          1         1      .         1       1         30 |
-  2. | 100    2    oxy     IR       1    30          7      14          5      2      7    140    69    85    50   137   100   123   123       0          1         2      0         2       0         30 |
-  3. | 100    2    oxy     IR       1    30          7      14          5      2      7    140    69    85    50   137   100   123   123       1          7         3      6         1       6         30 |
-  4. | 100    1    oxy     ER       1    30         30      60         20      2     30   2400    69    85    50   137   100   123   123       1         30         4     23         0      23         30 |
-     +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-
-
-   totptime |      Freq.     Percent        Cum.
-------------+-----------------------------------
-         30 |          4      100.00      100.00
-------------+-----------------------------------
-      Total |          4      100.00
-
-(2 observations deleted)
-
-
-
-
-
-
-     +-----+
-     | eq8 |
-     |-----|
-  1. |  85 |
-  2. |  85 |
-     +-----+
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<hr>
-<h2 id="Summary-results-across-equations">Summary results across equations<a class="anchor-link" href="#Summary-results-across-equations">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[166]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span>frame change results<span class="k"></span>
-<span class="k">list</span>
-<span class="k">qui</span>:<span class="k"> summ</span> MME
-<span class="k">    di</span> <span class="s">&quot;Minimum: &quot;</span> <span class="nf">r</span>(min)
-<span class="k">    di</span> <span class="s">&quot;Maximum: &quot;</span> <span class="nf">r</span>(max)
-<span class="k">    di</span> <span class="s">&quot;range: &quot;</span><span class="nf">r</span>(max)<span class="o">-</span><span class="nf">r</span>(min)
-<span class="k">    di</span> <span class="nf">r</span>(max)<span class="o">/</span><span class="nf">r</span>(min) <span class="s">&quot;-fold difference between highest and lowest&quot;</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
+. runexperiment
+
+     +----------------------------------------------------------------------------------------------------------------------------+
+     |  pt   rx   drug   form   start   end   endimp~d   units   strength   conv   days      M   eq1   eq2   eq3   eq4   totptime |
+     |----------------------------------------------------------------------------------------------------------------------------|
+  1. | 100    1    oxy     ER       1    30         30      60         20      2     30   2400    69    85    85    50         30 |
+  2. | 100    2    oxy     IR       1    30          7      14          5      2      7    140    69    85    85    50         30 |
+     +----------------------------------------------------------------------------------------------------------------------------+
+Resize the browser window if line wraps in table.
+-------------------
+Experiment results across 4 equations:
+Minimum average daily MME: 50
+Maximum average daily MME: 85
+range: 35
+1.7-fold difference between highest and lowest
 
      +----------------+
      | equation   MME |
      |----------------|
   1. |        1    69 |
   2. |        2    85 |
-  3. |        3    50 |
-  4. |        4   137 |
-  5. |        5   100 |
-     |----------------|
-  6. |        6   123 |
-  7. |        7   123 |
-  8. |        8    85 |
+  3. |        3    85 |
+  4. |        4    50 |
      +----------------+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h1 id="Experiment-2:-One-ER,-2-IR">Experiment 2: One ER, 2 IR<a class="anchor-link" href="#Experiment-2:-One-ER,-2-IR">&#182;</a></h1><p>3 prescriptions :<br></p>
+<ul>
+<li>One 20mg ER oxycodone twice-a-day for 30 days, filled on Day 1<br></li>
+<li>One 5mg IR oxycodone as needed for breakthrough pain, written as 7 day supply, filled on Day 1<br></li>
+<li>One 5mg IR oxycodone as needed for breakthrough pain, written as 7 day supply, filled on Day 1<br></li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[431]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
+<span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;ER&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">60</span> <span class="m">20</span> <span class="m">2</span> <span class="m">30</span>
+<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span>
+<span class="m">100</span> <span class="m">3</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">10</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span><span class="k"></span>
+<span class="k">end</span>
+
+runexperiment
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
 
 
-Minimum: 50
+<div class="output_area">
 
-Maximum: 137
+    <div class="prompt"></div>
 
-range: 87
 
-2.74-fold difference between highest and lowest
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+. runexperiment
+
+     +----------------------------------------------------------------------------------------------------------------------------+
+     |  pt   rx   drug   form   start   end   endimp~d   units   strength   conv   days      M   eq1   eq2   eq3   eq4   totptime |
+     |----------------------------------------------------------------------------------------------------------------------------|
+  1. | 100    1    oxy     ER       1    30         30      60         20      2     30   2400    61    89    89    40         30 |
+  2. | 100    2    oxy     IR       1    30          7      14          5      2      7    140    61    89    89    40         30 |
+  3. | 100    3    oxy     IR      10    30         16      14          5      2      7    140    61    89    89    40         30 |
+     +----------------------------------------------------------------------------------------------------------------------------+
+Resize the browser window if line wraps in table.
+-------------------
+Experiment results across 4 equations:
+Minimum average daily MME: 40
+Maximum average daily MME: 89
+range: 49
+2.2-fold difference between highest and lowest
+
+     +----------------+
+     | equation   MME |
+     |----------------|
+  1. |        1    61 |
+  2. |        2    89 |
+  3. |        3    89 |
+  4. |        4    40 |
+     +----------------+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h1 id="Experiment-3:-Two-IR">Experiment 3: Two IR<a class="anchor-link" href="#Experiment-3:-Two-IR">&#182;</a></h1><p>2 IR prescriptions:<br></p>
+<ul>
+<li>One 5mg IR oxycodone <em>prn</em>, written as 7 day supply, filled on <strong>Day 1</strong><br></li>
+<li>One 5mg IR oxycodone <em>prn</em>, written as 7 day supply, filled on <strong>Day 10</strong><br></li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[434]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
+<span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span>
+<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">10</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span><span class="k"></span>
+<span class="k">end</span>
+
+runexperiment
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+. runexperiment
+
+     +---------------------------------------------------------------------------------------------------------------------------+
+     |  pt   rx   drug   form   start   end   endimp~d   units   strength   conv   days     M   eq1   eq2   eq3   eq4   totptime |
+     |---------------------------------------------------------------------------------------------------------------------------|
+  1. | 100    1    oxy     IR       1    30          7      14          5      2      7   140    20     9    20    20         14 |
+  2. | 100    2    oxy     IR      10    30         16      14          5      2      7   140    20     9    20    20         14 |
+     +---------------------------------------------------------------------------------------------------------------------------+
+Resize the browser window if line wraps in table.
+-------------------
+Experiment results across 4 equations:
+Minimum average daily MME: 9
+Maximum average daily MME: 20
+range: 11
+2.2-fold difference between highest and lowest
+
+     +----------------+
+     | equation   MME |
+     |----------------|
+  1. |        1    20 |
+  2. |        2     9 |
+  3. |        3    20 |
+  4. |        4    20 |
+     +----------------+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h1 id="Experiment-4:-Two-overlapping-IR-oxycodone">Experiment 4: Two overlapping IR oxycodone<a class="anchor-link" href="#Experiment-4:-Two-overlapping-IR-oxycodone">&#182;</a></h1><p>2 IR prescriptions, more prn use than expected scenario:<br></p>
+<ul>
+<li>One 5mg IR oxycodone <em>prn</em> 2 pills/day, written as 7 day supply, filled on <strong>Day 1</strong><br></li>
+<li>One 5mg IR oxycodone <em>prn</em>, written as 7 day supply, filled on <strong>Day 3</strong><br></li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[433]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
+<span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span>
+<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">3</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">2</span> <span class="m">7</span><span class="k"></span>
+<span class="k">end</span>
+
+runexperiment
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+. runexperiment
+
+     +---------------------------------------------------------------------------------------------------------------------------+
+     |  pt   rx   drug   form   start   end   endimp~d   units   strength   conv   days     M   eq1   eq2   eq3   eq4   totptime |
+     |---------------------------------------------------------------------------------------------------------------------------|
+  1. | 100    1    oxy     IR       1    30          7      14          5      2      7   140    20     9    31    20          9 |
+  2. | 100    2    oxy     IR       3    30          9      14          5      2      7   140    20     9    31    20          9 |
+     +---------------------------------------------------------------------------------------------------------------------------+
+Resize the browser window if line wraps in table.
+-------------------
+Experiment results across 4 equations:
+Minimum average daily MME: 9
+Maximum average daily MME: 31
+range: 22
+3.4-fold difference between highest and lowest
+
+     +----------------+
+     | equation   MME |
+     |----------------|
+  1. |        1    20 |
+  2. |        2     9 |
+  3. |        3    31 |
+  4. |        4    20 |
+     +----------------+
 </pre>
 </div>
 </div>
