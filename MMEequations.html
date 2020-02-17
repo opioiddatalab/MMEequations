@@ -13141,7 +13141,7 @@ $( document ).ready(function(){
 <p><font size='6'>
     Milligrams of Morphine Equivalents Equations
     </font></p>
-<p>Updated Feb 13, 2020<br>
+<p>Updated Feb 17, 2020<br>
 For more information see <a href="opioiddata.org">OpioidData.org</a></p>
 <p><font color='red'>Caution: this is a work in progress. Don't take it too seriously (yet).</font></p>
 <hr>
@@ -13199,10 +13199,11 @@ For more information see <a href="opioiddata.org">OpioidData.org</a></p>
 Rx1: 60qty x 30mg x 1.5 = <strong>2700</strong> MME per script<br>
 Rx2: 14qty x 5mg x 1.5 = <strong>105</strong> MME per script<br>
 <br></p>
-<p><code>|-|-|-|-|-|-|-|-|-|10|-|-|-|-|-|-|-|-|-|20|-|-|-|-|-|-|-|-|-|30|</code>    CALENDAR DAY <br>
-<code>|+|+|+|+|+|+|+|+|+|+ |+|+|+|+|+|+|+|+|+|+ |+|+|+|+|+|+|+|+|+|+ |</code>    Rx1<br>
-<code>|+|+|+|+|+|+|+|.|.|. |.|.|.|.|.|.|.|.|.|. |.|.|.|.|.|.|.|.|.|. |</code>    Rx2<br></p>
-<p>${\sum_{i=0}^n \text{M}}$ = 30-Day Total MME: 2700 + 105 = <strong>2805</strong> <br></p>
+<p><code>|-|-|-|-|-|-|-|-|-|1|-|-|-|-|-|-|-|-|-|2|-|-|-|-|-|-|-|-|-|3|</code>    CALENDAR DAY <br>
+<code>|-|-|-|-|-|-|-|-|-|0|-|-|-|-|-|-|-|-|-|0|-|-|-|-|-|-|-|-|-|0|</code>     <br>
+<code>|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|</code>    Rx1<br>
+<code>|+|+|+|+|+|+|+|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|.|</code>    Rx2<br></p>
+<p>${\sum_{i=0}^n M_i}$ = 30-Day Total MME: 2700 + 105 = <strong>2805</strong> <br></p>
 <p><br></p>
 <p><strong>What is the correct denominator?</strong> <br></p>
 <p><font color='red'> 1. Is it the sum of days supply?<br><br></font>
@@ -13226,7 +13227,14 @@ $\cfrac{\sum{\cfrac{M_i} {d_i}}} {n}$ = $\cfrac{\cfrac{2700 \text{ MME}} {30 \te
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="In-popular-usage">In popular usage<a class="anchor-link" href="#In-popular-usage">&#182;</a></h1><h2 id="Origins-and-evolution">Origins and evolution<a class="anchor-link" href="#Origins-and-evolution">&#182;</a></h2><p>The concept of comapring the relative potency of opioid molecules to each other (or morphine) has its roots in clinical pharmacology, appearing in the biomedical literature <a href="https://pubmed.ncbi.nlm.nih.gov/13631610/">around 1960</a>, and codified in the essential textbook Goodman and Gilman's <a href="https://en.wikipedia.org/wiki/Goodman_%26_Gilman%27s_The_Pharmacological_Basis_of_Therapeutics">The Pharmacological Basis of Therapeutics</a>. About 40 years ago, as new opioid molecules were becoming available for routine medical use, equianalgesic potency conversions were developed to assist clinical decision making when switching a patient from one opioid compound to another. In 1985, <a href="https://pubmed.ncbi.nlm.nih.gov/2582259-the-treatment-of-cancer-pain/">Foley</a> formalized clinical practice for cancer pain management into an equianalgesic conversion table that serves as the archetype. Conversion tables started appearing in drug labels in the 1990s. The concept was attractive and one such table was notoriously <a href="https://opioiddatalab.github.io/MMEequations/OxyContinMMEpen.png">embeded in a pen</a> as a marketing leave-behind. By 2001, <a href="https://pubmed.ncbi.nlm.nih.gov/11369161-accuracy-in-equianalgesic-dosing-conversion-dilemmas/">controversy was brewing</a> on how to use the conversion factors among clinicians, with <a href="https://pubmed.ncbi.nlm.nih.gov/11495714-equianalgesic-dose-ratios-for-opioids-a-critical-review-and-proposals-for-long-term-dosing/">specific concern</a> over the conversion factor for long-acting opioid methadone, which had emerged as a common chornic pain management option. Later, <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4809343/">Fudin et al.</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/19735901-opioid-equianalgesic-tables-are-they-all-equally-dangerous/">Shaheen et al.</a> and others detailed why the use of conversion factors is deeply questionable, not in the least because they do not take into account elimination half-life. To our knowledge, in 2006 the first documented use of morphine equivalents in an epidemiology study was published by <a href="https://pubmed.ncbi.nlm.nih.gov/16236466-association-between-non-medical-and-prescriptive-usage-of-opioids/">Dasgupta et al.</a>, with a comprehensive conversion table assembled from various sources including drug labels. Then, several <a href="https://www.nhms.org/sites/default/files/Pdfs/Opioid-Comparison-Chart-Prescriber-Letter-2012.pdf">professional organizations</a> and <a href="healthquality.va.gov/guidelines/Pain/cot/VADoDOTCPG022717.pdf">other groups</a> created equianalgesic tables with varying conversion factors. Around 2010, Len Paulozzi at the Centers for Disease Control and Prevention (CDC) started circulating annaul spreadsheets with NDC and equianalgesic potency to researchers via email listservs. This <a href="https://www.cdc.gov/drugoverdose/pdf/calculating_total_daily_dose-a.pdf">particular set</a> of conversion factors soon became the standard for research studies, but only offered guidance on measuring MME in a single prescription, and did not address overlapping scripts. In 2016, CDC issued <a href="https://www.cdc.gov/mmwr/volumes/65/rr/rr6501e1.htm?CDC_AA_refVal=https%3A%2F%2Fwww.cdc.gov%2Fmmwr%2Fvolumes%2F65%2Frr%2Frr6501e1er.htm">guidelines</a> for pain management that included strong cautions for opioid use above an arbitrary MME threshold, thereby suggesting a metric for intervention evaluation and surveillance, still with little regard to how to account for overlapping prescriptions. State laws and insurance policies with MME limits rapidly evolved, invoking the guidelines. Since 2015 there has been rapid increase in the number of publications using MME for epidemiologic studies, however, there is still no standard way for calculating MME in large healthcare datasets. In addition, there is little agreement on how to calculate MME for liquid medicines and non-oral routes of administration.</p>
+<h1 id="In-popular-usage">In popular usage<a class="anchor-link" href="#In-popular-usage">&#182;</a></h1><h2 id="Nomenclature">Nomenclature<a class="anchor-link" href="#Nomenclature">&#182;</a></h2><p>We use the terms <em>average daily MME</em> interchangably with <em>MME per day</em> (summarized over a given time span).</p>
+<h2 id="Origins-and-evolution">Origins and evolution<a class="anchor-link" href="#Origins-and-evolution">&#182;</a></h2><p>The concept of comapring the relative potency of opioid molecules to each other (or morphine) has its roots in clinical pharmacology, appearing in the biomedical literature <a href="https://pubmed.ncbi.nlm.nih.gov/13631610/">around 1960</a>, and codified in the essential textbook Goodman and Gilman's <a href="https://en.wikipedia.org/wiki/Goodman_%26_Gilman%27s_The_Pharmacological_Basis_of_Therapeutics">The Pharmacological Basis of Therapeutics</a>. About 40 years ago, as new opioid molecules were becoming available for routine medical use, equianalgesic potency conversions were developed to assist clinical decision making when switching a patient from one opioid compound to another. In 1985, <a href="https://pubmed.ncbi.nlm.nih.gov/2582259-the-treatment-of-cancer-pain/">Foley</a> formalized clinical practice for cancer pain management into an equianalgesic conversion table that serves as the archetype. Conversion tables started appearing in drug labels in the 1990s. The concept was attractive and one such table was notoriously <a href="https://opioiddatalab.github.io/MMEequations/docs/OxyContinMMEpen.png">embeded in a pen</a> as a marketing leave-behind. By 2001, <a href="https://pubmed.ncbi.nlm.nih.gov/11369161-accuracy-in-equianalgesic-dosing-conversion-dilemmas/">controversy was brewing</a> on how to use the conversion factors among clinicians, with <a href="https://pubmed.ncbi.nlm.nih.gov/11495714-equianalgesic-dose-ratios-for-opioids-a-critical-review-and-proposals-for-long-term-dosing/">specific concern</a> over the conversion factor for long-acting opioid methadone, which had emerged as a common chornic pain management option. Later, <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4809343/">Fudin et al.</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/19735901-opioid-equianalgesic-tables-are-they-all-equally-dangerous/">Shaheen et al.</a> and others detailed why the use of conversion factors is deeply questionable, not in the least because they do not take into account elimination half-life. To our knowledge, in 2006 the first documented use of morphine equivalents in an epidemiology study was published by <a href="https://pubmed.ncbi.nlm.nih.gov/16236466-association-between-non-medical-and-prescriptive-usage-of-opioids/">Dasgupta et al.</a>, with a comprehensive conversion table assembled from various sources including drug labels. The original use showed API-level plots before the summarized version with MME, allowing for heterogeneity to be expressed alongside broader patterns across opioids.<br>
+<br>
+During this time, several <a href="https://www.nhms.org/sites/default/files/Pdfs/Opioid-Comparison-Chart-Prescriber-Letter-2012.pdf">professional organizations</a> and <a href="healthquality.va.gov/guidelines/Pain/cot/VADoDOTCPG022717.pdf">other groups</a> created equianalgesic tables with varying conversion factors. Around 2010, Len Paulozzi at the Centers for Disease Control and Prevention (CDC) started circulating annaul <a href="http://opioiddatalab.github.io/MMEequations/docs/CDC%20NDC%20codes%202010.xlsx">spreadsheets</a> with NDC and equianalgesic potency to researchers via email listservs. This <a href="https://www.cdc.gov/drugoverdose/pdf/calculating_total_daily_dose-a.pdf">particular set</a> of conversion factors soon became the standard for research studies, but only offered guidance on measuring MME in a single prescription, and did not address overlapping scripts. In 2016, CDC issued <a href="https://www.cdc.gov/mmwr/volumes/65/rr/rr6501e1.htm?CDC_AA_refVal=https%3A%2F%2Fwww.cdc.gov%2Fmmwr%2Fvolumes%2F65%2Frr%2Frr6501e1er.htm">guidelines</a> for pain management that included strong cautions for opioid use above an arbitrary MME threshold, thereby suggesting a metric for intervention evaluation and surveillance, still with little regard to how to account for overlapping prescriptions. State laws and insurance policies with MME limits rapidly evolved, invoking the guidelines. Since 2015 there has been rapid increase in the number of publications using MME for epidemiologic studies, however, there is still no standard way for calculating MME in large healthcare datasets. In addition, there is little agreement on how to calculate MME for liquid medicines and non-oral routes of administration. Despite little agreement on the best use of MME, some have even <a href="https://link.springer.com/article/10.1007/s11916-018-0695-3">called for</a> MME to appear on drug packaging.<br>
+<br>
+When used clinically, MME is an instantaneous mesaure used at the point of care, with an understanding of patient context. For example, when switching a patient to another opioid because of side effects, the remaining pills from the discontinued opioid will not be included in the calculation, however, in epidmeiology studies they will be. In this way, epidemiology approaches will overestimate <em>prescribed</em> exposure; and <em>underestimate</em> exposure from unsanctioned sources.<br>
+<br>
+There is exposure ascertainment heterogenity across the observational studies cited in the CDC Guidelines, creating opportunity for misclassification as we have previously <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/pds.4564">stated</a>. Yet, that these studies uniformly found increasing risk with exposure, regardless of formula used, demonstrates the fallability of the existence of a hard threshold for overdose outcomes, as has been <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/pds.4366">pointed out</a>.</p>
 <h2 id="Clinical-care-implications">Clinical care implications<a class="anchor-link" href="#Clinical-care-implications">&#182;</a></h2><p><strong>Daily MME thresholds are used to modify care regimens for patients, without explicit formulae for how it is calcualted.</strong><br></p>
 <blockquote><p>If the incoming claim was greater than the allowed daily MME, or if the incoming claim caused the total daily MME limit to be exceeded, the incoming claim was denied at point of sale...The MME reduction schedule was every 6 months: May 2017 to ≤250 MME/day; November 2017 to ≤200
 MME/day, May 2018 to ≤150 MME/day. The next, and probably final, decrease for chronic non-cancer pain beneficiaries receiving an opioid will be November 14, 2018 and the total daily MME allowed limit will be ≤90 MME/day.<br><a href="https://www.medicaid.gov/Medicaid/Prescription-Drugs/Downloads/Drug-Utilization-Review/DUR-FFS-Reports/AR-DUR-FFY17.pdf">Arkansas Medicaid</a></p>
@@ -13234,27 +13242,52 @@ MME/day, May 2018 to ≤150 MME/day. The next, and probably final, decrease for 
 <h2 id="Public-health-implications">Public health implications<a class="anchor-link" href="#Public-health-implications">&#182;</a></h2><p>MME are routinely used in epidemiologic studies of opioid utilization today. The ease of calculation, based solely on arithmetic, coupled with the molecular underpinnings, create an ideal level of cognitive complexity to engender MMEs with an aura of authority. Collectively, MME offer the potential to agglomerate opioid compounds to create a summary metric for population level research and policy, similar to blood alcohol concentrations. However, this approach also obscures nuance between opioid compounds and formulations that may be worth of exploration.</p>
 <blockquote><p>The average daily MME per prescription was 48.1 in 2015, and prescriptions for 90 MME per day and up are considered to be "high-dose".<br> <a href="https://opioid.amfar.org/indicator/mme_percap">amFAR</a></p>
 </blockquote>
-<h2 id="Usage-examples">Usage examples<a class="anchor-link" href="#Usage-examples">&#182;</a></h2><p><strong>Equation 2 Example</strong><br></p>
-<blockquote><p>For days with multiple prescriptions, MME was calculated for each prescription separately and
-summed to yield a single daily MME dosage. Each beneficiary was assigned an average daily MME dose by <strong>dividing the sum total daily MME for each beneficiary by</strong> the days in the “treatment period”: “Treatment period” was defined as <strong>the number of days between the first day of the
-beneficiary’s first opioid prescription and the last</strong> day of the beneficiary’s final opioid
-prescription in 2016 (the date of the final prescription plus the days supplied).<br>
-<a href="https://www.cms.gov/About-CMS/Agency-Information/OMH/Downloads/Opioid-Prescription-in-Medicare-Beneficiaries-Report.pdf">Centers for Medicare and Medicaid Services, page 11</a></p>
+<h2 id="Usage-examples">Usage examples<a class="anchor-link" href="#Usage-examples">&#182;</a></h2><p>This is not a comprehensive review of methods, but 4 major approaches that were explored in the hypothetical examples that follow this section.<br></p>
+<p><strong>Equation 1 Example</strong><br></p>
+<blockquote><p>The total days’ supply per year is the sum of the days’ supply for all of the patient’s opioid prescriptions during the year, regardless of whether the dates of the prescriptions overlapped or continued... We included overlapping opioid prescriptions per day and calculated a daily MME by distributing the <strong>total MME for all opioid prescriptions over the days supplied</strong>.<br>
+<a href="https://jasn.asnjournals.org/content/jnephrol/28/12/3658.full.pdf">Kimmel et al.</a></p>
+<p>The duration of an opioid prescription was expressed as the number of days of supply, as obtained from the claim record. The strength of a prescription was expressed as the MME-per-day dose (computed as the product of drug strength per dose unit, number of units per day, and an MME conversion factor) to standardize potency across different opioid substances or dose forms (e.g., tablet or patch). We obtained information on drug strength per dose unit from the FDA, the National Center for Injury Prevention and Control, and the Red Book directories. <strong>The number of units per day was calculated by dividing the total number of units by the number of days of supply.</strong><br>
+<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6487883/">Zhu et al.</a></p>
 </blockquote>
-<p><strong>Equation ? Example</strong><br></p>
-<blockquote><p>The treatment period begins on an index prescription start date (IPSD) and ends on the last day of opioid supply during the measurement year. Total Daily MME is the total sum of the MME Daily Doses for all opioid dispensing events on one day. Average MME is the average MME for all opioids dispensed during the treatment period.<br>
-<a href="https://www.ncqa.org/wp-content/uploads/2019/02/20190208_17_UOD.pdf">National Committee for Quality Assurance, pages 1 &amp; 4</a></p>
+<p><strong>Equation 2 Example</strong><br></p>
+<blockquote><p>For days with multiple prescriptions, MME was calculated for each prescription separately and summed to yield a single daily MME dosage. Each beneficiary was assigned an average daily MME dose by <strong>dividing the sum total daily MME for each beneficiary by</strong> the days in the “treatment period”: “Treatment period” was defined as <strong>the number of days between the first day of the beneficiary’s first opioid prescription and the last</strong> day of the beneficiary’s final opioid prescription in 2016 (the date of the final prescription plus the days supplied).<br>
+<a href="https://www.cms.gov/About-CMS/Agency-Information/OMH/Downloads/Opioid-Prescription-in-Medicare-Beneficiaries-Report.pdf">Centers for Medicare and Medicaid Services, page 11</a>
+<br></p>
+<p>Individual opioid prescriptions were organized into distinct 6-month periods. Within each time period, we used standard conversion tables to determine the morphine milligram equivalents (MME) per prescription and summed these to determine the total MME per period, then calculated an average daily opioid dose by <strong>dividing the total MME per period by 180 days</strong>.<br>
+<a href="https://link.springer.com/article/10.1007/s11606-019-05227-9">Perez et al.</a><br></p>
+<p>We calculated the average daily prescribed dose for each drug fill as the <strong>total MME dispensed divided by the number of person days of insurance enrollment in that period</strong> (that is, quarter)... Opioid prescriptions were allocated to a year and quarter, on the basis of the fill date and days supplied. For example, a 30 day prescription filled on 31 December 2008 would have been allocated as one day in quarter 4 of 2008 and 29 days in quarter 1 of 2009.<br>
+<a href="https://www.bmj.com/content/362/bmj.k2833.full">Moore et al.</a><br></p>
+<p>We calculated the MME for a dispensation by multiplying the quantity of each prescription by the strength of the prescription (unit dispensed by milligrams of opioid). We then multiplied the resulting product by the conversion factor. We calculated the average daily MME dispensed for the relevant period (defined as 183 days for the baseline and 12-month periods and 90 days for the 6-month period) by adding the MMEs for the prescriptions dispensed during the period and <strong>dividing by the number of days in the period.</strong><br>
+<a href="https://www.pcori.org/sites/default/files/Campbell011-Final-Research-Report.pdf">Campbell et al. PCORI</a><br></p>
 </blockquote>
 <p><strong>Equation 3 example</strong></p>
 <blockquote><p>Average daily MME was defined as the patient’s total MME from all prescriptions received during follow-up divided by the total available days supply from all prescriptions. If a beneficiary’s prescription was filled before the end of the previous prescription, the <strong>overlapping days were only counted once in the denominator</strong>.<br>
 <a href="https://www.jmcp.org/doi/pdf/10.18553/jmcp.2019.25.9.966">Raman S et al.</a></p>
+</blockquote>
+<p><strong>Equation 4 example</strong></p>
+<blockquote><p>To calculate the average daily MME of a given opioid prescription, we multiplied the drug's strength by the quantity
+received and a medication‐specific MME conversion factor and divided by the days' supply received.17 The average daily MME for each prescription was then applied to all days for which the prescription was to be taken, according to the days' supply. If a beneficiary had more than 1 opioid prescription active on a given day, the MMEs for all prescriptions to be taken on that day were summed. We included MMEs from all sources of payment. Prescriptions for medication‐assisted treatment (MAT) for opioid use disorders were not included. For modeling purposes, <strong>we averaged each beneficiary's average daily MMEs across each calendar month</strong>.
+<a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/pds.4445">Naumann et al.</a></p>
+</blockquote>
+<p><strong>Unclear</strong><br></p>
+<blockquote><p>We also created patient-level variables to further describe opioid use, including total number of days receiving an opioid and mean daily MME.<br>
+<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5846585/">Gellad et al.</a><br></p>
+<p>Additional measures included MME per capita, average daily MME per prescription, and average days’ supply per prescription.<br>
+<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5726238/">Guy et al. MMWR</a><br></p>
+<p>The treatment period begins on an index prescription start date (IPSD) and ends on the last day of opioid supply during the measurement year. Total Daily MME is the total sum of the MME Daily Doses for all opioid dispensing events on one day. Average MME is the average MME for all opioids dispensed during the treatment period.<br>
+<a href="https://www.ncqa.org/wp-content/uploads/2019/02/20190208_17_UOD.pdf">National Committee for Quality Assurance, pages 1 &amp; 4</a><br></p>
+<p>When &gt;1 prescriptions overlapped by dates (e.g., separate prescriptions for long- and short-acting opioids, or for serial prescriptions filled early to avoid running out), we calculated the average daily MME through the duration of the overlapping prescriptions.<br>
+<a href="https://link.springer.com/article/10.1007/s11606-019-05114-3">Hinami et al.</a></p>
+<p>Average daily MME per prescription. For each opioid fill, the MME per day and then the average per month were calculated.
+<a href="https://annals.org/aim/fullarticle/2698111">Bohnert et al.</a><br></p>
 </blockquote>
 <h2 id="Alternative-approaches">Alternative approaches<a class="anchor-link" href="#Alternative-approaches">&#182;</a></h2><p><strong>Similar to Equation 3 but avoiding denominator hassle.</strong></p>
 <blockquote><p>The volume and rate of opioid prescribing through the EMR were the key outputs measured. Data were analyzed as <strong>MME per patient encounter per month</strong>, MME per prescription, and number of opioid prescriptions per encounter. <br>
 <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6324493/">Meisenberg BR et al.</a></p>
 </blockquote>
 <hr>
-<h1 id="Simulation-programs">Simulation programs<a class="anchor-link" href="#Simulation-programs">&#182;</a></h1>
+<h1 id="Programming">Programming<a class="anchor-link" href="#Programming">&#182;</a></h1><p>Stata/MP version 16.0</p>
+
 </div>
 </div>
 </div>
@@ -13317,7 +13350,7 @@ prescription in 2016 (the date of the final prescription plus the days supplied)
 <span class="k">    qui</span>: frame change results
     metrics
 <span class="k">    list</span>
-<span class="k">    qui</span>:<span class="k"> clear</span> frames<span class="k"></span>
+<span class="k">    qui</span>: frame<span class="k"> drop</span> results<span class="k"></span>
 <span class="k">end</span>
 </pre></div>
 
@@ -13344,7 +13377,8 @@ prescription in 2016 (the date of the final prescription plus the days supplied)
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="Equations">Equations<a class="anchor-link" href="#Equations">&#182;</a></h1><p>Where:<br>
+<h1 id="Equations">Equations<a class="anchor-link" href="#Equations">&#182;</a></h1><p>Equations should be considered with caution -- they have not been vetted and checked over by others. Revision suggestions are welcome!</p>
+<p>Where:<br>
 $M_i$ .......... MME for given prescription <em>i</em><br>
 $q$     .......... Quantity (untis) dispensed<br>
 $d$     .......... Days supply<br>
@@ -14023,31 +14057,32 @@ range: 10
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">program</span> lnsim, rclass
+<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all
+
+<span class="k">program</span> lnsim, rclass
 <span class="k">    version</span> <span class="m">16</span>
 <span class="k">    drop</span> _all
 <span class="k">    set</span> obs <span class="m">100</span>
-<span class="k">    gen</span> z = <span class="nf">exp</span>(<span class="nf">rnormal</span>())
-<span class="k">    gen</span> start=runiformint(<span class="m">1</span>, <span class="m">30</span>)
-<span class="c1">    *gen days=exp(rpoisson(3))</span>
-<span class="k">    gen</span> int days = <span class="nf">floor</span>((<span class="m">30+1</span>)<span class="o">*</span><span class="nf">rpoisson</span>(<span class="m">3</span>) <span class="o">+</span> <span class="m">1</span>)
-<span class="k">    summarize</span> days
+<span class="c1">    </span>
+<span class="c1">	* Generate start date from uniform distribution</span>
+<span class="k">    gen</span> double start=<span class="nf">floor</span>((<span class="m">30-1</span>)<span class="o">*</span><span class="nf">runiform</span>() <span class="o">+</span> <span class="m">1</span>)
+<span class="k">		replace</span> start=<span class="nf">round</span>(start)
+<span class="k">		tab</span> start
+<span class="c1">	* Generate days supply from gamma distruibution</span>
+<span class="k">	gen</span> double days=<span class="nf">floor</span>((<span class="m">2.9-1</span>)<span class="o">*</span><span class="nf">rgamma</span>(<span class="m">2.25</span>,<span class="m">1</span>) <span class="o">+</span> <span class="m">1</span>)
+
+<span class="k">	summarize</span> days, detail
 <span class="k">    return scalar mean</span> = <span class="nf">r</span>(mean)
+<span class="k">	return scalar</span> max=<span class="nf">r</span>(max)
+<span class="k">	return scalar</span> min=<span class="nf">r</span>(min)
 <span class="k">    return scalar</span> Var = <span class="nf">r</span>(Var)<span class="k"></span>
 <span class="k">end</span>
 
-<span class="c1">*qui: input pt rx str3 drug str2 form start end units strength conv days</span>
-<span class="c1">*100 1 &quot;oxy&quot; &quot;ER&quot; 1 30 60 30 1.5 30</span>
-<span class="c1">*100 2 &quot;oxy&quot; &quot;IR&quot; 1 30 14 5 1.5 7</span>
-<span class="c1">*end</span>
-
-
-
-<span class="c1">*set seed 1234</span><span class="k"></span>
-<span class="k">simulate mean</span>=<span class="nf">r</span>(mean)<span class="k"> var</span>=<span class="nf">r</span>(Var), reps(<span class="m">1000</span>) nodots: lnsim<span class="k"></span>
+<span class="k">di</span> <span class="s">&quot;Days supply:&quot;</span><span class="k"></span>
+<span class="k">simulate mean</span>=<span class="nf">r</span>(mean)<span class="k"> var</span>=<span class="nf">r</span>(Var) min=<span class="nf">r</span>(min) max=<span class="nf">r</span>(max), reps(<span class="m">1000</span>) nodots: lnsim<span class="k"></span>
 <span class="k">summarize</span>
 <span class="k">program drop</span> lnsim
 </pre></div>
@@ -14069,16 +14104,23 @@ range: 10
 <pre>
 
 
+Days supply:
+
+
       command:  lnsim
          mean:  r(mean)
           var:  r(Var)
+          min:  r(min)
+          max:  r(max)
 
 
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-        mean |      1,000    94.05456    5.435994      74.16     117.56
-         var |      1,000    2905.286    449.9829    1616.81   4454.672
+        mean |      1,000     4.76933    .2828347       3.97        5.6
+         var |      1,000    8.162269    1.744049   4.497374   17.52273
+         min |      1,000       1.001    .0316228          1          2
+         max |      1,000       15.11    2.738869         10         33
 
 </pre>
 </div>
@@ -14096,163 +14138,6 @@ range: 10
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">program drop</span> lnsim
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">list</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-      +------------------+
-      |  mean        var |
-      |------------------|
-   1. | 16.43   82.26778 |
-   2. | 16.05   76.75505 |
-   3. | 14.92   79.04404 |
-   4. | 15.25   83.74495 |
-   5. | 16.36   75.42464 |
-      |------------------|
-   6. | 16.19   81.02414 |
-   7. | 16.69   94.33727 |
-   8. | 16.61   75.31101 |
-   9. | 15.99   82.21202 |
-  10. | 14.75   75.44192 |
-      |------------------|
-  11. | 17.39   66.68475 |
-  12. | 15.81   82.37768 |
-  13. | 14.81   85.83222 |
-  14. | 16.78   89.52687 |
-  15. | 16.11   80.30091 |
-      |------------------|
-  16. | 15.82   72.95717 |
-  17. | 15.62   75.20768 |
-  18. | 16.45   70.89646 |
-  19. | 16.21   87.11707 |
-  20. | 16.21   78.04636 |
-      |------------------|
-  21. | 16.61    87.1898 |
-  22. | 15.47   76.27182 |
-  23. | 16.42   68.89252 |
-  24. | 16.69    87.5898 |
-  25. | 14.64   74.55596 |
-      |------------------|
-  26. | 17.53   88.19101 |
-  27. | 16.66   88.75192 |
-  28. |  17.4   82.50505 |
-  29. | 16.97   72.87788 |
-  30. | 16.49   79.48475 |
-      |------------------|
-  31. | 16.23   79.55263 |
-  32. | 16.32   77.55313 |
-  33. | 16.18   81.30061 |
-  34. | 15.66   90.83273 |
-  35. |  16.1   72.31313 |
-      |------------------|
-  36. | 16.88    90.4097 |
-  37. | 15.76   86.44687 |
-  38. | 16.85    87.2803 |
-  39. |  15.1   76.63636 |
-  40. | 16.36   82.45495 |
-      |------------------|
-  41. | 16.77   96.64353 |
-  42. | 15.28   81.23394 |
-  43. | 17.17   74.40515 |
-  44. | 16.44   83.92566 |
-  45. | 17.64   92.85899 |
-      |------------------|
-  46. | 17.68   68.78545 |
-  47. | 15.04   78.46303 |
-  48. | 15.74   74.37616 |
-  49. | 14.42   71.05414 |
-  50. | 16.77   99.69404 |
-      |------------------|
-  51. | 14.72   85.03192 |
-  52. | 16.37   75.32636 |
-  53. | 15.05   66.31061 |
-  54. | 14.66   96.22667 |
-  55. | 15.33   75.49606 |
-      |------------------|
-  56. | 15.66   71.25697 |
-  57. | 15.55   75.09849 |
-  58. | 15.15   86.67424 |
-  59. | 15.45   76.55303 |
-  60. | 16.94   82.62263 |
-      |------------------|
-  61. | 16.52   79.14101 |
-  62. | 15.95   74.71465 |
-  63. | 16.85   82.61364 |
-  64. | 14.85   74.02778 |
-  65. |    16   85.71717 |
-      |------------------|
-  66. |    17   91.19192 |
-  67. |  15.6   87.45454 |
-  68. | 15.08   87.54909 |
-  69. | 15.04   74.74586 |
-  70. | 17.06   79.99636 |
-      |------------------|
-  71. | 15.62   74.60162 |
-  72. | 16.72   73.59757 |
-  73. | 15.12   68.00565 |
-  74. |  18.3   74.89899 |
-  75. | 15.76   77.88121 |
-      |------------------|
-  76. | 15.41   71.63828 |
-  77. |  15.5   77.84849 |
-  78. | 15.31   77.22616 |
-  79. | 15.36    77.0004 |
-  80. | 16.83   83.25364 |
-      |------------------|
---more--
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
 </div>
     </div>
   </div>
