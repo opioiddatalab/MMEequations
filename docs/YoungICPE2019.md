@@ -1,8 +1,8 @@
 [ICPE2019 Abstract 432](https://doi.org/10.1002/pds.4864)<br>
 
 # The proportion of patients in the United States receiving postsurgical opioids exceeding recommended thresholds increased between 2006 and 2015
-Jessica C. Young1; Brooke A. Chidgey2; Til Stürmer1; Michele Jonsson Funk1
-1 Gillings School of Global Public Health, University of North Carolina at Chapel Hill, Chapel Hill, NC; 2 University of North Carolina School of Medicine, Chapel Hill, NC<br>
+Jessica C. Young<sup>1</sup>; Brooke A. Chidgey<sup>2</sup>; Til Stürmer<sup>1</sup>; Michele Jonsson Funk<sup>1</sup><br>
+<sup>1</sup> Gillings School of Global Public Health, University of North Carolina at Chapel Hill, Chapel Hill, NC<br><sup>2</sup> University of North Carolina School of Medicine, Chapel Hill, NC<br>
 <br>
 [Full presentation PDF](https://github.com/opioiddatalab/MMEequations/blob/master/docs/Young_SurgicalPrescribingTrends_23AUG2019_download.pdf)
 <br><br>
