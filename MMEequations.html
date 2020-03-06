@@ -13327,7 +13327,7 @@ However, [Nielsen et al.](https://onlinelibrary.wiley.com/doi/abs/10.1002/pds.41
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all
@@ -13384,6 +13384,7 @@ However, [Nielsen et al.](https://onlinelibrary.wiley.com/doi/abs/10.1002/pds.41
 <span class="k">    qui</span>: frame change results
     metrics
 <span class="k">    list</span>
+    frame change default
 <span class="k">    qui</span>: frame<span class="k"> drop</span> results<span class="k"></span>
 <span class="k">end</span>
 </pre></div>
@@ -13442,7 +13443,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 1</span>
@@ -13487,7 +13488,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 2</span>
@@ -13541,7 +13542,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 3</span>
@@ -13633,7 +13634,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 4</span>
@@ -13670,7 +13671,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
@@ -13714,31 +13715,6 @@ range: 41
   3. |        3    94 |
   4. |        4    53 |
      +----------------+
-may not drop current frame
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>r(119);
-r(119);
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
 </pre>
 </div>
 </div>
@@ -13763,7 +13739,7 @@ r(119);
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13777,6 +13753,44 @@ runexperiment
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+. runexperiment
+-------------------
+Total therapy-days accounting for any overlap: 30 days out of 30
+-------------------
+Experiment results across 4 equations:
+Minimum average daily MME: 30
+Maximum average daily MME: 67
+range: 37
+2.2-fold difference between highest and lowest
+
+     +----------------+
+     | equation   MME |
+     |----------------|
+  1. |        1    46 |
+  2. |        2    67 |
+  3. |        3    67 |
+  4. |        4    30 |
+     +----------------+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13796,7 +13810,7 @@ runexperiment
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13809,6 +13823,44 @@ runexperiment
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+. runexperiment
+-------------------
+Total therapy-days accounting for any overlap: 14 days out of 30
+-------------------
+Experiment results across 4 equations:
+Minimum average daily MME: 7
+Maximum average daily MME: 15
+range: 8
+2.1-fold difference between highest and lowest
+
+     +----------------+
+     | equation   MME |
+     |----------------|
+  1. |        1    15 |
+  2. |        2     7 |
+  3. |        3    15 |
+  4. |        4    15 |
+     +----------------+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13828,7 +13880,7 @@ runexperiment
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13841,6 +13893,44 @@ runexperiment
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+. runexperiment
+-------------------
+Total therapy-days accounting for any overlap: 9 days out of 30
+-------------------
+Experiment results across 4 equations:
+Minimum average daily MME: 7
+Maximum average daily MME: 23
+range: 16
+3.3-fold difference between highest and lowest
+
+     +----------------+
+     | equation   MME |
+     |----------------|
+  1. |        1    15 |
+  2. |        2     7 |
+  3. |        3    23 |
+  4. |        4    15 |
+     +----------------+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13860,7 +13950,7 @@ runexperiment
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13876,6 +13966,44 @@ runexperiment
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+. runexperiment
+-------------------
+Total therapy-days accounting for any overlap: 9 days out of 30
+-------------------
+Experiment results across 4 equations:
+Minimum average daily MME: 6
+Maximum average daily MME: 19
+range: 13
+3.2-fold difference between highest and lowest
+
+     +----------------+
+     | equation   MME |
+     |----------------|
+  1. |        1    13 |
+  2. |        2     6 |
+  3. |        3    19 |
+  4. |        4    13 |
+     +----------------+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13888,7 +14016,7 @@ runexperiment
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13908,6 +14036,50 @@ runexperiment
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+. replace days=2 if rx==1
+(1 real change made)
+
+. replace units=4 if rx==1
+(1 real change made)
+
+. runexperiment
+-------------------
+Total therapy-days accounting for any overlap: 9 days out of 30
+-------------------
+Experiment results across 4 equations:
+Minimum average daily MME: 3
+Maximum average daily MME: 13
+range: 10
+4.3-fold difference between highest and lowest
+
+     +----------------+
+     | equation   MME |
+     |----------------|
+  1. |        1    11 |
+  2. |        2     3 |
+  3. |        3    11 |
+  4. |        4    13 |
+     +----------------+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13920,7 +14092,7 @@ runexperiment
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all
@@ -13951,6 +14123,44 @@ runexperiment
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+Days supply:
+
+
+      command:  lnsim
+         mean:  r(mean)
+          var:  r(Var)
+          min:  r(min)
+          max:  r(max)
+
+
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        mean |      1,000      4.7783    .2961135       3.73       5.68
+         var |      1,000    8.205428    1.780052   3.646465   15.06061
+         min |      1,000       1.002     .044699          1          2
+         max |      1,000      15.117    2.812334          9         29
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
