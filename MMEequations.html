@@ -13327,10 +13327,11 @@ However, [Nielsen et al.](https://onlinelibrary.wiley.com/doi/abs/10.1002/pds.41
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[228]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all
+<div class=" highlight hl-stata"><pre><span></span><span class="k">program drop</span> _all<span class="k"></span>
+<span class="k">clear</span> all
 
 <span class="k">program</span> define datainput
 <span class="k">    sort</span> pt start rx
@@ -13367,7 +13368,10 @@ However, [Nielsen et al.](https://onlinelibrary.wiley.com/doi/abs/10.1002/pds.41
 <span class="k">        di</span> <span class="nf">round</span>(<span class="nf">r</span>(max)<span class="o">/</span><span class="nf">r</span>(min),.<span class="m">1</span>) <span class="s">&quot;-fold difference between highest and lowest&quot;</span><span class="k"></span>
 <span class="k">end</span>
 
-<span class="c1">// Composite program for 4 equations</span>
+frame create composite equation MME experiment
+frame<span class="k"> post</span> composite (<span class="m">0</span>) (.) (<span class="m">0</span>)
+
+<span class="c1">// Composite programs</span>
 <span class="k">program</span> define runexperiment
 <span class="k">    version</span> <span class="m">16</span>
 <span class="k">    qui</span>: datainput
@@ -13386,6 +13390,27 @@ However, [Nielsen et al.](https://onlinelibrary.wiley.com/doi/abs/10.1002/pds.41
 <span class="k">    list</span>
     frame change default
 <span class="k">    qui</span>: frame<span class="k"> drop</span> results<span class="k"></span>
+<span class="k">end</span>
+
+<span class="c1">// Compile composite results</span>
+<span class="k">program</span> define compileresults
+<span class="k">    version</span> <span class="m">16</span>
+    frame change composite
+        frame<span class="k"> copy</span> composite long
+<span class="k">    gen</span> j=_n
+<span class="k">    qui</span>:<span class="k"> reshape</span> wide MME, i(j) j(experiment)
+<span class="k">        qui</span>:<span class="k"> collapse</span> (max) MME<span class="o">*</span>,<span class="k"> by</span>(equation)
+<span class="k">            qui</span>:<span class="k"> save</span> compositeresult,<span class="k"> replace</span>
+<span class="k">                list</span>
+<span class="k">end</span>
+
+<span class="k">program</span> ranktable
+    frame change long
+<span class="k">        bysort</span> experiment:<span class="k"> egen</span> rank=rank(MME)
+<span class="k">            egen</span> max=<span class="nf">max</span>(experiment)
+<span class="k">                replace</span> experiment=max<span class="m">+1</span><span class="k"> if</span> equation<span class="o">==</span><span class="m">0</span>
+<span class="k">                    set</span> scheme economist
+<span class="k">                        scatter</span> equation experiment [w=rank]<span class="k"></span>
 <span class="k">end</span>
 </pre></div>
 
@@ -13443,7 +13468,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[229]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 1</span>
@@ -13459,7 +13484,8 @@ $n$     .......... Total number of prescriptions<br></p>
 <span class="k">        bysort</span> pt:<span class="k"> gen</span> eq1=<span class="nf">round</span>(num<span class="o">/</span>den)
 <span class="k">            la var</span> eq1 <span class="s">&quot;MME Equation 1&quot;</span>
 <span class="k">                drop</span> num den
-                frame<span class="k"> post</span> results (<span class="m">1</span>) (eq1)<span class="k"></span>
+                frame<span class="k"> post</span> results (<span class="m">1</span>) (eq1)
+                   frame<span class="k"> post</span> composite (<span class="m">1</span>) (eq1) (exp)<span class="k"></span>
 <span class="k">end</span>
 </pre></div>
 
@@ -13488,7 +13514,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[230]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 2</span>
@@ -13506,7 +13532,8 @@ $n$     .......... Total number of prescriptions<br></p>
 <span class="k">        bysort</span> pt:<span class="k"> gen</span> eq2=<span class="nf">round</span>(num<span class="o">/</span>den)
 <span class="k">            la var</span> eq1 <span class="s">&quot;MME Equation 2&quot;</span>
 <span class="k">                drop</span> num den min max
-                    frame<span class="k"> post</span> results (<span class="m">2</span>) (eq2)<span class="k"></span>
+                    frame<span class="k"> post</span> results (<span class="m">2</span>) (eq2)
+                        frame<span class="k"> post</span> composite (<span class="m">2</span>) (eq2) (exp)<span class="k"></span>
 <span class="k">end</span>
 </pre></div>
 
@@ -13542,7 +13569,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[231]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 3</span>
@@ -13598,7 +13625,8 @@ $n$     .......... Total number of prescriptions<br></p>
 <span class="k">            la var</span> eq3 <span class="s">&quot;MME Equation 3 - brace counting&quot;</span>
 <span class="k">                drop</span> num ender bracedate diff counter running ptime
 <span class="k">                    order</span> eq3, a(eq2)
-                    frame<span class="k"> post</span> results (<span class="m">3</span>) (eq3)<span class="k"></span>
+                    frame<span class="k"> post</span> results (<span class="m">3</span>) (eq3)
+                        frame<span class="k"> post</span> composite (<span class="m">3</span>) (eq3) (exp)<span class="k"></span>
 <span class="k">end</span>
 </pre></div>
 
@@ -13634,7 +13662,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[232]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 4</span>
@@ -13646,7 +13674,8 @@ $n$     .......... Total number of prescriptions<br></p>
 <span class="k">            la var</span> eq4 <span class="s">&quot;MME Equation 4&quot;</span>
 <span class="k">                note</span> eq4: Average of individual prescription daily MME,<span class="k"> by</span> person
 <span class="k">                    drop</span> temp
-                        frame<span class="k"> post</span> results (<span class="m">4</span>) (eq4)<span class="k"></span>
+                        frame<span class="k"> post</span> results (<span class="m">4</span>) (eq4)
+                            frame<span class="k"> post</span> composite (<span class="m">4</span>) (eq4) (exp)<span class="k"></span>
 <span class="k">end</span>
 </pre></div>
 
@@ -13671,13 +13700,15 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[233]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
-<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;ER&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">60</span> <span class="m">30</span> <span class="m">1.5</span> <span class="m">30</span>
-<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
+<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
+<span class="k">qui</span>:<span class="k"> input</span> exp pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">1</span> <span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;ER&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">60</span> <span class="m">30</span> <span class="m">1.5</span> <span class="m">30</span>
+<span class="m">1</span> <span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
 <span class="k">end</span>
+
 runexperiment
 </pre></div>
 
@@ -13696,6 +13727,7 @@ runexperiment
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
+
 
 . runexperiment
 -------------------
@@ -13739,14 +13771,14 @@ range: 41
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[234]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
-<span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
-<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;ER&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">60</span> <span class="m">20</span> <span class="m">1.5</span> <span class="m">30</span>
-<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
-<span class="m">100</span> <span class="m">3</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">10</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
+<span class="k">qui</span>:<span class="k"> input</span> exp pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">2</span> <span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;ER&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">60</span> <span class="m">20</span> <span class="m">1.5</span> <span class="m">30</span>
+<span class="m">2</span> <span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
+<span class="m">2</span> <span class="m">100</span> <span class="m">3</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">10</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
 <span class="k">end</span>
 
 runexperiment
@@ -13810,13 +13842,13 @@ range: 37
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[235]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
-<span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
-<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
-<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">10</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
+<span class="k">qui</span>:<span class="k"> input</span> exp pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">3</span> <span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
+<span class="m">3</span> <span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">10</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
 <span class="k">end</span>
 
 runexperiment
@@ -13880,13 +13912,13 @@ range: 8
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[236]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
-<span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
-<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
-<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">3</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
+<span class="k">qui</span>:<span class="k"> input</span> exp pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">4</span> <span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
+<span class="m">4</span> <span class="m">100</span> <span class="m">2</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">3</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span><span class="k"></span>
 <span class="k">end</span>
 
 runexperiment
@@ -13950,13 +13982,13 @@ range: 16
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[237]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
-<span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
-<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
-<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;hyd&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">3</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1</span> <span class="m">7</span><span class="k"></span>
+<span class="k">qui</span>:<span class="k"> input</span> exp pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">5</span> <span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
+<span class="m">5</span> <span class="m">100</span> <span class="m">2</span> <span class="s">&quot;hyd&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">3</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1</span> <span class="m">7</span><span class="k"></span>
 <span class="k">end</span>
 
 runexperiment
@@ -14016,19 +14048,18 @@ range: 13
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[238]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
-<span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
-<span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
-<span class="m">100</span> <span class="m">2</span> <span class="s">&quot;hyd&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">3</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1</span> <span class="m">7</span><span class="k"></span>
+<span class="k">qui</span>:<span class="k"> input</span> exp pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
+<span class="m">6</span> <span class="m">100</span> <span class="m">1</span> <span class="s">&quot;oxy&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">1</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1.5</span> <span class="m">7</span>
+<span class="m">6</span> <span class="m">100</span> <span class="m">2</span> <span class="s">&quot;hyd&quot;</span> <span class="s">&quot;IR&quot;</span> <span class="m">3</span> <span class="m">30</span> <span class="m">14</span> <span class="m">5</span> <span class="m">1</span> <span class="m">7</span><span class="k"></span>
 <span class="k">end</span>
 
 <span class="c1">// Assume first prescritption was discontinued and disposed of before starting the second</span>
 <span class="k">replace</span> days=<span class="m">2</span><span class="k"> if</span> rx<span class="o">==</span><span class="m">1</span><span class="k"></span>
 <span class="k">replace</span> units=<span class="m">4</span><span class="k"> if</span> rx<span class="o">==</span><span class="m">1</span>
-
 runexperiment
 </pre></div>
 
@@ -14085,41 +14116,17 @@ range: 10
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="Large-sample-simulations">Large sample simulations<a class="anchor-link" href="#Large-sample-simulations">&#182;</a></h1><p><font color='red'> Work in progress... </font></p>
-
+<h1 id="Summary-of-Findings">Summary of Findings<a class="anchor-link" href="#Summary-of-Findings">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[239]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all
-
-<span class="k">program</span> lnsim, rclass
-<span class="k">    version</span> <span class="m">16</span>
-<span class="k">    drop</span> _all
-<span class="k">    set</span> obs <span class="m">100</span>
-<span class="c1">    </span>
-<span class="c1">	* Generate start date from uniform distribution</span>
-<span class="k">    gen</span> double start=<span class="nf">floor</span>((<span class="m">30-1</span>)<span class="o">*</span><span class="nf">runiform</span>() <span class="o">+</span> <span class="m">1</span>)
-<span class="k">		replace</span> start=<span class="nf">round</span>(start)
-<span class="k">		tab</span> start
-<span class="c1">	* Generate days supply from gamma distruibution</span>
-<span class="k">	gen</span> double days=<span class="nf">floor</span>((<span class="m">2.9-1</span>)<span class="o">*</span><span class="nf">rgamma</span>(<span class="m">2.25</span>,<span class="m">1</span>) <span class="o">+</span> <span class="m">1</span>)
-
-<span class="k">	summarize</span> days, detail
-<span class="k">    return scalar mean</span> = <span class="nf">r</span>(mean)
-<span class="k">	return scalar</span> max=<span class="nf">r</span>(max)
-<span class="k">	return scalar</span> min=<span class="nf">r</span>(min)
-<span class="k">    return scalar</span> Var = <span class="nf">r</span>(Var)<span class="k"></span>
-<span class="k">end</span>
-
-<span class="k">di</span> <span class="s">&quot;Days supply:&quot;</span><span class="k"></span>
-<span class="k">simulate mean</span>=<span class="nf">r</span>(mean)<span class="k"> var</span>=<span class="nf">r</span>(Var) min=<span class="nf">r</span>(min) max=<span class="nf">r</span>(max), reps(<span class="m">1000</span>) nodots: lnsim<span class="k"></span>
-<span class="k">summarize</span>
-<span class="k">program drop</span> lnsim
+<div class=" highlight hl-stata"><pre><span></span>compileresults
+ranktable
 </pre></div>
 
     </div>
@@ -14138,25 +14145,127 @@ range: 10
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 
+     +-----------------------------------------------------------+
+     | equation   MME0   MME1   MME2   MME3   MME4   MME5   MME6 |
+     |-----------------------------------------------------------|
+  1. |        0      .      .      .      .      .      .      . |
+  2. |        1      .     76     46     15     15     13     11 |
+  3. |        2      .     94     67      7      7      6      3 |
+  4. |        3      .     94     67     15     23     19     11 |
+  5. |        4      .     53     30     15     15     13     13 |
+     +-----------------------------------------------------------+
 
-Days supply:
+(1 missing value generated)
+(1 real change made)
+(analytic weights assumed)
+(analytic weights assumed)
+(analytic weights assumed)
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
 
 
-      command:  lnsim
-         mean:  r(mean)
-          var:  r(Var)
-          min:  r(min)
-          max:  r(max)
+
+<div class="output_html rendered_html output_subarea ">
+                <iframe frameborder="0" scrolling="no" height="600" width="600"                srcdoc="<html><body>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;!-- This is a Stata 16.0 generated SVG file (http://www.stata.com) --&gt;
+
+&lt;svg version=&quot;1.1&quot; width=&quot;600px&quot; height=&quot;600px&quot; viewBox=&quot;0 0 1584 1584&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&gt;
+	&lt;desc&gt;Stata Graph - Graph&lt;/desc&gt;
+	&lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;1584&quot; height=&quot;1584&quot; style=&quot;fill:#C6D3DF;stroke:none&quot;/&gt;
+	&lt;rect x=&quot;0.00&quot; y=&quot;0.05&quot; width=&quot;1584.00&quot; height=&quot;1583.95&quot; style=&quot;fill:#C6D3DF&quot;/&gt;
+	&lt;rect x=&quot;1.58&quot; y=&quot;1.63&quot; width=&quot;1580.83&quot; height=&quot;1580.78&quot; style=&quot;fill:none;stroke:#C6D3DF;stroke-width:3.17&quot;/&gt;
+	&lt;line x1=&quot;55.44&quot; y1=&quot;1370.56&quot; x2=&quot;1376.84&quot; y2=&quot;1370.56&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
+	&lt;line x1=&quot;55.44&quot; y1=&quot;1044.15&quot; x2=&quot;1376.84&quot; y2=&quot;1044.15&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
+	&lt;line x1=&quot;55.44&quot; y1=&quot;717.80&quot; x2=&quot;1376.84&quot; y2=&quot;717.80&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
+	&lt;line x1=&quot;55.44&quot; y1=&quot;391.40&quot; x2=&quot;1376.84&quot; y2=&quot;391.40&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
+	&lt;line x1=&quot;55.44&quot; y1=&quot;64.99&quot; x2=&quot;1376.84&quot; y2=&quot;64.99&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
+	&lt;circle cx=&quot;1204.52&quot; cy=&quot;1370.61&quot; r=&quot;9.60&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1204.52&quot; cy=&quot;1370.61&quot; r=&quot;0.10&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;227.71&quot; cy=&quot;1044.20&quot; r=&quot;50.34&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;227.71&quot; cy=&quot;1044.20&quot; r=&quot;40.84&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;227.71&quot; cy=&quot;717.80&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;227.71&quot; cy=&quot;717.80&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;227.71&quot; cy=&quot;391.40&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;227.71&quot; cy=&quot;391.40&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;227.71&quot; cy=&quot;64.99&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;227.71&quot; cy=&quot;64.99&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;390.52&quot; cy=&quot;1044.20&quot; r=&quot;50.34&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;390.52&quot; cy=&quot;1044.20&quot; r=&quot;40.84&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;390.52&quot; cy=&quot;717.80&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;390.52&quot; cy=&quot;717.80&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;390.52&quot; cy=&quot;391.40&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;390.52&quot; cy=&quot;391.40&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;390.52&quot; cy=&quot;64.99&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;390.52&quot; cy=&quot;64.99&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;553.33&quot; cy=&quot;1044.20&quot; r=&quot;59.55&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;553.33&quot; cy=&quot;1044.20&quot; r=&quot;50.05&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;553.33&quot; cy=&quot;717.80&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;553.33&quot; cy=&quot;717.80&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;553.33&quot; cy=&quot;391.40&quot; r=&quot;59.55&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;553.33&quot; cy=&quot;391.40&quot; r=&quot;50.05&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;553.33&quot; cy=&quot;64.99&quot; r=&quot;59.55&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;553.33&quot; cy=&quot;64.99&quot; r=&quot;50.05&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;1044.20&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;1044.20&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;717.80&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;717.80&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;391.40&quot; r=&quot;67.27&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;391.40&quot; r=&quot;57.77&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;64.99&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;64.99&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;878.90&quot; cy=&quot;1044.20&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;878.90&quot; cy=&quot;1044.20&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;878.90&quot; cy=&quot;717.80&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;878.90&quot; cy=&quot;717.80&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;878.90&quot; cy=&quot;391.40&quot; r=&quot;67.27&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;878.90&quot; cy=&quot;391.40&quot; r=&quot;57.77&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;878.90&quot; cy=&quot;64.99&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;878.90&quot; cy=&quot;64.99&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1041.71&quot; cy=&quot;1044.20&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1041.71&quot; cy=&quot;1044.20&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1041.71&quot; cy=&quot;717.80&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1041.71&quot; cy=&quot;717.80&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1041.71&quot; cy=&quot;391.40&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1041.71&quot; cy=&quot;391.40&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1041.71&quot; cy=&quot;64.99&quot; r=&quot;67.27&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1041.71&quot; cy=&quot;64.99&quot; r=&quot;57.77&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;text x=&quot;1398.81&quot; y=&quot;1391.74&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;0&lt;/text&gt;
+	&lt;text x=&quot;1398.81&quot; y=&quot;1065.34&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;1&lt;/text&gt;
+	&lt;text x=&quot;1398.81&quot; y=&quot;738.98&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;2&lt;/text&gt;
+	&lt;text x=&quot;1398.81&quot; y=&quot;412.58&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;3&lt;/text&gt;
+	&lt;text x=&quot;1398.81&quot; y=&quot;86.18&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;4&lt;/text&gt;
+	&lt;text x=&quot;1499.40&quot; y=&quot;717.80&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; transform=&quot;rotate(-90 1499.40,717.80)&quot; text-anchor=&quot;middle&quot;&gt;equation&lt;/text&gt;
+	&lt;line x1=&quot;55.44&quot; y1=&quot;1380.06&quot; x2=&quot;1376.84&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
+	&lt;line x1=&quot;64.95&quot; y1=&quot;1358.08&quot; x2=&quot;64.95&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
+	&lt;text x=&quot;64.95&quot; y=&quot;1433.37&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;0&lt;/text&gt;
+	&lt;line x1=&quot;390.52&quot; y1=&quot;1358.08&quot; x2=&quot;390.52&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
+	&lt;text x=&quot;390.52&quot; y=&quot;1433.37&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;2&lt;/text&gt;
+	&lt;line x1=&quot;716.14&quot; y1=&quot;1358.08&quot; x2=&quot;716.14&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
+	&lt;text x=&quot;716.14&quot; y=&quot;1433.37&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;4&lt;/text&gt;
+	&lt;line x1=&quot;1041.76&quot; y1=&quot;1358.08&quot; x2=&quot;1041.76&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
+	&lt;text x=&quot;1041.76&quot; y=&quot;1433.37&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;6&lt;/text&gt;
+	&lt;line x1=&quot;1367.33&quot; y1=&quot;1358.08&quot; x2=&quot;1367.33&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
+	&lt;text x=&quot;1367.33&quot; y=&quot;1433.37&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;8&lt;/text&gt;
+	&lt;text x=&quot;716.14&quot; y=&quot;1499.40&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;experiment&lt;/text&gt;
+&lt;/svg&gt;
+</body></html>"></iframe>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
 
 
-
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
--------------+---------------------------------------------------------
-        mean |      1,000      4.7783    .2961135       3.73       5.68
-         var |      1,000    8.205428    1.780052   3.646465   15.06061
-         min |      1,000       1.002     .044699          1          2
-         max |      1,000      15.117    2.812334          9         29
-
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
 </pre>
 </div>
 </div>
@@ -14164,15 +14273,6 @@ Days supply:
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<hr>
-<p><em>fin.</em></p>
-
-</div>
-</div>
 </div>
     </div>
   </div>
