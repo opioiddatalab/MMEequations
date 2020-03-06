@@ -13123,7 +13123,7 @@ div#notebook {
 <script>
 $( document ).ready(function(){
 
-            var cfg = {};
+            var cfg = {"nav_menu": {}, "number_sections": true, "sideBar": true, "skip_h1_title": false, "title_cell": "Table of Contents", "title_sidebar": "Contents", "toc_cell": false, "toc_position": {}, "toc_section_display": true, "toc_window_display": false};
 
             // fire the main function with these parameters
             require(['nbextensions/toc2/toc2'], function (toc2) {
@@ -13141,7 +13141,7 @@ $( document ).ready(function(){
 <p><font size='6'>
     Milligrams of Morphine Equivalents Equations
     </font></p>
-<p>Updated Feb 17, 2020<br>
+<p>Updated Feb 19, 2020<br>
 For more information see <a href="opioiddata.org">OpioidData.org</a></p>
 <p><font color='red'>Caution: this is a work in progress. Don't take it too seriously (yet).</font></p>
 <hr>
@@ -13206,17 +13206,21 @@ Rx2: 14qty x 5mg x 1.5 = <strong>105</strong> MME per script<br>
 <p>${\sum_{i=0}^n M_i}$ = 30-Day Total MME: 2700 + 105 = <strong>2805</strong> <br></p>
 <p><br></p>
 <p><strong>What is the correct denominator?</strong> <br></p>
-<p><font color='red'> 1. Is it the sum of days supply?<br><br></font>
+<p><font color='red'> 1. Is it the sum of days supply? <br></font>
+<a href="https://opioiddatalab.github.io/MMEequations/MMEequations.html#Equation-1-example">literature example</a><br><br>
 $\cfrac {\sum_{i=0}^n M_i} {\sum_{i=0}^n d_i}$ = $\cfrac{2805 \text{ MME}} {37 \text{ days}} = 76\text{ average daily MME}$ <br><br>
 <br></p>
 <p><font color='red'>2. Is it the total person-days since start of exposure (intent-to-treat)?<br></font>
+<a href="https://opioiddatalab.github.io/MMEequations/MMEequations.html#Equation-2-example">literature example</a><br><br>
 $\cfrac {\sum_{i=0}^n M_i} {max(\text{s+d}) - min(s) + 1}$ = $\cfrac{2805 \text{ MME}} {30 \text{ days}} = 94\text{ average daily MME}$ <br><br>
 <br></p>
-<p><font color='red'>3. Is it the total person-days explicitly exposed, counting overlap days once?<br></font></p>
+<p><font color='red'>3. Is it the total person-days explicitly exposed, counting overlap days once?<br></font>
+<a href="https://opioiddatalab.github.io/MMEequations/MMEequations.html#Equation-3-example">literature example</a><br><br></p>
 <p><code>Equation TBD</code> = $\cfrac{2805 \text{ MME}} {30 \text{ days}} = 94\text{ average daily MME}$ <br><br>
 <br>
 <font size='1'>Both #2 and #3 are 30d in this example but will not always be, e.g., 2 prescriptions separated by days. </font><br><br></p>
-<p><font color='red'>4. Or, do you average the two?<br><br></font>
+<p><font color='red'>4. Or, do you average the two?<br></font>
+<a href="https://opioiddatalab.github.io/MMEequations/MMEequations.html#Equation-4-example">literature example</a><br><br>
 $\cfrac{\sum{\cfrac{M_i} {d_i}}} {n}$ = $\cfrac{\cfrac{2700 \text{ MME}} {30 \text{ days}} + \cfrac{105 \text{ MME}} {7 \text{ days}}} {2} = 53\text{ average daily MME}$</p>
 <p>The range of possible values for "average daily MME" (53 to 94) represnts 80% variation between the highest and lowest estimates, in this simple scenario, crossing the arbitrary 90 MME/day threshold for "high dose" opioids. When the prescriptions are not overlapping or are staggered, there can be a heightened chance of bias.</p>
 
@@ -13232,9 +13236,9 @@ $\cfrac{\sum{\cfrac{M_i} {d_i}}} {n}$ = $\cfrac{\cfrac{2700 \text{ MME}} {30 \te
 <br>
 During this time, several <a href="https://www.nhms.org/sites/default/files/Pdfs/Opioid-Comparison-Chart-Prescriber-Letter-2012.pdf">professional organizations</a> and <a href="healthquality.va.gov/guidelines/Pain/cot/VADoDOTCPG022717.pdf">other groups</a> created equianalgesic tables with varying conversion factors. Around 2010, Len Paulozzi at the Centers for Disease Control and Prevention (CDC) started circulating annaul <a href="http://opioiddatalab.github.io/MMEequations/docs/CDC%20NDC%20codes%202010.xlsx">spreadsheets</a> with NDC and equianalgesic potency to researchers via email listservs. This <a href="https://www.cdc.gov/drugoverdose/pdf/calculating_total_daily_dose-a.pdf">particular set</a> of conversion factors soon became the standard for research studies, but only offered guidance on measuring MME in a single prescription, and did not address overlapping scripts. In 2016, CDC issued <a href="https://www.cdc.gov/mmwr/volumes/65/rr/rr6501e1.htm?CDC_AA_refVal=https%3A%2F%2Fwww.cdc.gov%2Fmmwr%2Fvolumes%2F65%2Frr%2Frr6501e1er.htm">guidelines</a> for pain management that included strong cautions for opioid use above an arbitrary MME threshold, thereby suggesting a metric for intervention evaluation and surveillance, still with little regard to how to account for overlapping prescriptions. State laws and insurance policies with MME limits rapidly evolved, invoking the guidelines. Since 2015 there has been rapid increase in the number of publications using MME for epidemiologic studies, however, there is still no standard way for calculating MME in large healthcare datasets. In addition, there is little agreement on how to calculate MME for liquid medicines and non-oral routes of administration. Despite little agreement on the best use of MME, some have even <a href="https://link.springer.com/article/10.1007/s11916-018-0695-3">called for</a> MME to appear on drug packaging.<br>
 <br>
-When used clinically, MME is an instantaneous mesaure used at the point of care, with an understanding of patient context. For example, when switching a patient to another opioid because of side effects, the remaining pills from the discontinued opioid will not be included in the calculation, however, in epidmeiology studies they will be. In this way, epidemiology approaches will overestimate <em>prescribed</em> exposure; and <em>underestimate</em> exposure from unsanctioned sources.<br>
+When used clinically, MME is an instantaneous mesaure used at the point of care, with an understanding of patient context. For example, when switching a patient to another opioid because of side effects, the remaining pills from the discontinued opioid will not be included in the calculation, however, in epidmeiology studies they will be. In this way, <strong>epidemiology approaches will overestimate <em>prescribed</em> exposure; and <em>underestimate</em> exposure from unsanctioned sources</strong>.<br>
 <br>
-There is exposure ascertainment heterogenity across the observational studies cited in the CDC Guidelines, creating opportunity for misclassification as we have previously <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/pds.4564">stated</a>. Yet, that these studies uniformly found increasing risk with exposure, regardless of formula used, demonstrates the fallability of the existence of a hard threshold for overdose outcomes, as has been <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/pds.4366">pointed out</a>.</p>
+There is exposure ascertainment heterogeneity across the observational studies cited in the CDC Guidelines, creating opportunity for misclassification as we have previously <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/pds.4564">stated</a>. Yet, that these studies uniformly found increasing risk with exposure, regardless of formula used, demonstrates the fallibility of the existence of a hard threshold for overdose outcomes, as has been <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/pds.4366">pointed out</a>.</p>
 <h2 id="Clinical-care-implications">Clinical care implications<a class="anchor-link" href="#Clinical-care-implications">&#182;</a></h2><p><strong>Daily MME thresholds are used to modify care regimens for patients, without explicit formulae for how it is calcualted.</strong><br></p>
 <blockquote><p>If the incoming claim was greater than the allowed daily MME, or if the incoming claim caused the total daily MME limit to be exceeded, the incoming claim was denied at point of sale...The MME reduction schedule was every 6 months: May 2017 to ≤250 MME/day; November 2017 to ≤200
 MME/day, May 2018 to ≤150 MME/day. The next, and probably final, decrease for chronic non-cancer pain beneficiaries receiving an opioid will be November 14, 2018 and the total daily MME allowed limit will be ≤90 MME/day.<br><a href="https://www.medicaid.gov/Medicaid/Prescription-Drugs/Downloads/Drug-Utilization-Review/DUR-FFS-Reports/AR-DUR-FFY17.pdf">Arkansas Medicaid</a></p>
@@ -13248,14 +13252,12 @@ MME/day, May 2018 to ≤150 MME/day. The next, and probably final, decrease for 
 <br></p>
 <hr>
 <h2 id="Usage-examples">Usage examples<a class="anchor-link" href="#Usage-examples">&#182;</a></h2><p>This is not a comprehensive review of methods, but 4 major approaches that were explored in the hypothetical examples that follow this section.<br></p>
-<p><strong>Equation 1 Example</strong><br></p>
-<blockquote><p>The total days’ supply per year is the sum of the days’ supply for all of the patient’s opioid prescriptions during the year, regardless of whether the dates of the prescriptions overlapped or continued... We included overlapping opioid prescriptions per day and calculated a daily MME by distributing the <strong>total MME for all opioid prescriptions over the days supplied</strong>.<br>
+<h3 id="Equation-1-example">Equation 1 example<a class="anchor-link" href="#Equation-1-example">&#182;</a></h3><blockquote><p>The total days’ supply per year is the sum of the days’ supply for all of the patient’s opioid prescriptions during the year, regardless of whether the dates of the prescriptions overlapped or continued... We included overlapping opioid prescriptions per day and calculated a daily MME by distributing the <strong>total MME for all opioid prescriptions over the days supplied</strong>.<br>
 <a href="https://jasn.asnjournals.org/content/jnephrol/28/12/3658.full.pdf">Kimmel et al.</a></p>
 <p>The duration of an opioid prescription was expressed as the number of days of supply, as obtained from the claim record. The strength of a prescription was expressed as the MME-per-day dose (computed as the product of drug strength per dose unit, number of units per day, and an MME conversion factor) to standardize potency across different opioid substances or dose forms (e.g., tablet or patch). We obtained information on drug strength per dose unit from the FDA, the National Center for Injury Prevention and Control, and the Red Book directories. <strong>The number of units per day was calculated by dividing the total number of units by the number of days of supply.</strong><br>
 <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6487883/">Zhu et al.</a></p>
 </blockquote>
-<p><strong>Equation 2 Example</strong><br></p>
-<blockquote><p>For days with multiple prescriptions, MME was calculated for each prescription separately and summed to yield a single daily MME dosage. Each beneficiary was assigned an average daily MME dose by <strong>dividing the sum total daily MME for each beneficiary by</strong> the days in the “treatment period”: “Treatment period” was defined as <strong>the number of days between the first day of the beneficiary’s first opioid prescription and the last</strong> day of the beneficiary’s final opioid prescription in 2016 (the date of the final prescription plus the days supplied).<br>
+<h3 id="Equation-2-example">Equation 2 example<a class="anchor-link" href="#Equation-2-example">&#182;</a></h3><blockquote><p>For days with multiple prescriptions, MME was calculated for each prescription separately and summed to yield a single daily MME dosage. Each beneficiary was assigned an average daily MME dose by <strong>dividing the sum total daily MME for each beneficiary by</strong> the days in the “treatment period”: “Treatment period” was defined as <strong>the number of days between the first day of the beneficiary’s first opioid prescription and the last</strong> day of the beneficiary’s final opioid prescription in 2016 (the date of the final prescription plus the days supplied).<br>
 <a href="https://www.cms.gov/About-CMS/Agency-Information/OMH/Downloads/Opioid-Prescription-in-Medicare-Beneficiaries-Report.pdf">Centers for Medicare and Medicaid Services, page 11</a>
 <br></p>
 <p>Individual opioid prescriptions were organized into distinct 6-month periods. Within each time period, we used standard conversion tables to determine the morphine milligram equivalents (MME) per prescription and summed these to determine the total MME per period, then calculated an average daily opioid dose by <strong>dividing the total MME per period by 180 days</strong>.<br>
@@ -13265,17 +13267,14 @@ MME/day, May 2018 to ≤150 MME/day. The next, and probably final, decrease for 
 <p>We calculated the MME for a dispensation by multiplying the quantity of each prescription by the strength of the prescription (unit dispensed by milligrams of opioid). We then multiplied the resulting product by the conversion factor. We calculated the average daily MME dispensed for the relevant period (defined as 183 days for the baseline and 12-month periods and 90 days for the 6-month period) by adding the MMEs for the prescriptions dispensed during the period and <strong>dividing by the number of days in the period.</strong><br>
 <a href="https://www.pcori.org/sites/default/files/Campbell011-Final-Research-Report.pdf">Campbell et al. PCORI</a><br></p>
 </blockquote>
-<p><strong>Equation 3 example</strong></p>
-<blockquote><p>Average daily MME was defined as the patient’s total MME from all prescriptions received during follow-up divided by the total available days supply from all prescriptions. If a beneficiary’s prescription was filled before the end of the previous prescription, the <strong>overlapping days were only counted once in the denominator</strong>.<br>
+<h3 id="Equation-3-example">Equation 3 example<a class="anchor-link" href="#Equation-3-example">&#182;</a></h3><blockquote><p>Average daily MME was defined as the patient’s total MME from all prescriptions received during follow-up divided by the total available days supply from all prescriptions. If a beneficiary’s prescription was filled before the end of the previous prescription, the <strong>overlapping days were only counted once in the denominator</strong>.<br>
 <a href="https://www.jmcp.org/doi/pdf/10.18553/jmcp.2019.25.9.966">Raman S et al.</a></p>
 </blockquote>
-<p><strong>Equation 4 example</strong></p>
-<blockquote><p>To calculate the average daily MME of a given opioid prescription, we multiplied the drug's strength by the quantity
+<h3 id="Equation-4-example">Equation 4 example<a class="anchor-link" href="#Equation-4-example">&#182;</a></h3><blockquote><p>To calculate the average daily MME of a given opioid prescription, we multiplied the drug's strength by the quantity
 received and a medication‐specific MME conversion factor and divided by the days' supply received.17 The average daily MME for each prescription was then applied to all days for which the prescription was to be taken, according to the days' supply. If a beneficiary had more than 1 opioid prescription active on a given day, the MMEs for all prescriptions to be taken on that day were summed. We included MMEs from all sources of payment. Prescriptions for medication‐assisted treatment (MAT) for opioid use disorders were not included. For modeling purposes, <strong>we averaged each beneficiary's average daily MMEs across each calendar month</strong>.
 <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/pds.4445">Naumann et al.</a></p>
 </blockquote>
-<p><strong>Unclear</strong><br></p>
-<blockquote><p>We also created patient-level variables to further describe opioid use, including total number of days receiving an opioid and mean daily MME.<br>
+<h3 id="Unclear">Unclear<a class="anchor-link" href="#Unclear">&#182;</a></h3><blockquote><p>We also created patient-level variables to further describe opioid use, including total number of days receiving an opioid and mean daily MME.<br>
 <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5846585/">Gellad et al.</a><br></p>
 <p>Additional measures included MME per capita, average daily MME per prescription, and average days’ supply per prescription.<br>
 <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5726238/">Guy et al. MMWR</a><br></p>
@@ -13290,6 +13289,36 @@ received and a medication‐specific MME conversion factor and divided by the da
 <blockquote><p>The volume and rate of opioid prescribing through the EMR were the key outputs measured. Data were analyzed as <strong>MME per patient encounter per month</strong>, MME per prescription, and number of opioid prescriptions per encounter. <br>
 <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6324493/">Meisenberg BR et al.</a></p>
 </blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h1 id="International-Approaches">International Approaches<a class="anchor-link" href="#International-Approaches">&#182;</a></h1><ol>
+<li><p>The World Health Organization uses <em>defined daily dose</em> as a metric for drug utilization. It is defined as:</p>
+<blockquote><p>Defined Daily Dose (DDD): The assumed average maintenance dose per day for a drug used for its main indication in adults.<br>
+<a href="https://www.who.int/medicines/regulation/medicines-safety/toolkit_ddd/en&lt;br&gt;
+However, [Nielsen et al.](https://onlinelibrary.wiley.com/doi/abs/10.1002/pds.4168">WHO</a> using data from Australia have shown that the established DDD for opioid analgesics may not have kept pace with modern pain management practice.</p>
+</blockquote>
+</li>
+<li><p>The <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5590759/">Medication Posession Ratio (MPR)</a> is widely used in medication adherence studies. There are 3 ways to calculate MPR, which take into account days supply and end dates to different degrees.<br></p>
+</li>
+</ol>
+<p><img src="https://opioiddatalab.github.io/MMEequations/docs/Sperber2017MPR.png"><br></p>
+<ol>
+<li>The <a href="https://doi.org/10.1002/pds.4217">Waiting Time Distribution and Inter-arrival Distance</a> (<a href="https://www.biostat.au.dk/DSTS2017/HStovring_WTDs.pdf">slides</a>) comes from Henrik Støvring, Anton Pottegård, and Jesper Hallas at Aarhus University in Denmark. The WTD methods arose out of neccesity; major Danish health datasets do not have indication, dosage, or refill information, making it impossible to observe when someone has stopped taking a drug (e.g., defining the end of the exposed period, or right administrative censoring). Thw WTD and IAD models take advatange of observed time between prescription refills to estimate how long people <em>actually take</em> to consume the medicines they are prescribed. It turns out that these distributions can be modeled with considerable (statistical) efficiency using parametric equations, meaning that patients are fairly consistent when they go get refills (including people at the extremes, which too is predictable) for other chronic conditions. Obviously opioids are complex, with acute and chronic pain both possible, so <a href="https://github.com/opioiddatalab/WTD/blob/master/opioidsWTD.ipynb">we are carefully exploring</a> the feasability of using this measure in opioid studies.<br></li>
+</ol>
+<p><img src="https://opioiddatalab.github.io/MMEequations/docs/reverseWTD.png"><br></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <hr>
 <h1 id="Programming">Programming<a class="anchor-link" href="#Programming">&#182;</a></h1><p>Stata/MP version 16.0</p>
 
@@ -13298,7 +13327,7 @@ received and a medication‐specific MME conversion factor and divided by the da
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all
@@ -13413,7 +13442,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 1</span>
@@ -13458,7 +13487,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 2</span>
@@ -13512,7 +13541,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 3</span>
@@ -13604,7 +13633,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 4</span>
@@ -13641,7 +13670,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">qui</span>:<span class="k"> input</span> pt rx str3 drug str2<span class="k"> form</span> start<span class="k"> end</span> units strength conv days
@@ -13685,6 +13714,31 @@ range: 41
   3. |        3    94 |
   4. |        4    53 |
      +----------------+
+may not drop current frame
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>r(119);
+r(119);
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
 </pre>
 </div>
 </div>
@@ -13709,7 +13763,7 @@ range: 41
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13723,44 +13777,6 @@ runexperiment
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-. runexperiment
--------------------
-Total therapy-days accounting for any overlap: 30 days out of 30
--------------------
-Experiment results across 4 equations:
-Minimum average daily MME: 30
-Maximum average daily MME: 67
-range: 37
-2.2-fold difference between highest and lowest
-
-     +----------------+
-     | equation   MME |
-     |----------------|
-  1. |        1    46 |
-  2. |        2    67 |
-  3. |        3    67 |
-  4. |        4    30 |
-     +----------------+
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13780,7 +13796,7 @@ range: 37
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13793,44 +13809,6 @@ runexperiment
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-. runexperiment
--------------------
-Total therapy-days accounting for any overlap: 14 days out of 30
--------------------
-Experiment results across 4 equations:
-Minimum average daily MME: 7
-Maximum average daily MME: 15
-range: 8
-2.1-fold difference between highest and lowest
-
-     +----------------+
-     | equation   MME |
-     |----------------|
-  1. |        1    15 |
-  2. |        2     7 |
-  3. |        3    15 |
-  4. |        4    15 |
-     +----------------+
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13850,7 +13828,7 @@ range: 8
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13863,44 +13841,6 @@ runexperiment
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-. runexperiment
--------------------
-Total therapy-days accounting for any overlap: 9 days out of 30
--------------------
-Experiment results across 4 equations:
-Minimum average daily MME: 7
-Maximum average daily MME: 23
-range: 16
-3.3-fold difference between highest and lowest
-
-     +----------------+
-     | equation   MME |
-     |----------------|
-  1. |        1    15 |
-  2. |        2     7 |
-  3. |        3    23 |
-  4. |        4    15 |
-     +----------------+
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13920,7 +13860,7 @@ range: 16
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13936,44 +13876,6 @@ runexperiment
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-. runexperiment
--------------------
-Total therapy-days accounting for any overlap: 9 days out of 30
--------------------
-Experiment results across 4 equations:
-Minimum average daily MME: 6
-Maximum average daily MME: 19
-range: 13
-3.2-fold difference between highest and lowest
-
-     +----------------+
-     | equation   MME |
-     |----------------|
-  1. |        1    13 |
-  2. |        2     6 |
-  3. |        3    19 |
-  4. |        4    13 |
-     +----------------+
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13986,7 +13888,7 @@ range: 13
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -14006,50 +13908,6 @@ runexperiment
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-. replace days=2 if rx==1
-(1 real change made)
-
-. replace units=4 if rx==1
-(1 real change made)
-
-. runexperiment
--------------------
-Total therapy-days accounting for any overlap: 9 days out of 30
--------------------
-Experiment results across 4 equations:
-Minimum average daily MME: 3
-Maximum average daily MME: 13
-range: 10
-4.3-fold difference between highest and lowest
-
-     +----------------+
-     | equation   MME |
-     |----------------|
-  1. |        1    11 |
-  2. |        2     3 |
-  3. |        3    11 |
-  4. |        4    13 |
-     +----------------+
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -14062,7 +13920,7 @@ range: 10
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all
@@ -14093,44 +13951,6 @@ range: 10
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-Days supply:
-
-
-      command:  lnsim
-         mean:  r(mean)
-          var:  r(Var)
-          min:  r(min)
-          max:  r(max)
-
-
-
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
--------------+---------------------------------------------------------
-        mean |      1,000     4.76933    .2828347       3.97        5.6
-         var |      1,000    8.162269    1.744049   4.497374   17.52273
-         min |      1,000       1.001    .0316228          1          2
-         max |      1,000       15.11    2.738869         10         33
-
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
