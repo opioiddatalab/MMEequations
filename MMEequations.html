@@ -13327,7 +13327,7 @@ However, [Nielsen et al.](https://onlinelibrary.wiley.com/doi/abs/10.1002/pds.41
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[228]:</div>
+<div class="prompt input_prompt">In&nbsp;[564]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">program drop</span> _all<span class="k"></span>
@@ -13406,11 +13406,12 @@ frame<span class="k"> post</span> composite (<span class="m">0</span>) (.) (<spa
 
 <span class="k">program</span> ranktable
     frame change long
-<span class="k">        bysort</span> experiment:<span class="k"> egen</span> rank=rank(MME)
-<span class="k">            egen</span> max=<span class="nf">max</span>(experiment)
-<span class="k">                replace</span> experiment=max<span class="m">+1</span><span class="k"> if</span> equation<span class="o">==</span><span class="m">0</span>
-<span class="k">                    set</span> scheme economist
-<span class="k">                        scatter</span> equation experiment [w=rank]<span class="k"></span>
+<span class="k">        qui</span>:<span class="k"> bysort</span> experiment:<span class="k"> egen</span> rank=rank(MME)
+<span class="k">            qui</span>:<span class="k"> replace</span> rank=rank<span class="o">^</span><span class="m">1</span>
+<span class="k">                qui</span>:<span class="k"> egen</span> max=<span class="nf">max</span>(experiment)
+<span class="k">                   qui</span>:<span class="k"> bysort</span> equation:<span class="k"> egen</span> seq=rank(<span class="o">-</span>MME), unique
+<span class="k">                        set</span> scheme economist
+<span class="k">                            scatter</span> equation experiment [w=rank], xlabel(none)<span class="k"></span>
 <span class="k">end</span>
 </pre></div>
 
@@ -13468,7 +13469,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[229]:</div>
+<div class="prompt input_prompt">In&nbsp;[565]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 1</span>
@@ -13514,7 +13515,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[230]:</div>
+<div class="prompt input_prompt">In&nbsp;[566]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 2</span>
@@ -13569,7 +13570,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[231]:</div>
+<div class="prompt input_prompt">In&nbsp;[567]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 3</span>
@@ -13662,7 +13663,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[232]:</div>
+<div class="prompt input_prompt">In&nbsp;[568]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="c1">// Equation 4</span>
@@ -13688,7 +13689,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="Experiment-1:-Base-scenario-ER+IR">Experiment 1: Base scenario ER+IR<a class="anchor-link" href="#Experiment-1:-Base-scenario-ER+IR">&#182;</a></h1><p>Using the core example described above, 2 prescriptions :<br></p>
+<h1 id="Experiments">Experiments<a class="anchor-link" href="#Experiments">&#182;</a></h1><h2 id="Experiment-1:-Base-scenario-ER+IR">Experiment 1: Base scenario ER+IR<a class="anchor-link" href="#Experiment-1:-Base-scenario-ER+IR">&#182;</a></h2><p>Using the core example described above, 2 prescriptions :<br></p>
 <ul>
 <li>One 20mg ER oxycodone twice-a-day for 30 days<br></li>
 <li>One 5mg IR oxycodone as needed for breakthrough pain, written as 7 day supply<br></li>
@@ -13700,7 +13701,7 @@ $n$     .......... Total number of prescriptions<br></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[233]:</div>
+<div class="prompt input_prompt">In&nbsp;[569]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13759,7 +13760,7 @@ range: 41
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="Experiment-2:-One-ER,-2-IR">Experiment 2: One ER, 2 IR<a class="anchor-link" href="#Experiment-2:-One-ER,-2-IR">&#182;</a></h1><p>3 prescriptions :<br></p>
+<h2 id="Experiment-2:-One-ER,-2-IR">Experiment 2: One ER, 2 IR<a class="anchor-link" href="#Experiment-2:-One-ER,-2-IR">&#182;</a></h2><p>3 prescriptions :<br></p>
 <ul>
 <li>One 20mg ER oxycodone twice-a-day for 30 days, filled on Day 1<br></li>
 <li>One 5mg IR oxycodone as needed for breakthrough pain, written as 7 day supply, filled on Day 1<br></li>
@@ -13771,7 +13772,7 @@ range: 41
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[234]:</div>
+<div class="prompt input_prompt">In&nbsp;[570]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13831,7 +13832,7 @@ range: 37
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="Experiment-3:-Two-IR">Experiment 3: Two IR<a class="anchor-link" href="#Experiment-3:-Two-IR">&#182;</a></h1><p>2 IR prescriptions:<br></p>
+<h2 id="Experiment-3:-Two-IR">Experiment 3: Two IR<a class="anchor-link" href="#Experiment-3:-Two-IR">&#182;</a></h2><p>2 IR prescriptions:<br></p>
 <ul>
 <li>One 5mg IR oxycodone <em>prn</em>, written as 7 day supply, filled on <strong>Day 1</strong><br></li>
 <li>One 5mg IR oxycodone <em>prn</em>, written as 7 day supply, filled on <strong>Day 10</strong><br></li>
@@ -13842,7 +13843,7 @@ range: 37
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[235]:</div>
+<div class="prompt input_prompt">In&nbsp;[571]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13901,7 +13902,7 @@ range: 8
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="Experiment-4:-Two-overlapping-IR-oxycodone">Experiment 4: Two overlapping IR oxycodone<a class="anchor-link" href="#Experiment-4:-Two-overlapping-IR-oxycodone">&#182;</a></h1><p>2 IR prescriptions, more <em>prn</em> use than expected scenario:<br></p>
+<h2 id="Experiment-4:-Two-overlapping-IR-oxycodone">Experiment 4: Two overlapping IR oxycodone<a class="anchor-link" href="#Experiment-4:-Two-overlapping-IR-oxycodone">&#182;</a></h2><p>2 IR prescriptions, more <em>prn</em> use than expected scenario:<br></p>
 <ul>
 <li>One 5mg IR oxycodone <em>prn</em> 2 pills/day, written as 7 day supply, filled on <strong>Day 1</strong><br></li>
 <li>One 5mg IR oxycodone <em>prn</em>, written as 7 day supply, filled on <strong>Day 3</strong><br></li>
@@ -13912,7 +13913,7 @@ range: 8
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[236]:</div>
+<div class="prompt input_prompt">In&nbsp;[572]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -13971,7 +13972,7 @@ range: 16
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h1 id="Experiment-5:-One-hydrocone-IR-+-1-oxycodone-IR">Experiment 5: One hydrocone IR + 1 oxycodone IR<a class="anchor-link" href="#Experiment-5:-One-hydrocone-IR-+-1-oxycodone-IR">&#182;</a></h1><p>2 IR prescriptions, switching from oxycodone to hydrocodone because of side effects but assuming both scripts were consumed:<br></p>
+<h2 id="Experiment-5:-One-hydrocone-IR-+-1-oxycodone-IR">Experiment 5: One hydrocone IR + 1 oxycodone IR<a class="anchor-link" href="#Experiment-5:-One-hydrocone-IR-+-1-oxycodone-IR">&#182;</a></h2><p>2 IR prescriptions, switching from oxycodone to hydrocodone because of side effects but assuming both scripts were consumed:<br></p>
 <ul>
 <li>One 5mg IR oxycodone <em>prn</em> 2 pills/day, written as 7 day supply, filled on <strong>Day 1</strong><br></li>
 <li>One 5mg IR hydrocodone <em>prn</em>, written as 7 day supply, filled on <strong>Day 3</strong><br></li>
@@ -13982,7 +13983,7 @@ range: 16
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[237]:</div>
+<div class="prompt input_prompt">In&nbsp;[573]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -14041,14 +14042,14 @@ range: 13
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<p>Now, let's run the experiment again, but assume that the remaining 10 tablets of oxycodone after the first 2 days was disposed of.</p>
+<h2 id="Experiment-6:-leftover-pills-destroyed">Experiment 6: leftover pills destroyed<a class="anchor-link" href="#Experiment-6:-leftover-pills-destroyed">&#182;</a></h2><p>Now, let's run the previous experiment again, but assume that the remaining 10 tablets of oxycodone after the first 2 days was disposed of.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[238]:</div>
+<div class="prompt input_prompt">In&nbsp;[574]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
@@ -14122,7 +14123,7 @@ range: 10
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[239]:</div>
+<div class="prompt input_prompt">In&nbsp;[575]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span>compileresults
@@ -14155,8 +14156,6 @@ ranktable
   5. |        4      .     53     30     15     15     13     13 |
      +-----------------------------------------------------------+
 
-(1 missing value generated)
-(1 real change made)
 (analytic weights assumed)
 (analytic weights assumed)
 (analytic weights assumed)
@@ -14179,78 +14178,68 @@ ranktable
 	&lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;1584&quot; height=&quot;1584&quot; style=&quot;fill:#C6D3DF;stroke:none&quot;/&gt;
 	&lt;rect x=&quot;0.00&quot; y=&quot;0.05&quot; width=&quot;1584.00&quot; height=&quot;1583.95&quot; style=&quot;fill:#C6D3DF&quot;/&gt;
 	&lt;rect x=&quot;1.58&quot; y=&quot;1.63&quot; width=&quot;1580.83&quot; height=&quot;1580.78&quot; style=&quot;fill:none;stroke:#C6D3DF;stroke-width:3.17&quot;/&gt;
-	&lt;line x1=&quot;55.44&quot; y1=&quot;1370.56&quot; x2=&quot;1376.84&quot; y2=&quot;1370.56&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
-	&lt;line x1=&quot;55.44&quot; y1=&quot;1044.15&quot; x2=&quot;1376.84&quot; y2=&quot;1044.15&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
-	&lt;line x1=&quot;55.44&quot; y1=&quot;717.80&quot; x2=&quot;1376.84&quot; y2=&quot;717.80&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
-	&lt;line x1=&quot;55.44&quot; y1=&quot;391.40&quot; x2=&quot;1376.84&quot; y2=&quot;391.40&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
+	&lt;line x1=&quot;55.44&quot; y1=&quot;1442.08&quot; x2=&quot;1376.84&quot; y2=&quot;1442.08&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
+	&lt;line x1=&quot;55.44&quot; y1=&quot;1097.81&quot; x2=&quot;1376.84&quot; y2=&quot;1097.81&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
+	&lt;line x1=&quot;55.44&quot; y1=&quot;753.54&quot; x2=&quot;1376.84&quot; y2=&quot;753.54&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
+	&lt;line x1=&quot;55.44&quot; y1=&quot;409.27&quot; x2=&quot;1376.84&quot; y2=&quot;409.27&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
 	&lt;line x1=&quot;55.44&quot; y1=&quot;64.99&quot; x2=&quot;1376.84&quot; y2=&quot;64.99&quot; style=&quot;stroke:#FFFFFF;stroke-width:4.75&quot;/&gt;
-	&lt;circle cx=&quot;1204.52&quot; cy=&quot;1370.61&quot; r=&quot;9.60&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;1204.52&quot; cy=&quot;1370.61&quot; r=&quot;0.10&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;227.71&quot; cy=&quot;1044.20&quot; r=&quot;50.34&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;227.71&quot; cy=&quot;1044.20&quot; r=&quot;40.84&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;227.71&quot; cy=&quot;717.80&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;227.71&quot; cy=&quot;717.80&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;227.71&quot; cy=&quot;391.40&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;227.71&quot; cy=&quot;391.40&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;227.71&quot; cy=&quot;64.99&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;227.71&quot; cy=&quot;64.99&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;390.52&quot; cy=&quot;1044.20&quot; r=&quot;50.34&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;390.52&quot; cy=&quot;1044.20&quot; r=&quot;40.84&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;390.52&quot; cy=&quot;717.80&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;390.52&quot; cy=&quot;717.80&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;390.52&quot; cy=&quot;391.40&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;390.52&quot; cy=&quot;391.40&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;390.52&quot; cy=&quot;64.99&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;390.52&quot; cy=&quot;64.99&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;553.33&quot; cy=&quot;1044.20&quot; r=&quot;59.55&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;553.33&quot; cy=&quot;1044.20&quot; r=&quot;50.05&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;553.33&quot; cy=&quot;717.80&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;553.33&quot; cy=&quot;717.80&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;553.33&quot; cy=&quot;391.40&quot; r=&quot;59.55&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;553.33&quot; cy=&quot;391.40&quot; r=&quot;50.05&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;553.33&quot; cy=&quot;64.99&quot; r=&quot;59.55&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;553.33&quot; cy=&quot;64.99&quot; r=&quot;50.05&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;716.14&quot; cy=&quot;1044.20&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;716.14&quot; cy=&quot;1044.20&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;716.14&quot; cy=&quot;717.80&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;716.14&quot; cy=&quot;717.80&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;716.14&quot; cy=&quot;391.40&quot; r=&quot;67.27&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;716.14&quot; cy=&quot;391.40&quot; r=&quot;57.77&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;716.14&quot; cy=&quot;64.99&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;716.14&quot; cy=&quot;64.99&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;878.90&quot; cy=&quot;1044.20&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;878.90&quot; cy=&quot;1044.20&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;878.90&quot; cy=&quot;717.80&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;878.90&quot; cy=&quot;717.80&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;878.90&quot; cy=&quot;391.40&quot; r=&quot;67.27&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;878.90&quot; cy=&quot;391.40&quot; r=&quot;57.77&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;878.90&quot; cy=&quot;64.99&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;878.90&quot; cy=&quot;64.99&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;1041.71&quot; cy=&quot;1044.20&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;1041.71&quot; cy=&quot;1044.20&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;1041.71&quot; cy=&quot;717.80&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;1041.71&quot; cy=&quot;717.80&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;1041.71&quot; cy=&quot;391.40&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;1041.71&quot; cy=&quot;391.40&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;circle cx=&quot;1041.71&quot; cy=&quot;64.99&quot; r=&quot;67.27&quot; style=&quot;fill:#3E647D&quot;/&gt;
-	&lt;circle cx=&quot;1041.71&quot; cy=&quot;64.99&quot; r=&quot;57.77&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
-	&lt;text x=&quot;1398.81&quot; y=&quot;1391.74&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;0&lt;/text&gt;
-	&lt;text x=&quot;1398.81&quot; y=&quot;1065.34&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;1&lt;/text&gt;
-	&lt;text x=&quot;1398.81&quot; y=&quot;738.98&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;2&lt;/text&gt;
-	&lt;text x=&quot;1398.81&quot; y=&quot;412.58&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;3&lt;/text&gt;
+	&lt;circle cx=&quot;64.90&quot; cy=&quot;1442.08&quot; r=&quot;9.60&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;64.90&quot; cy=&quot;1442.08&quot; r=&quot;0.10&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;499.03&quot; cy=&quot;1097.81&quot; r=&quot;50.34&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;499.03&quot; cy=&quot;1097.81&quot; r=&quot;40.84&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;933.20&quot; cy=&quot;1097.81&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;933.20&quot; cy=&quot;1097.81&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;1097.81&quot; r=&quot;59.55&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;1097.81&quot; r=&quot;50.05&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1367.33&quot; cy=&quot;1097.81&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1367.33&quot; cy=&quot;1097.81&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;281.96&quot; cy=&quot;1097.81&quot; r=&quot;50.34&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;281.96&quot; cy=&quot;1097.81&quot; r=&quot;40.84&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1150.27&quot; cy=&quot;1097.81&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1150.27&quot; cy=&quot;1097.81&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;933.20&quot; cy=&quot;753.54&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;933.20&quot; cy=&quot;753.54&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;753.54&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;753.54&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1150.27&quot; cy=&quot;753.54&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1150.27&quot; cy=&quot;753.54&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;281.96&quot; cy=&quot;753.54&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;281.96&quot; cy=&quot;753.54&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1367.33&quot; cy=&quot;753.54&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1367.33&quot; cy=&quot;753.54&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;499.03&quot; cy=&quot;753.54&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;499.03&quot; cy=&quot;753.54&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1150.27&quot; cy=&quot;409.27&quot; r=&quot;67.27&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1150.27&quot; cy=&quot;409.27&quot; r=&quot;57.77&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;499.03&quot; cy=&quot;409.27&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;499.03&quot; cy=&quot;409.27&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;933.20&quot; cy=&quot;409.27&quot; r=&quot;67.27&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;933.20&quot; cy=&quot;409.27&quot; r=&quot;57.77&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1367.33&quot; cy=&quot;409.27&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1367.33&quot; cy=&quot;409.27&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;409.27&quot; r=&quot;59.55&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;409.27&quot; r=&quot;50.05&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;281.96&quot; cy=&quot;409.27&quot; r=&quot;63.56&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;281.96&quot; cy=&quot;409.27&quot; r=&quot;54.06&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;933.20&quot; cy=&quot;64.99&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;933.20&quot; cy=&quot;64.99&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;499.03&quot; cy=&quot;64.99&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;499.03&quot; cy=&quot;64.99&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1150.27&quot; cy=&quot;64.99&quot; r=&quot;55.19&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1150.27&quot; cy=&quot;64.99&quot; r=&quot;45.69&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;281.96&quot; cy=&quot;64.99&quot; r=&quot;38.41&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;281.96&quot; cy=&quot;64.99&quot; r=&quot;28.91&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;64.99&quot; r=&quot;59.55&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;716.14&quot; cy=&quot;64.99&quot; r=&quot;50.05&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;circle cx=&quot;1367.33&quot; cy=&quot;64.99&quot; r=&quot;67.27&quot; style=&quot;fill:#3E647D&quot;/&gt;
+	&lt;circle cx=&quot;1367.33&quot; cy=&quot;64.99&quot; r=&quot;57.77&quot; style=&quot;fill:none;stroke:#3E647D;stroke-width:19.01&quot;/&gt;
+	&lt;text x=&quot;1398.81&quot; y=&quot;1463.27&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;0&lt;/text&gt;
+	&lt;text x=&quot;1398.81&quot; y=&quot;1118.99&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;1&lt;/text&gt;
+	&lt;text x=&quot;1398.81&quot; y=&quot;774.72&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;2&lt;/text&gt;
+	&lt;text x=&quot;1398.81&quot; y=&quot;430.45&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;3&lt;/text&gt;
 	&lt;text x=&quot;1398.81&quot; y=&quot;86.18&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot;&gt;4&lt;/text&gt;
-	&lt;text x=&quot;1499.40&quot; y=&quot;717.80&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; transform=&quot;rotate(-90 1499.40,717.80)&quot; text-anchor=&quot;middle&quot;&gt;equation&lt;/text&gt;
-	&lt;line x1=&quot;55.44&quot; y1=&quot;1380.06&quot; x2=&quot;1376.84&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
-	&lt;line x1=&quot;64.95&quot; y1=&quot;1358.08&quot; x2=&quot;64.95&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
-	&lt;text x=&quot;64.95&quot; y=&quot;1433.37&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;0&lt;/text&gt;
-	&lt;line x1=&quot;390.52&quot; y1=&quot;1358.08&quot; x2=&quot;390.52&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
-	&lt;text x=&quot;390.52&quot; y=&quot;1433.37&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;2&lt;/text&gt;
-	&lt;line x1=&quot;716.14&quot; y1=&quot;1358.08&quot; x2=&quot;716.14&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
-	&lt;text x=&quot;716.14&quot; y=&quot;1433.37&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;4&lt;/text&gt;
-	&lt;line x1=&quot;1041.76&quot; y1=&quot;1358.08&quot; x2=&quot;1041.76&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
-	&lt;text x=&quot;1041.76&quot; y=&quot;1433.37&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;6&lt;/text&gt;
-	&lt;line x1=&quot;1367.33&quot; y1=&quot;1358.08&quot; x2=&quot;1367.33&quot; y2=&quot;1380.06&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
-	&lt;text x=&quot;1367.33&quot; y=&quot;1433.37&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;8&lt;/text&gt;
+	&lt;text x=&quot;1499.40&quot; y=&quot;753.54&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; transform=&quot;rotate(-90 1499.40,753.54)&quot; text-anchor=&quot;middle&quot;&gt;equation&lt;/text&gt;
+	&lt;line x1=&quot;55.44&quot; y1=&quot;1451.59&quot; x2=&quot;1376.84&quot; y2=&quot;1451.59&quot; style=&quot;stroke:#000000;stroke-width:3.17&quot;/&gt;
 	&lt;text x=&quot;716.14&quot; y=&quot;1499.40&quot; style=&quot;font-family:&#x27;Helvetica&#x27;;font-size:60.49px;fill:#000000&quot; text-anchor=&quot;middle&quot;&gt;experiment&lt;/text&gt;
 &lt;/svg&gt;
 </body></html>"></iframe>
