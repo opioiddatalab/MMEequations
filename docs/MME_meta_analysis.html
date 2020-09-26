@@ -13109,6 +13109,28 @@ div#notebook {
     });
     </script>
     <!-- End of mathjax configuration --></head>
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/ipython-contrib/jupyter_contrib_nbextensions/master/src/jupyter_contrib_nbextensions/nbextensions/toc2/main.css">
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="https://rawgit.com/ipython-contrib/jupyter_contrib_nbextensions/master/src/jupyter_contrib_nbextensions/nbextensions/toc2/toc2.js"></script>
+
+<script>
+$( document ).ready(function(){
+
+            var cfg = {};
+
+            // fire the main function with these parameters
+            require(['nbextensions/toc2/toc2'], function (toc2) {
+                toc2.table_of_contents(cfg);
+            });
+    });
+</script>
 <body>
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
@@ -13116,7 +13138,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Daily-MME-Meta-Analysis">Daily MME Meta Analysis<a class="anchor-link" href="#Daily-MME-Meta-Analysis">&#182;</a></h1><p>Adapting a method recently developed by FDA to analyze a <a href="https://www.fda.gov/media/141914/download">related opioid methods question</a>, we used meta analytic techniques to test the impact of the four definitions in the real-world. The general set up is to compare opioid use in FL vs. CA across the 4 definitions of daily MME. We previously observed that Florida had higher unadjusted levels of opioid use, presumably an interaction with an older population and the enactment of clinical pain management legislation. We took two approaches, 1) comparing the proportion of "high dose" users among opioid recipients, and 2) comparing average daily MME between the states, stratified by medicines used for acute versus chronic pain.</p>
+<h1 id="Daily-MME-Meta-Analysis">Daily MME Meta Analysis<a class="anchor-link" href="#Daily-MME-Meta-Analysis">&#182;</a></h1><p>Adapting a method recently developed by FDA to analyze a <a href="https://www.fda.gov/media/141914/download">related opioid methods question</a>, we used meta analytic techniques to test the impact of the four definitions in the real-world. The general set up is to compare opioid use in FL vs. CA across the 4 definitions of daily MME. We previously observed that Florida had higher unadjusted levels of opioid use, presumably an interaction with an older population and the enactment of clinical pain management legislation. We took two approaches, 1) treating daily MME as categorical by comparing the proportion of "high dose" users among opioid recipients, and 2) comparing means of daily MME between the states in a continuous manner, stratified by medicines used for acute versus chronic pain.</p>
 
 </div>
 </div>
@@ -13317,7 +13339,7 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<p>Run meta analysis command using fixed effects REML model. Since there is no sampling variation, fixed effects is the preferred <em>a priori</em> specification.</p>
+<p>Run meta analysis command using fixed effects model. Since there is no sampling variation, fixed effects is the preferred <em>a priori</em> specification.</p>
 
 </div>
 </div>
@@ -13505,8 +13527,7 @@ Test of homogeneity: Q = chi2(3) = 3444.41                    Prob &gt; Q = 0.00
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
 <h1 id="Meta-Analysis-of-Means-by-Type-of-Opioid">Meta Analysis of Means by Type of Opioid<a class="anchor-link" href="#Meta-Analysis-of-Means-by-Type-of-Opioid">&#182;</a></h1><p>In this meta analysis we examine the impact of definitional variation on acute vs. chronic pain patients, measured by opioid formulation type. We stratified the sample into three sub-groups: 1) patients receiving on only immediate-release or short-acting opioids labeled for acute pain (hereafter immediate-release; 2) patients receiving only extended-release or long-acting opioids generally labeled for chronic pain (hereafter extended-release); and 3) patients receiving both immediate-release and extended-release opioids contemporaneously within the 3 month observation period (e.g., chronic pain patients receiving opioids for breakthrough pain or during taper).</p>
-<p>Meta regression is being used to assess heterogeneity, not to derive a summary effect measure. Since there is no sampling variation between studies, fixed effect models are used.</p>
-<p>Continuing with the approach in the previous meta analysis, we compared the average daily MME between Florida and California. We calculate difference in means, by definition.</p>
+<p>Continuing with the approach in the previous meta analysis, we calculated mean differences in daily MME between Florida and California, treating each of the 4 daily MME definitions as separate studies run on the same sample (e.g., fixed effects).</p>
 
 </div>
 </div>
