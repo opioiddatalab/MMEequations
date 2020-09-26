@@ -13109,28 +13109,6 @@ div#notebook {
     });
     </script>
     <!-- End of mathjax configuration --></head>
-
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="https://rawgit.com/ipython-contrib/jupyter_contrib_nbextensions/master/src/jupyter_contrib_nbextensions/nbextensions/toc2/main.css">
-
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<script src="https://rawgit.com/ipython-contrib/jupyter_contrib_nbextensions/master/src/jupyter_contrib_nbextensions/nbextensions/toc2/toc2.js"></script>
-
-<script>
-$( document ).ready(function(){
-
-            var cfg = {};
-
-            // fire the main function with these parameters
-            require(['nbextensions/toc2/toc2'], function (toc2) {
-                toc2.table_of_contents(cfg);
-            });
-    });
-</script>
 <body>
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
@@ -13153,7 +13131,7 @@ $( document ).ready(function(){
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Input dataset from table of high dose patients (&gt;90 daily MME) among adult outpatient opioid recipients identified using the PDMP of each state. <code>boundary=0</code> designates if it is greater than 90 MME and <code>boundary=1</code> designates greater than or equal to 90 daily MME. This dataset is not actually used in the analysis but is the underlying raw data for subsequent steps.</p>
+<p>Input dataset from table of high dose patients (&gt;90 daily MME) among adult outpatient opioid recipients identified using the PDMP of each state.</p>
 
 </div>
 </div>
@@ -13161,75 +13139,6 @@ $( document ).ready(function(){
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all<span class="k"></span>
-<span class="k">qui</span>:<span class="k"> input</span> str2 state definition highdose population boundary
-<span class="s">&quot;CA&quot;</span> <span class="m">1</span> <span class="m">87078</span> <span class="m">2430870</span> <span class="m">0</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">2</span> <span class="m">140822</span> <span class="m">2430870</span> <span class="m">0</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">3</span> <span class="m">86407</span> <span class="m">2430870</span> <span class="m">0</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">4</span> <span class="m">249471</span> <span class="m">2430870</span> <span class="m">0</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">1</span> <span class="m">106240</span> <span class="m">2430870</span> <span class="m">1</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">2</span> <span class="m">155254</span> <span class="m">2430870</span> <span class="m">1</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">3</span> <span class="m">87407</span> <span class="m">2430870</span> <span class="m">1</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">4</span> <span class="m">285807</span> <span class="m">2430870</span> <span class="m">1</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">1</span> <span class="m">87295</span> <span class="m">1485591</span> <span class="m">0</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">2</span> <span class="m">136995</span> <span class="m">1485591</span> <span class="m">0</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">3</span> <span class="m">97346</span> <span class="m">1485591</span> <span class="m">0</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">4</span> <span class="m">211429</span> <span class="m">1485591</span> <span class="m">0</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">1</span> <span class="m">113998</span> <span class="m">1485591</span> <span class="m">1</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">2</span> <span class="m">157794</span> <span class="m">1485591</span> <span class="m">1</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">3</span> <span class="m">98541</span> <span class="m">1485591</span> <span class="m">1</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">4</span> <span class="m">261335</span> <span class="m">1485591</span> <span class="m">1</span><span class="k"></span>
-<span class="k">end</span>
-
-<span class="c1">* Create numeric indicator for state</span><span class="k"></span>
-<span class="k">gen</span> staten=<span class="m">1</span><span class="k"> if</span> state<span class="o">==</span><span class="s">&quot;FL&quot;</span>
-<span class="k">    replace</span> staten=<span class="m">0</span><span class="k"> if</span> state<span class="o">==</span><span class="s">&quot;CA&quot;</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-. gen staten=1 if state==&#34;FL&#34;
-(8 missing values generated)
-
-.     replace staten=0 if state==&#34;CA&#34;
-(8 real changes made)
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<hr>
-<p>Generate Rate Ratios with California <code>staten=0</code> reference group.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">di</span> <span class="s">&quot;===== Proportion of high dose patients FL vs CA greater than 90 daily MME =====&quot;</span>
@@ -13354,7 +13263,7 @@ $( document ).ready(function(){
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all<span class="k"></span>
@@ -13415,7 +13324,7 @@ $( document ).ready(function(){
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span>meta<span class="k"> summarize</span>, fixed eform
@@ -13476,7 +13385,7 @@ Test of homogeneity: Q = chi2(3) = 3444.41                    Prob &gt; Q = 0.00
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span>meta<span class="k"> summarize</span>, random(sj) eform
@@ -13530,7 +13439,7 @@ Test of homogeneity: Q = chi2(3) = 3444.41                    Prob &gt; Q = 0.00
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-stata"><pre><span></span>meta<span class="k"> summarize</span>, random(dl) eform
@@ -13596,222 +13505,35 @@ Test of homogeneity: Q = chi2(3) = 3444.41                    Prob &gt; Q = 0.00
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
 <h1 id="Meta-Analysis-of-Means-by-Type-of-Opioid">Meta Analysis of Means by Type of Opioid<a class="anchor-link" href="#Meta-Analysis-of-Means-by-Type-of-Opioid">&#182;</a></h1><p>In this meta analysis we examine the impact of definitional variation on acute vs. chronic pain patients, measured by opioid formulation type. We stratified the sample into three sub-groups: 1) patients receiving on only immediate-release or short-acting opioids labeled for acute pain (hereafter immediate-release; 2) patients receiving only extended-release or long-acting opioids generally labeled for chronic pain (hereafter extended-release); and 3) patients receiving both immediate-release and extended-release opioids contemporaneously within the 3 month observation period (e.g., chronic pain patients receiving opioids for breakthrough pain or during taper).</p>
+<p>Meta regression is being used to assess heterogeneity, not to derive a summary effect measure. Since there is no sampling variation between studies, fixed effect models are used.</p>
+<p>Continuing with the approach in the previous meta analysis, we compared the average daily MME between Florida and California. We calculate difference in means, by definition.</p>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Input data from analysts with mean (and SE) of daily MME, with stratum-specific population, by formulation and state.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span> all<span class="k"></span>
-<span class="k">qui</span>:<span class="k"> input</span> str2 state definition avg<span class="k"> se</span> population formulation str80<span class="k"> label</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">1</span> <span class="m">30.3156249</span> <span class="m">0.1477</span> <span class="m">2273028</span> <span class="m">1</span> <span class="s">&quot;D1. California Sum of days supply&quot;</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">2</span> <span class="m">31.5819604</span> <span class="m">0.1479</span> <span class="m">2273028</span> <span class="m">1</span> <span class="s">&quot;D2. California Accounting for overlap days&quot;</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">3</span> <span class="m">10.3398905</span> <span class="m">0.0282</span> <span class="m">2273028</span> <span class="m">1</span> <span class="s">&quot;D3. California Defined observation window&quot;</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">4</span> <span class="m">39.6430507</span> <span class="m">0.1860</span> <span class="m">2273028</span> <span class="m">1</span> <span class="s">&quot;D4. California Maximum daily dose&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">1</span> <span class="m">34.0531498</span> <span class="m">0.0246</span> <span class="m">1338828</span> <span class="m">1</span> <span class="s">&quot;D1. Florida Sum of days supply&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">2</span> <span class="m">35.0964146</span> <span class="m">0.0261</span> <span class="m">1338828</span> <span class="m">1</span> <span class="s">&quot;D2. Florida Accounting for overlap days&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">3</span> <span class="m">12.5794512</span> <span class="m">0.0219</span> <span class="m">1338828</span> <span class="m">1</span> <span class="s">&quot;D3. Florida Defined observation window&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">4</span> <span class="m">44.7478467</span> <span class="m">0.0418</span> <span class="m">1338828</span> <span class="m">1</span> <span class="s">&quot;D4. Florida Maximum daily dose&quot;</span>
-
-<span class="s">&quot;CA&quot;</span> <span class="m">1</span> <span class="m">90.2232825</span> <span class="m">0.5002</span> <span class="m">40038</span> <span class="m">2</span> <span class="s">&quot;D1. California Sum of days supply&quot;</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">2</span> <span class="m">103.7573329</span> <span class="m">0.6715</span> <span class="m">40038</span> <span class="m">2</span> <span class="s">&quot;D2. California Accounting for overlap days&quot;</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">3</span> <span class="m">72.753132</span> <span class="m">0.5228</span> <span class="m">40038</span> <span class="m">2</span> <span class="s">&quot;D3. California Defined observation window&quot;</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">4</span> <span class="m">153.6802569</span> <span class="m">1.0256</span> <span class="m">40038</span> <span class="m">2</span> <span class="s">&quot;D4. California Maximum daily dose&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">1</span> <span class="m">86.9071545</span> <span class="m">0.5450</span> <span class="m">26039</span> <span class="m">2</span> <span class="s">&quot;D1. Florida Sum of days supply&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">2</span> <span class="m">96.9302372</span> <span class="m">0.6372</span> <span class="m">26039</span> <span class="m">2</span> <span class="s">&quot;D2. Florida Accounting for overlap days&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">3</span> <span class="m">66.8367252</span> <span class="m">0.5028</span> <span class="m">26039</span> <span class="m">2</span> <span class="s">&quot;D3. Florida Defined observation window&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">4</span> <span class="m">143.0437107</span> <span class="m">0.9884</span> <span class="m">26039</span> <span class="m">2</span> <span class="s">&quot;D4. Florida Maximum daily dose&quot;</span>
-
-<span class="s">&quot;CA&quot;</span> <span class="m">1</span> <span class="m">74.1906194</span> <span class="m">0.1876</span> <span class="m">117804</span> <span class="m">3</span> <span class="s">&quot;D1. California Sum of days supply&quot;</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">2</span> <span class="m">143.9839494</span> <span class="m">0.4413</span> <span class="m">117804</span> <span class="m">3</span> <span class="s">&quot;D2. California Accounting for overlap days&quot;</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">3</span> <span class="m">122.7372442</span> <span class="m">0.4328</span> <span class="m">117804</span> <span class="m">3</span> <span class="s">&quot;D3. California Defined observation window&quot;</span>
-<span class="s">&quot;CA&quot;</span> <span class="m">4</span> <span class="m">250.7462218</span> <span class="m">0.8219</span> <span class="m">117804</span> <span class="m">3</span> <span class="s">&quot;D4. California Maximum daily dose&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">1</span> <span class="m">82.95423</span> <span class="m">0.1703</span> <span class="m">120724</span> <span class="m">3</span> <span class="s">&quot;D1. Florida Sum of days supply&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">2</span> <span class="m">160.1525421</span> <span class="m">0.3788</span> <span class="m">120724</span> <span class="m">3</span> <span class="s">&quot;D2. Florida Accounting for overlap days&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">3</span> <span class="m">133.0969773</span> <span class="m">0.3625</span> <span class="m">120724</span> <span class="m">3</span> <span class="s">&quot;D3. Florida Defined observation window&quot;</span>
-<span class="s">&quot;FL&quot;</span> <span class="m">4</span> <span class="m">267.949697</span> <span class="m">0.6850</span> <span class="m">120724</span> <span class="m">3</span> <span class="s">&quot;D4. Florida Maximum daily dose&quot;</span><span class="k"></span>
-<span class="k">end</span>
-
-<span class="k">gen</span> staten=<span class="m">1</span><span class="k"> if</span> state<span class="o">==</span><span class="s">&quot;FL&quot;</span>
-<span class="k">    replace</span> staten=<span class="m">0</span><span class="k"> if</span> state<span class="o">==</span><span class="s">&quot;CA&quot;</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-
-. gen staten=1 if state==&#34;FL&#34;
-(12 missing values generated)
-
-.     replace staten=0 if state==&#34;CA&#34;
-(12 real changes made)
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <hr>
-<h2 id="Immediate-release-only">Immediate-release only<a class="anchor-link" href="#Immediate-release-only">&#182;</a></h2><p>Continuing with the approach in the previous meta analysis, we compared the average daily MME between Florida and California. We used negative binomial (NB2) regression to estimate the relative difference (ratio). NB2 was used instead of Poisson due to overdispersion. <code>formulation==1</code> designates the IR-only category. No linear transformation needed in this meta analysis because average MME is continuous.</p>
-
+<h2 id="Immediate-release-only">Immediate-release only<a class="anchor-link" href="#Immediate-release-only">&#182;</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span><span class="k">di</span> <span class="s">&quot;--Definition 1--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">1</span>, link(log) family(nb) eform nohead <span class="k"></span>
-<span class="k">di</span> <span class="s">&quot;--Definition 2--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">2</span>, link(log) family(nb) eform nohead<span class="k"></span>
-<span class="k">di</span> <span class="s">&quot;--Definition 3--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">3</span>, link(log) family(nb) eform nohead<span class="k"></span>
-<span class="k">di</span> <span class="s">&quot;--Definition 4--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">1</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">4</span>, link(log) family(nb) eform nohead
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
---Definition 1--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood =  -16146496  
-Iteration 1:   log likelihood =  -16146496  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |   1.123287   .0012424   105.11   0.000     1.120855    1.125725
-       _cons |   30.31562   .0204367  5060.82   0.000     30.27559    30.35571
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-
---Definition 2--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood =  -16277871  
-Iteration 1:   log likelihood =  -16277871  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |    1.11128   .0012285    95.45   0.000     1.108875    1.113691
-       _cons |   31.58196   .0212768  5124.81   0.000     31.54029    31.62369
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-
---Definition 3--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood =  -12470064  
-Iteration 1:   log likelihood =  -12470062  
-Iteration 2:   log likelihood =  -12470062  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |   1.216594   .0013811   172.70   0.000      1.21389    1.219304
-       _cons |   10.33989   .0071822  3363.03   0.000     10.32582    10.35398
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-
---Definition 4--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood =  -17108631  
-Iteration 1:   log likelihood =  -17108631  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |   1.128769    .001244   109.90   0.000     1.126333     1.13121
-       _cons |   39.64305   .0266241  5479.37   0.000      39.5909    39.69527
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Effect measure and standard errors scraped into a new dataset for meta analysis, and put into a new frame</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span>frame create<span class="k"> ir</span>
-frame change<span class="k"> ir</span>
-
-<span class="k">qui</span>:<span class="k"> input</span> definition rr<span class="k"> se</span> str80<span class="k"> label</span>
-<span class="m">1</span> <span class="m">1.123287</span> .<span class="m">0012424</span> <span class="s">&quot;D1. Sum of days supply&quot;</span>
-<span class="m">2</span> <span class="m">1.11128</span> .<span class="m">0012285</span> <span class="s">&quot;D2. Accounting for overlap days&quot;</span>
-<span class="m">3</span> <span class="m">1.216594</span> .<span class="m">0013811</span> <span class="s">&quot;D3. Defined observation window&quot;</span>
-<span class="m">4</span> <span class="m">1.128769</span> .<span class="m">001244</span> <span class="s">&quot;D4. Maximum daily dose&quot;</span><span class="k"></span>
+<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
+<span class="k">input</span> definition n_fl m_fl sd_fl n_ca m_ca sd_ca
+<span class="m">1</span> <span class="m">1338828</span> <span class="m">34.0531498</span> <span class="m">28.4797412</span> <span class="m">2273028</span> <span class="m">30.3156249</span> <span class="m">222.6063485</span>
+<span class="m">2</span> <span class="m">1338828</span> <span class="m">35.0964146</span> <span class="m">30.180772</span> <span class="m">2273028</span> <span class="m">31.5819604</span> <span class="m">223.0198312</span>
+<span class="m">3</span> <span class="m">1338828</span> <span class="m">12.5794512</span> <span class="m">25.2892396</span> <span class="m">2273028</span> <span class="m">10.3398905</span> <span class="m">42.5422362</span>
+<span class="m">4</span> <span class="m">1338828</span> <span class="m">44.7478467</span> <span class="m">48.3917948</span> <span class="m">2273028</span> <span class="m">39.6430507</span> <span class="m">280.3601706</span><span class="k"></span>
 <span class="k">end</span>
 
-<span class="k">qui</span>: meta<span class="k"> set</span> rr<span class="k"> se</span> , studylabel(label)
+<span class="k">qui</span>: meta esize n_fl m_fl sd_fl n_ca m_ca sd_ca, esize(mdiff)
+meta<span class="k"> summarize</span>, fixed
 </pre></div>
 
     </div>
@@ -13831,8 +13553,31 @@ frame change<span class="k"> ir</span>
 <pre>
 
 
+     definit~n       n_fl       m_fl      sd_fl       n_ca       m_ca      sd_ca
 
-. qui: meta set rr se , studylabel(label)
+
+
+  Effect-size label:  Mean Diff.
+        Effect size:  _meta_es
+          Std. Err.:  _meta_se
+
+Meta-analysis summary                     Number of studies =      4
+Fixed-effects model                       Heterogeneity:
+Method: Inverse-variance                            I2 (%) =   98.63
+                                                        H2 =   72.98
+
+--------------------------------------------------------------------
+            Study |     Mean Diff.    [95% Conf. Interval]  % Weight
+------------------+-------------------------------------------------
+          Study 1 |          3.738       3.359       4.116      3.92
+          Study 2 |          3.514       3.135       3.894      3.90
+          Study 3 |          2.240       2.160       2.319     89.72
+          Study 4 |          5.105       4.626       5.584      2.45
+------------------+-------------------------------------------------
+            theta |          2.418       2.343       2.493
+--------------------------------------------------------------------
+Test of theta = 0: z = 63.18                     Prob &gt; |z| = 0.0000
+Test of homogeneity: Q = chi2(3) = 218.94          Prob &gt; Q = 0.0000
 </pre>
 </div>
 </div>
@@ -13851,124 +13596,19 @@ frame change<span class="k"> ir</span>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span>frame change default
-
-<span class="k">di</span> <span class="s">&quot;--Definition 1--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">2</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">1</span>, link(log) family(nb) eform nohead <span class="k"></span>
-<span class="k">di</span> <span class="s">&quot;--Definition 2--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">2</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">2</span>, link(log) family(nb) eform nohead<span class="k"></span>
-<span class="k">di</span> <span class="s">&quot;--Definition 3--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">2</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">3</span>, link(log) family(nb) eform nohead<span class="k"></span>
-<span class="k">di</span> <span class="s">&quot;--Definition 4--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">2</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">4</span>, link(log) family(nb) eform nohead
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
---Definition 1--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood = -362969.87  
-Iteration 1:   log likelihood = -362969.87  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |   .9632454   .0077119    -4.68   0.000     .9482483    .9784797
-       _cons |   90.22328   .4533942   895.93   0.000     89.33901    91.11631
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-
---Definition 2--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood = -371363.94  
-Iteration 1:   log likelihood = -371363.94  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |   .9342013   .0074746    -8.51   0.000     .9196656    .9489667
-       _cons |   103.7573   .5210332   924.41   0.000     102.7411    104.7836
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-
---Definition 3--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood = -347612.99  
-Iteration 1:   log likelihood = -347612.99  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |   .9186782   .0073665   -10.58   0.000      .904353    .9332304
-       _cons |   72.75314   .3660833   851.99   0.000     72.03915    73.47419
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-
---Definition 4--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood = -397119.55  
-Iteration 1:   log likelihood = -397119.55  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |   .9307879   .0074353    -8.98   0.000     .9163284    .9454755
-       _cons |   153.6803   .7705313  1004.19   0.000     152.1774    155.1979
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span>frame create er
-frame change er
-
-<span class="k">input</span> definition rr<span class="k"> se</span> str80<span class="k"> label</span>
-<span class="m">1</span> .<span class="m">9632454</span> .<span class="m">0077119</span> <span class="s">&quot;D1. Sum of days supply&quot;</span>
-<span class="m">2</span> .<span class="m">9342013</span> .<span class="m">0074746</span> <span class="s">&quot;D2. Accounting for overlap days&quot;</span>
-<span class="m">3</span> .<span class="m">9186782</span> .<span class="m">0073665</span> <span class="s">&quot;D3. Defined observation window&quot;</span>
-<span class="m">4</span> .<span class="m">9307879</span> .<span class="m">0074353</span> <span class="s">&quot;D4. Maximum daily dose&quot;</span><span class="k"></span>
+<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
+<span class="k">input</span> definition n_fl m_fl sd_fl n_ca m_ca sd_ca
+<span class="m">1</span> <span class="m">26039</span> <span class="m">86.9071545</span> <span class="m">87.9504585</span> <span class="m">40038</span> <span class="m">90.2232825</span> <span class="m">100.0878302</span>
+<span class="m">2</span> <span class="m">26039</span> <span class="m">96.9302372</span> <span class="m">102.8249551</span> <span class="m">40038</span> <span class="m">103.7573329</span> <span class="m">134.372793</span>
+<span class="m">3</span> <span class="m">26039</span> <span class="m">66.8367252</span> <span class="m">81.142005</span> <span class="m">40038</span> <span class="m">72.753132</span> <span class="m">104.6161615</span>
+<span class="m">4</span> <span class="m">26039</span> <span class="m">143.0437107</span> <span class="m">159.4875273</span> <span class="m">40038</span> <span class="m">153.6802569</span> <span class="m">205.2125971</span><span class="k"></span>
 <span class="k">end</span>
 
-<span class="k">qui</span>: meta<span class="k"> set</span> rr<span class="k"> se</span> , studylabel(label)
+<span class="k">qui</span>: meta esize n_fl m_fl sd_fl n_ca m_ca sd_ca, esize(mdiff)
+meta<span class="k"> summarize</span>, fixed
 </pre></div>
 
     </div>
@@ -13988,10 +13628,31 @@ frame change er
 <pre>
 
 
+     definit~n       n_fl       m_fl      sd_fl       n_ca       m_ca      sd_ca
 
-     definit~n         rr         se                                            
-&gt;                                  label
 
+
+  Effect-size label:  Mean Diff.
+        Effect size:  _meta_es
+          Std. Err.:  _meta_se
+
+Meta-analysis summary                     Number of studies =      4
+Fixed-effects model                       Heterogeneity:
+Method: Inverse-variance                            I2 (%) =   86.38
+                                                        H2 =    7.34
+
+--------------------------------------------------------------------
+            Study |     Mean Diff.    [95% Conf. Interval]  % Weight
+------------------+-------------------------------------------------
+          Study 1 |         -3.316      -4.806      -1.826     35.11
+          Study 2 |         -6.827      -8.745      -4.909     21.19
+          Study 3 |         -5.916      -7.415      -4.418     34.70
+          Study 4 |        -10.637     -13.578      -7.695      9.01
+------------------+-------------------------------------------------
+            theta |         -5.622      -6.504      -4.739
+--------------------------------------------------------------------
+Test of theta = 0: z = -12.48                    Prob &gt; |z| = 0.0000
+Test of homogeneity: Q = chi2(3) = 22.03           Prob &gt; Q = 0.0001
 </pre>
 </div>
 </div>
@@ -14010,124 +13671,19 @@ frame change er
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span>frame change default
-
-<span class="k">di</span> <span class="s">&quot;--Definition 1--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">3</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">1</span>, link(log) family(nb) eform nohead <span class="k"></span>
-<span class="k">di</span> <span class="s">&quot;--Definition 2--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">3</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">2</span>, link(log) family(nb) eform nohead<span class="k"></span>
-<span class="k">di</span> <span class="s">&quot;--Definition 3--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">3</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">3</span>, link(log) family(nb) eform nohead<span class="k"></span>
-<span class="k">di</span> <span class="s">&quot;--Definition 4--&quot;</span><span class="k"></span>
-<span class="k">glm</span> avg staten [fw=population]<span class="k"> if</span> formulation<span class="o">==</span><span class="m">3</span> <span class="o">&amp;</span> definition<span class="o">==</span><span class="m">4</span>, link(log) family(nb) eform nohead
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
---Definition 1--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood = -1280775.8  
-Iteration 1:   log likelihood = -1280775.8  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |   1.118123   .0046083    27.09   0.000     1.109127    1.127192
-       _cons |   74.19061   .2176087  1468.29   0.000     73.76533    74.61835
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-
---Definition 2--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood = -1437573.4  
-Iteration 1:   log likelihood = -1437573.3  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |   1.112294   .0045703    25.90   0.000     1.103373    1.121288
-       _cons |   143.9839   .4209562  1699.84   0.000     143.1612    144.8114
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-
---Definition 3--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood = -1396572.1  
-Iteration 1:   log likelihood = -1396572.1  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |   1.084406   .0044584    19.71   0.000     1.075703    1.093179
-       _cons |   122.7372   .3590528  1644.25   0.000     122.0355     123.443
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-
---Definition 4--
-
-note: avg has noninteger values
-
-Iteration 0:   log likelihood = -1564732.5  
-Iteration 1:   log likelihood = -1564732.5  
-
-------------------------------------------------------------------------------
-             |                 OIM
-         avg |        IRR   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-      staten |   1.068609   .0043848    16.17   0.000      1.06005    1.077238
-       _cons |   250.7462   .7320127  1892.36   0.000     249.3156     252.185
-------------------------------------------------------------------------------
-Note: _cons estimates baseline incidence rate.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span>frame create erir
-frame change erir
-
-<span class="k">input</span> definition rr<span class="k"> se</span> str80<span class="k"> label</span>
-<span class="m">1</span> <span class="m">1.118123</span> .<span class="m">0046083</span> <span class="s">&quot;D1. Sum of days supply&quot;</span>
-<span class="m">2</span> <span class="m">1.112294</span> .<span class="m">0045703</span> <span class="s">&quot;D2. Accounting for overlap days&quot;</span>
-<span class="m">3</span> <span class="m">1.084406</span> .<span class="m">0044584</span>  <span class="s">&quot;D3. Defined observation window&quot;</span>
-<span class="m">4</span> <span class="m">1.068609</span> .<span class="m">0043848</span> <span class="s">&quot;D4. Maximum daily dose&quot;</span><span class="k"></span>
+<div class=" highlight hl-stata"><pre><span></span><span class="k">clear</span>
+<span class="k">input</span> definition n_fl m_fl sd_fl n_ca m_ca sd_ca
+<span class="m">1</span> <span class="m">120724</span> <span class="m">82.95423</span> <span class="m">59.1676551</span> <span class="m">117804</span> <span class="m">74.1906194</span> <span class="m">64.4024217</span>
+<span class="m">2</span> <span class="m">120724</span> <span class="m">160.1525421</span> <span class="m">131.6299812</span> <span class="m">117804</span> <span class="m">143.9839494</span> <span class="m">151.4652358</span>
+<span class="m">3</span> <span class="m">120724</span> <span class="m">133.0969773</span> <span class="m">125.945819</span> <span class="m">117804</span> <span class="m">122.7372442</span> <span class="m">148.5490438</span>
+<span class="m">4</span> <span class="m">120724</span> <span class="m">267.949697</span> <span class="m">238.0130378</span> <span class="m">117804</span> <span class="m">250.7462218</span> <span class="m">282.0999741</span><span class="k"></span>
 <span class="k">end</span>
 
-<span class="k">qui</span>: meta<span class="k"> set</span> rr<span class="k"> se</span> , studylabel(label)
+<span class="k">qui</span>: meta esize n_fl m_fl sd_fl n_ca m_ca sd_ca, esize(mdiff)
+meta<span class="k"> summarize</span>, fixed
 </pre></div>
 
     </div>
@@ -14147,204 +13703,31 @@ frame change erir
 <pre>
 
 
-
-     definit~n         rr         se                                            
-&gt;                                  label
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<hr>
-<h2 id="Meta-Regression">Meta Regression<a class="anchor-link" href="#Meta-Regression">&#182;</a></h2><p>Meta regression is being used to assess heterogeneity, not to derive a summary effect measure. Since there is no sampling variation between studies, fixed effect models are used, but random effects models were also run to check for major divergent results (none were found, data not shown but can be run with the commented-out code below).</p>
-<h3 id="IR-only">IR only<a class="anchor-link" href="#IR-only">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span>frame<span class="k"> ir</span> {
-    meta<span class="k"> summarize</span>, fixed
-<span class="c1">    *meta summarize, random(sj)</span>
-}
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
+     definit~n       n_fl       m_fl      sd_fl       n_ca       m_ca      sd_ca
 
 
-<div class="output_area">
 
-    <div class="prompt"></div>
+  Effect-size label:  Mean Diff.
+        Effect size:  _meta_es
+          Std. Err.:  _meta_se
 
+Meta-analysis summary                     Number of studies =      4
+Fixed-effects model                       Heterogeneity:
+Method: Inverse-variance                            I2 (%) =   98.34
+                                                        H2 =   60.27
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-  Effect-size label:  Effect Size
-        Effect size:  rr
-          Std. Err.:  se
-        Study label:  label
-
-Meta-analysis summary                                Number of studies =      4
-Fixed-effects model                                  Heterogeneity:
-Method: Inverse-variance                                       I2 (%) =   99.92
-                                                                   H2 = 1293.65
-
--------------------------------------------------------------------------------
-                       Study |    Effect Size    [95% Conf. Interval]  % Weight
------------------------------+-------------------------------------------------
-      D1. Sum of days supply |          1.123       1.121       1.126     26.11
-D2. Accounting for overlap~s |          1.111       1.109       1.114     26.71
-D3. Defined observation wi~w |          1.217       1.214       1.219     21.13
-      D4. Maximum daily dose |          1.129       1.126       1.131     26.05
------------------------------+-------------------------------------------------
-                       theta |          1.141       1.140       1.142
--------------------------------------------------------------------------------
-Test of theta = 0: z = 1797.53                              Prob &gt; |z| = 0.0000
-Test of homogeneity: Q = chi2(3) = 3880.94                    Prob &gt; Q = 0.0000
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="ER-only">ER only<a class="anchor-link" href="#ER-only">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span>frame er {
-    meta<span class="k"> summarize</span>, fixed
-<span class="c1">    *meta summarize, random(sj)</span>
-}
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-  Effect-size label:  Effect Size
-        Effect size:  rr
-          Std. Err.:  se
-        Study label:  label
-
-Meta-analysis summary                                Number of studies =      4
-Fixed-effects model                                  Heterogeneity:
-Method: Inverse-variance                                       I2 (%) =   83.83
-                                                                   H2 =    6.19
-
--------------------------------------------------------------------------------
-                       Study |    Effect Size    [95% Conf. Interval]  % Weight
------------------------------+-------------------------------------------------
-      D1. Sum of days supply |          0.963       0.948       0.978     23.61
-D2. Accounting for overlap~s |          0.934       0.920       0.949     25.13
-D3. Defined observation wi~w |          0.919       0.904       0.933     25.87
-      D4. Maximum daily dose |          0.931       0.916       0.945     25.39
------------------------------+-------------------------------------------------
-                       theta |          0.936       0.929       0.944
--------------------------------------------------------------------------------
-Test of theta = 0: z = 249.85                               Prob &gt; |z| = 0.0000
-Test of homogeneity: Q = chi2(3) = 18.56                      Prob &gt; Q = 0.0003
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Both-ER-and-IR">Both ER and IR<a class="anchor-link" href="#Both-ER-and-IR">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-stata"><pre><span></span>frame erir {
-    meta<span class="k"> summarize</span>, fixed
-<span class="c1">    *meta summarize, random(sj)</span>
-}
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-  Effect-size label:  Effect Size
-        Effect size:  rr
-          Std. Err.:  se
-        Study label:  label
-
-Meta-analysis summary                                Number of studies =      4
-Fixed-effects model                                  Heterogeneity:
-Method: Inverse-variance                                       I2 (%) =   96.31
-                                                                   H2 =   27.12
-
--------------------------------------------------------------------------------
-                       Study |    Effect Size    [95% Conf. Interval]  % Weight
------------------------------+-------------------------------------------------
-      D1. Sum of days supply |          1.118       1.109       1.127     23.87
-D2. Accounting for overlap~s |          1.112       1.103       1.121     24.27
-D3. Defined observation wi~w |          1.084       1.076       1.093     25.50
-      D4. Maximum daily dose |          1.069       1.060       1.077     26.36
------------------------------+-------------------------------------------------
-                       theta |          1.095       1.091       1.099
--------------------------------------------------------------------------------
-Test of theta = 0: z = 486.39                               Prob &gt; |z| = 0.0000
-Test of homogeneity: Q = chi2(3) = 81.37                      Prob &gt; Q = 0.0000
+--------------------------------------------------------------------
+            Study |     Mean Diff.    [95% Conf. Interval]  % Weight
+------------------+-------------------------------------------------
+          Study 1 |          8.764       8.267       9.260     69.06
+          Study 2 |         16.169      15.031      17.307     13.13
+          Study 3 |         10.360       9.255      11.464     13.94
+          Study 4 |         17.203      15.111      19.296      3.88
+------------------+-------------------------------------------------
+            theta |         10.286       9.873      10.698
+--------------------------------------------------------------------
+Test of theta = 0: z = 48.90                     Prob &gt; |z| = 0.0000
+Test of homogeneity: Q = chi2(3) = 180.81          Prob &gt; Q = 0.0000
 </pre>
 </div>
 </div>
@@ -14357,10 +13740,10 @@ Test of homogeneity: Q = chi2(3) = 81.37                      Prob &gt; Q = 0.00
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Interpretation">Interpretation<a class="anchor-link" href="#Interpretation">&#182;</a></h2><ul>
-<li>ER only group had <em>lower</em> average daily MME in Florida than California?! </li>
-<li>Heterogeneity by I^2 was high for all 3 definitions</li>
-<li>Heterogeneity was lowest for ER-only group</li>
-<li>For ER+IR group, the definitional variants would have resulted in us conclusing that average daily MME was higher in FL by: 6.9%, 8.4%, 11.2%, or 11.8%. Are these interesting policy or clinical distinctions?</li>
+<li>ER only group had <em>lower</em> mean daily MME in Florida than California?! </li>
+<li>Heterogeneity by I<sup>2</sup> was high for all 3 definitions</li>
+<li>Heterogeneity was lowest for ER-only group by both I<sup>2</sup> and X<sup>2</sup></li>
+<li>For ER+IR group, the definitional variants would have resulted in us concluding that the average dose was 8.8 (8.3, 9.3) milligrams to 17.2 (15.1, 19.3) milligrams higher in Florida.</li>
 </ul>
 
 </div>
